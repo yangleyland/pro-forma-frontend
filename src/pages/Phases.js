@@ -63,13 +63,6 @@ function Phases() {
       });
   };
 
-  //   // Fetch data from API passing in user.id
-  useEffect(() => {
-    if (user) {
-      fetchPhases(user.id);
-    }
-  }, [user, fetchPhases]);
-
   return (
     <div>
       <h1>Phases Page</h1>
