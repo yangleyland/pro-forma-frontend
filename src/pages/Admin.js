@@ -52,6 +52,30 @@ const Admin = () => {
 
       const result = await response.json();
       setMessage(`${result.message}`);
+
+      const defaultControlsData = {
+        id: userId,
+        electrification_scenario: "Medium- and Heavy-Duty Vehicles Only",
+        site: "site 1",
+        incentives: true,
+        ira_incentives: false,
+      };
+
+      // Call the /api/controls endpoint with the default data
+      const controlsResponse = await fetch(
+        "http://localhost:3002/api/controls",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(defaultControlsData),
+        }
+      );
+
+      if (!controlsResponse.ok) {
+        throw new Error("Failed to set controls data");
+      }
     } catch (error) {
       setMessage(`Error uploading file: ${error.message}`);
     }

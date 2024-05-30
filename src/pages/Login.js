@@ -5,39 +5,13 @@ import useAuthStore from '../store/useAuthStore';
 
 
 function Login() {
-  const {  login, getUser, initializeAuth } = useAuthStore();
-  useEffect(() => {
-    initializeAuth();
-  }, [initializeAuth]);
+  const {  login, getUser } = useAuthStore();
+
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  // const setUser = useUserStore((state) => state.setUser);
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const { data: { user }, error } = await supabase.auth.getUser();
-  //     if (error) {
-  //       console.error('Error fetching user:', error);
-  //     } else {
-  //       setUser(user);
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, [setUser]);
-
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  //   if (error) {
-  //     setMessage(`Error: ${error.message}`);
-  //   } else {
-  //     setMessage('User logged in successfully!');
-  //     setUser(data.user);
-  //   }
-  // };
   const handleLogin = async (e) => {
     e.preventDefault();
     try {

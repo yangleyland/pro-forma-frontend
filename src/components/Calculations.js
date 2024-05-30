@@ -1,87 +1,31 @@
 // src/components/Calculations.js
 import React, { useEffect } from "react";
 import useAuthStore from "../store/useAuthStore";
+import useProFormaCalcs from "../store/useProFormaCalcs";
 
 function Calculations() {
-  const { user, initializeAuth, data, loading } = useAuthStore();
+  const {  loading } = useAuthStore();
 
-  useEffect(() => {
-    initializeAuth();
-  }, [initializeAuth]);
+
+  const years = Array.from({ length: 17 }, (_, i) => 2024 + i);
+
+  const {
+    evPurchaseCostSums,
+    defaultReplacementAllocationSums,
+    EVAnnualMaintenanceCost,
+    existingVehicleAnnualMaintenanceCost,
+    EVAnnualChargingCosts,
+    existingVehicleAnnualFuelCosts,
+    HVIP,
+    IRA,
+  } = useProFormaCalcs();
+
+
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!user) {
-    return <div>Please log in</div>;
-  }
-
-  // Define the years range
-  const years = Array.from({ length: 17 }, (_, i) => 2024 + i);
-
-  // Calculate sums for each year
-  const calculateYearSums = (field) => {
-    return years.reduce((acc, year) => {
-      const yearTotal = data
-        .filter((item) => item["Replacement Year"] === year)
-        .filter(
-          (item) =>
-            item["Electrification Scenario"] ===
-            "Medium- and Heavy-Duty Vehicles Only"
-        )
-        .reduce((sum, item) => sum + item[field], 0);
-      acc[year] = yearTotal;
-      return acc;
-    }, {});
-  };
-
-  //sums with range
-  const calculateYearSumsWithinRange = (field) => {
-    return years.reduce((acc, year) => {
-      const yearTotal = data
-        .filter(
-          (item) =>
-            item["Replacement Year"] <= year && item["End of life"] > year
-        )
-        .filter(
-          (item) =>
-            item["Electrification Scenario"] ===
-            "Medium- and Heavy-Duty Vehicles Only"
-        )
-        .reduce((sum, item) => {
-            const value = parseFloat(item[field] || 0);
-            console.log(`Adding ${value} for year ${year} to ${field}`);
-            return sum + value;
-          }, 0);
-      acc[year] = yearTotal;
-      return acc;
-    }, {});
-  };
-
-  const evPurchaseCostSums = calculateYearSums(
-    "EV Purchase Cost pre-incentive"
-  );
-  const defaultReplacementAllocationSums = calculateYearSums(
-    "Default Replacement Allocation"
-  );
-  const EVAnnualMaintenanceCost = calculateYearSumsWithinRange(
-    "EV Annual Maintenance Costs"
-  );
-  const existingVehicleAnnualMaintenanceCost = calculateYearSumsWithinRange(
-    "Existing Vehicle Annual Maintenance"
-  );
-  const EVAnnualChargingCosts = calculateYearSumsWithinRange(
-    "EV Annual Charging Costs"
-  );
-  const existingVehicleAnnualFuelCosts = calculateYearSumsWithinRange(
-    "Existing Vehicle Annual Fuel Costs"
-  );
-
-  const HVIP = calculateYearSums(
-    "HVIP, PG&E EV Fleet Program, and Other Incentives"
-  );
-  const IRA = calculateYearSums("IRA Incentives");
 
   return (
     <div>

@@ -1,11 +1,20 @@
 import "./App.css";
+import { useEffect } from "react";
 import { Route, Routes, Link } from "react-router-dom";
 import Login from "./pages/Login.js";
 import Dashboard from "./pages/Dashboard.js";
 import AdvancedControls from "./pages/AdvancedControls.js";
 import Admin from "./pages/Admin.js";
+import useAuthStore from "./store/useAuthStore.js";
+import Phases from "./pages/Phases.js";
+import YearOverYear from "./pages/YearOverYear.js";
 
 function App() {
+  const { initializeAuth } = useAuthStore();
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
+
   return (
     <div>
       <div>
@@ -23,14 +32,22 @@ function App() {
             <li>
               <Link to="/admin">Admin</Link>
             </li>
+            <li>
+              <Link to="/phases">Phases</Link>
+            </li>
+            <li>
+              <Link to="/yearoveryear">Year Over Year</Link>
+            </li>
           </ul>
         </nav>
       </div>
       <Routes>
-        <Route exact path="/" element={<Dashboard/>} />
-        <Route path="/advanced-controls" element={<AdvancedControls/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/admin" element={<Admin/>} />
+        <Route exact path="/" element={<Dashboard />} />
+        <Route path="/advanced-controls" element={<AdvancedControls />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/phases" element={<Phases />} />
+        <Route path="/yearoveryear" element={<YearOverYear />} />
       </Routes>
     </div>
   );

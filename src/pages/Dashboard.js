@@ -3,14 +3,10 @@ import React from "react";
 import { useEffect } from "react";
 import useAuthStore from "../store/useAuthStore";
 import Calculations from "../components/Calculations";
+import Controls from "../components/Controls";
 
 function Dashboard() {
-  const { user, logout, initializeAuth, data } =
-    useAuthStore();
-  useEffect(() => {
-    initializeAuth();
-  }, [initializeAuth]);
-
+  const { user, logout, data } = useAuthStore();
 
   const renderTable = () => {
     if (data.length === 0) {
@@ -45,12 +41,13 @@ function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
+      <Controls />
       <button onClick={logout}>Logout</button>
       <p>Welcome to the dashboard!</p>
       <p>UID: {user.id}</p>
       <p>Email: {user.email}</p>
       {renderTable()}
-      <Calculations/>
+      <Calculations />
     </div>
   );
 }
