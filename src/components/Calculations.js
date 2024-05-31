@@ -18,6 +18,7 @@ function Calculations() {
     existingVehicleAnnualFuelCosts,
     HVIP,
     IRA,
+    vehicleCounts,
   } = useProFormaCalcs();
 
 
@@ -86,6 +87,12 @@ function Calculations() {
             <td>IRA</td>
             {years.map((year) => (
               <td key={year}>{IRA[year]}</td>
+            ))}
+          </tr>
+          <tr>
+            <td>IRA</td>
+            {years.map((year) => (
+              <td key={year}>{vehicleCounts[year]}</td>
             ))}
           </tr>
         </tbody>

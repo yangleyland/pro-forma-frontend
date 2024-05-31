@@ -9,18 +9,21 @@ import useAuthStore from "./store/useAuthStore.js";
 import Phases from "./pages/Phases.js";
 import YearOverYear from "./pages/YearOverYear.js";
 import usePhases from "./store/usePhases.js";
+import useYearOverYear from "./store/useYearOverYear.js";
 
 function App() {
   const { initializeAuth,user } = useAuthStore();
   const {fetchPhases} = usePhases();
   useEffect(() => {
     initializeAuth();
+    
   }, [initializeAuth]);
   useEffect(() => {
     if (user) {
       fetchPhases(user.id);
     }
   }, [user, fetchPhases]);
+  
 
 
   return (

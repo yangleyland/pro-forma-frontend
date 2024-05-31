@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
+import useYearOverYear from "../store/useYearOverYear";
 
 const Controls = () => {
   const { controlsData, setControlsData, user } = useAuthStore();
@@ -9,6 +10,9 @@ const Controls = () => {
   const [site, setSite] = useState("");
   const [incentives, setIncentives] = useState(false);
   const [iraIncentives, setIraIncentives] = useState(false);
+  const [phase1, setPhase1] = useState("");
+  const [phase2, setPhase2] = useState("");
+  const [phase3, setPhase3] = useState("");
 
   const initialLoad = useRef(true);
 
@@ -28,6 +32,10 @@ const Controls = () => {
       setSite(controlsData.site || "");
       setIncentives(controlsData.incentives || false);
       setIraIncentives(controlsData.ira_incentives || false);
+      setPhase1(controlsData.phase1 || "");
+      setPhase2(controlsData.phase2 || "");
+      setPhase3(controlsData.phase3 || "");
+
       initialLoad.current = false;
     }
   }, [controlsData]);
@@ -52,6 +60,8 @@ const Controls = () => {
       const result = await response.json();
       console.log("Control updated successfully:", result);
       setControlsData(result.data);
+      const {initYearOverYear}=useYearOverYear.getState();
+      initYearOverYear();
 
     } catch (error) {
       console.error(`Error updating control: ${error.message}`);
@@ -81,6 +91,21 @@ const Controls = () => {
     const newValue = e.target.checked;
     setIraIncentives(newValue);
     updateControl("ira_incentives", newValue);
+  };
+  const handlePhase1Change = (e) => {
+    const newValue = e.target.value;
+    setPhase1(newValue);
+    updateControl("phase1", newValue);
+  };
+  const handlePhase2Change = (e) => {
+    const newValue = e.target.value;
+    setPhase2(newValue);
+    updateControl("phase2", newValue);
+  };
+  const handlePhase3Change = (e) => {
+    const newValue = e.target.value;
+    setPhase3(newValue);
+    updateControl("phase3", newValue);
   };
 
 
@@ -135,6 +160,12 @@ const Controls = () => {
           checked={iraIncentives}
           onChange={handleIraIncentivesChange}
         />
+      </div>
+      <div>
+        <label>Phases:</label>
+        <input type="text" value={phase1} onChange={handlePhase1Change} />
+        <input type="text" value={phase2} onChange={handlePhase2Change} />
+        <input type="text" value={phase3} onChange={handlePhase3Change} />
       </div>
     </div>
   );

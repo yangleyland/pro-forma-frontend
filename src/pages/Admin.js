@@ -59,6 +59,9 @@ const Admin = () => {
         site: "site 1",
         incentives: true,
         ira_incentives: false,
+        phase1: 2024,
+        phase2: 2025,
+        phase3: 2026,
       };
 
       // Call the /api/controls endpoint with the default data

@@ -3,6 +3,8 @@ import { create } from "zustand";
 
 import supabase from "../supabaseClient";
 import useProFormaCalcs from "./useProFormaCalcs";
+import useYearOverYear from "./useYearOverYear";
+import useAdvancedCalc from "./useAdvancedCalc";
 
 const useAuthStore = create((set, get) => ({
   user: null,
@@ -75,6 +77,11 @@ const useAuthStore = create((set, get) => ({
       const controls = await controlsResponse.json();
       get().setControlsData(controls.data);
 
+      const { initYearOverYear } = useYearOverYear.getState();
+      const {advancedCalcs,fetchAdvancedCalcs} = useAdvancedCalc.getState();
+      await fetchAdvancedCalcs(userId);
+      initYearOverYear();
+      
 
     } catch (error) {
       set({ message: `Error: ${error.message}` });

@@ -2,6 +2,7 @@
 import React from 'react';
 
 function AdvancedControls() {
+  
   return (
     <div>
       <h1>AdvControls</h1>

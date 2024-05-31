@@ -1,5 +1,4 @@
-import {create} from 'zustand';
-
+import { create } from "zustand";
 
 const YEARS = Array.from({ length: 17 }, (_, i) => 2024 + i);
 
@@ -13,7 +12,8 @@ const useProFormaCalcs = create((set) => ({
   existingVehicleAnnualFuelCosts: {},
   HVIP: {},
   IRA: {},
-  setYearSums: (data,controls) => {
+  vehicleCounts: {},
+  setYearSums: (data, controls) => {
     const calculateYearSums = (field) => {
       return YEARS.reduce((acc, year) => {
         const yearTotal = data
@@ -22,13 +22,46 @@ const useProFormaCalcs = create((set) => ({
             if (controls["electrification_scenario"] === "All Vehicles") {
               return true; // Include all items if scenario is "All Vehicles"
             }
-            if (controls["electrification_scenario"] === "Whole Fleet Electrification Excluding Exemptions"){
-                return item["Exclude?"] === "No";
+            if (
+              controls["electrification_scenario"] ===
+              "Whole Fleet Electrification Excluding Exemptions"
+            ) {
+              return item["Exclude?"] === "No";
             }
-            return item["Electrification Scenario"] === "Medium- and Heavy-Duty Vehicles Only";
+            return (
+              item["Electrification Scenario"] ===
+              "Medium- and Heavy-Duty Vehicles Only"
+            );
           })
           .reduce((sum, item) => sum + item[field], 0);
         acc[year] = yearTotal;
+        return acc;
+      }, {});
+    };
+
+    const countVehicles = () => {
+      let yearCount = 0;
+      return YEARS.reduce((acc, year) => {
+        const yearTotal = data
+          .filter((item) => item["Replacement Year"] === year)
+          .filter((item) => {
+            if (controls["electrification_scenario"] === "All Vehicles") {
+              return true; // Include all items if scenario is "All Vehicles"
+            }
+            if (
+              controls["electrification_scenario"] ===
+              "Whole Fleet Electrification Excluding Exemptions"
+            ) {
+              return item["Exclude?"] === "No";
+            }
+            return (
+              item["Electrification Scenario"] ===
+              "Medium- and Heavy-Duty Vehicles Only"
+            );
+          })
+          .reduce((sum, item) => sum + 1, 0);
+        yearCount += yearTotal;
+        acc[year] = yearCount;
         return acc;
       }, {});
     };
@@ -40,11 +73,21 @@ const useProFormaCalcs = create((set) => ({
             (item) =>
               item["Replacement Year"] <= year && item["End of life"] > year
           )
-          .filter(
-            (item) =>
+          .filter((item) => {
+            if (controls["electrification_scenario"] === "All Vehicles") {
+              return true; // Include all items if scenario is "All Vehicles"
+            }
+            if (
+              controls["electrification_scenario"] ===
+              "Whole Fleet Electrification Excluding Exemptions"
+            ) {
+              return item["Exclude?"] === "No";
+            }
+            return (
               item["Electrification Scenario"] ===
               "Medium- and Heavy-Duty Vehicles Only"
-          )
+            );
+          })
           .reduce((sum, item) => {
             const value = parseFloat(item[field] || 0);
             return sum + value;
@@ -77,6 +120,7 @@ const useProFormaCalcs = create((set) => ({
       "HVIP, PG&E EV Fleet Program, and Other Incentives"
     );
     const IRA = calculateYearSums("IRA Incentives");
+    const vehicleCounts = countVehicles();
 
     set({
       evPurchaseCostSums,
@@ -87,6 +131,7 @@ const useProFormaCalcs = create((set) => ({
       existingVehicleAnnualFuelCosts,
       HVIP,
       IRA,
+      vehicleCounts,
     });
   },
 }));

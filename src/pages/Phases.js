@@ -10,7 +10,6 @@ function Phases() {
   const { chargerCosts, installationCosts, setChargerCost, setInstallCost } =
     useChargerCosts();
 
-
   // Define initial state values
   const [site, setSite] = useState("");
   const [year, setYear] = useState("");
@@ -62,6 +61,9 @@ function Phases() {
         console.log(error);
       });
   };
+  if (!user) {
+    return <div>Please log in</div>;
+  }
 
   return (
     <div>
