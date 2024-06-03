@@ -127,7 +127,7 @@ const Controls = () => {
 
   return (
 
-      <Card className="w-[350px]">
+      <Card className="h-full">
         <CardHeader>
           <CardTitle>Controls</CardTitle>
           <CardDescription>Modify basic controls of your fleet</CardDescription>

@@ -5,6 +5,9 @@ import useAuthStore from "../store/useAuthStore";
 import Calculations from "../components/Calculations";
 import Controls from "../components/Controls";
 import { Button } from "../components/ui/button";
+import CostBenefitChart from "../components/CostBenefitChart";
+import CostAndSavings from "../components/CostAndSavings";
+
 import {
   Table,
   TableBody,
@@ -13,8 +16,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../components/ui/table"
-
+} from "../components/ui/table";
 
 function Dashboard() {
   const { user, logout, data } = useAuthStore();
@@ -51,13 +53,22 @@ function Dashboard() {
   }
   return (
     <div>
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-optonygreen mb-4">
+      <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
         Dashboard
       </h1>
-      <Controls />
-      <Button onClick={logout}>Logout</Button>
-      {renderTable()}
-      <Calculations />
+      <div className="grid grid-cols-6 md:grid-cols-12 gap-4 p-4">
+        <div className="col-span-3 h-fill">
+          <Controls />
+        </div>
+        <div className="col-span-5 h-fill">
+          <CostBenefitChart />
+        </div>
+        <div className="col-span-4 h-fill">
+          <CostAndSavings />
+        </div>
+      </div>
+
+      {/* <Calculations /> */}
     </div>
   );
 }

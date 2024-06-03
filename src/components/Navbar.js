@@ -1,20 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { buttonVariants } from "./ui/button";
+import { Button } from "./ui/button";
 import {
-  FaChartBar,
-  FaCog,
   FaSignInAlt,
   FaUser,
   FaCalendarAlt,
-  FaChartLine,
 } from "react-icons/fa";
 import { LuBarChart3,LuCog,LuAreaChart} from "react-icons/lu";
+import useAuthStore from "../store/useAuthStore";
 
 
 // src/Navbar.js
 
 const Navbar = () => {
+  const { logout } = useAuthStore();
   return (
     <div className="h-screen w-1/6 bg-white border-r fixed">
       <div className="flex items-center justify-left h-16 pl-4">
@@ -60,6 +59,7 @@ const Navbar = () => {
             </li>
           </Link>
         </ul>
+        <Button variant="outline" onClick={logout}>Logout</Button>
       </nav>
     </div>
   );
