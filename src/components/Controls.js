@@ -3,6 +3,24 @@ import { useEffect, useRef } from "react";
 import { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import useYearOverYear from "../store/useYearOverYear";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Switch } from "./ui/switch";
 
 const Controls = () => {
   const { controlsData, setControlsData, user } = useAuthStore();
@@ -60,35 +78,34 @@ const Controls = () => {
       const result = await response.json();
       console.log("Control updated successfully:", result);
       setControlsData(result.data);
-      const {initYearOverYear}=useYearOverYear.getState();
+      const { initYearOverYear } = useYearOverYear.getState();
       initYearOverYear();
-
     } catch (error) {
       console.error(`Error updating control: ${error.message}`);
     }
   };
 
-  const handleElectrificationScenarioChange = (e) => {
-    const newValue = e.target.value;
+  const handleElectrificationScenarioChange = (str) => {
+    const newValue = str;
     setElectrificationScenario(newValue);
     updateControl("electrification_scenario", newValue);
   };
 
-  const handleSiteChange = (e) => {
-    const newValue = e.target.value;
+  const handleSiteChange = (str) => {
+    const newValue = str;
     setSite(newValue);
     updateControl("site", newValue);
   };
 
-  const handleIncentivesChange = (e) => {
-    const newValue = e.target.checked;
+  const handleIncentivesChange = (checked) => {
+    const newValue = checked;
     setIncentives(newValue);
     updateControl("incentives", newValue);
     // Call additional function here
   };
 
-  const handleIraIncentivesChange = (e) => {
-    const newValue = e.target.checked;
+  const handleIraIncentivesChange = (checked) => {
+    const newValue = checked;
     setIraIncentives(newValue);
     updateControl("ira_incentives", newValue);
   };
@@ -108,66 +125,74 @@ const Controls = () => {
     updateControl("phase3", newValue);
   };
 
-
   return (
-    <div>
-      <h2>Controls</h2>
 
-      <div>
-        <label>Electrification Scenario:</label>
-        <select
-          value={electrificationScenario}
-          onChange={handleElectrificationScenarioChange}
-        >
-          <option value="" disabled>
-            Select an option
-          </option>
-          {electrificationOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label>Site to Display on Dashboard:</label>
-        <select value={site} onChange={handleSiteChange}>
-          <option value="" disabled>
-            Select a site
-          </option>
-          {siteOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label>Turn on Incentives?</label>
-        <input
-          type="checkbox"
-          checked={incentives}
-          onChange={handleIncentivesChange}
-        />
-      </div>
-
-      <div>
-        <label>Turn on Inflation Reduction Act Incentives?</label>
-        <input
-          type="checkbox"
-          checked={iraIncentives}
-          onChange={handleIraIncentivesChange}
-        />
-      </div>
-      <div>
+      <Card className="w-[350px]">
+        <CardHeader>
+          <CardTitle>Controls</CardTitle>
+          <CardDescription>Modify basic controls of your fleet</CardDescription>
+          <CardContent>
+            <form>
+              <div className="grid w-full items-center gap-4">
+                <div className="flex flex-col space-y-1.5">
+                  <Label>Electrification Scenario:</Label>
+                  <Select
+                    value={electrificationScenario}
+                    onValueChange={handleElectrificationScenarioChange}
+                  >
+                    <SelectTrigger id="electrification-scenario">
+                      <SelectValue placeholder="Select scenario" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {electrificationOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label>Site to Display</Label>
+                  <Select value={site} onValueChange={handleSiteChange}>
+                    <SelectTrigger id="site">
+                      <SelectValue placeholder="Select site" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {siteOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label>Turn on Incentives</Label>
+                  <Switch
+                    checked={incentives}
+                    onCheckedChange={handleIncentivesChange}
+                  />
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label>Turn on IRA Incentives</Label>
+                  <Switch
+                    checked={iraIncentives}
+                    onCheckedChange={handleIraIncentivesChange}
+                  />
+                </div>
+              </div>
+            </form>
+          </CardContent>
+        </CardHeader>
+              {/* <div>
         <label>Phases:</label>
         <input type="text" value={phase1} onChange={handlePhase1Change} />
         <input type="text" value={phase2} onChange={handlePhase2Change} />
         <input type="text" value={phase3} onChange={handlePhase3Change} />
-      </div>
-    </div>
+      </div> */}
+      </Card>
+
   );
 };
 

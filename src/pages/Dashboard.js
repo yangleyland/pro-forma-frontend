@@ -4,6 +4,17 @@ import { useEffect } from "react";
 import useAuthStore from "../store/useAuthStore";
 import Calculations from "../components/Calculations";
 import Controls from "../components/Controls";
+import { Button } from "../components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table"
+
 
 function Dashboard() {
   const { user, logout, data } = useAuthStore();
@@ -15,24 +26,24 @@ function Dashboard() {
 
     const headers = Object.keys(data[0]);
     return (
-      <table>
-        <thead>
-          <tr>
+      <Table>
+        <TableHeader>
+          <TableRow>
             {headers.map((header) => (
               <th key={header}>{header}</th>
             ))}
-          </tr>
-        </thead>
-        <tbody>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {data.map((item, index) => (
-            <tr key={index}>
+            <TableRow key={index}>
               {headers.map((header) => (
                 <td key={header}>{item[header]}</td>
               ))}
-            </tr>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     );
   };
   if (!user) {
@@ -40,12 +51,11 @@ function Dashboard() {
   }
   return (
     <div>
-      <h1>Dashboard</h1>
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-optonygreen mb-4">
+        Dashboard
+      </h1>
       <Controls />
-      <button onClick={logout}>Logout</button>
-      <p>Welcome to the dashboard!</p>
-      <p>UID: {user.id}</p>
-      <p>Email: {user.email}</p>
+      <Button onClick={logout}>Logout</Button>
       {renderTable()}
       <Calculations />
     </div>

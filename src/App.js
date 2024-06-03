@@ -11,18 +11,17 @@ import YearOverYear from "./pages/YearOverYear.js";
 import usePhases from "./store/usePhases.js";
 import useYearOverYear from "./store/useYearOverYear.js";
 import useYears from "./store/useYears.js";
-
+import Navbar from "./components/Navbar";
 
 function App() {
-  const { initializeAuth,user } = useAuthStore();
-  const {fetchPhases} = usePhases();
-  const {initializeYears} = useYears();
+  const { initializeAuth, user } = useAuthStore();
+  const { fetchPhases } = usePhases();
+  const { initializeYears } = useYears();
   useEffect(() => {
     initializeYears();
   }, [initializeYears]);
   useEffect(() => {
     initializeAuth();
-    
   }, [initializeAuth]);
   useEffect(() => {
     if (user) {
@@ -30,44 +29,27 @@ function App() {
     }
   }, [user, fetchPhases]);
 
-  
-  
-
-
   return (
-    <div>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Dashboard</Link>
-            </li>
-            <li>
-              <Link to="/advanced-controls">Advanced Controls</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/admin">Admin</Link>
-            </li>
-            <li>
-              <Link to="/phases">Phases</Link>
-            </li>
-            <li>
-              <Link to="/yearoveryear">Year Over Year</Link>
-            </li>
-          </ul>
-        </nav>
+    <div className="flex h-screen">
+      <Navbar />
+
+      <div className="flex-1">
+        <div className="flex">
+          <div className="w-1/6 z-50">
+            <Navbar />
+          </div>
+          <div className="w-5/6  p-10">
+            <Routes>
+              <Route exact path="/" element={<Dashboard />} />
+              <Route path="/advanced-controls" element={<AdvancedControls />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/phases" element={<Phases />} />
+              <Route path="/yearoveryear" element={<YearOverYear />} />
+            </Routes>
+          </div>
+        </div>
       </div>
-      <Routes>
-        <Route exact path="/" element={<Dashboard />} />
-        <Route path="/advanced-controls" element={<AdvancedControls />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/phases" element={<Phases />} />
-        <Route path="/yearoveryear" element={<YearOverYear />} />
-      </Routes>
     </div>
   );
 }
