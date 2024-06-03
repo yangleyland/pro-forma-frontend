@@ -2,12 +2,12 @@
 import React, { useEffect } from "react";
 import useAuthStore from "../store/useAuthStore";
 import useProFormaCalcs from "../store/useProFormaCalcs";
+import useYears from "../store/useYears";
 
 function Calculations() {
   const {  loading } = useAuthStore();
+  const {YEARS} = useYears();
 
-
-  const years = Array.from({ length: 17 }, (_, i) => 2024 + i);
 
   const {
     evPurchaseCostSums,
@@ -21,7 +21,17 @@ function Calculations() {
     vehicleCounts,
   } = useProFormaCalcs();
 
-
+  const rows = [
+    { label: "Electric Vehicle Purchase Cost", data: evPurchaseCostSums },
+    { label: "Default Replacement Allocation", data: defaultReplacementAllocationSums },
+    { label: "EV Annual Maintenance Cost", data: EVAnnualMaintenanceCost },
+    { label: "Existing Vehicle Annual Maintenance Cost", data: existingVehicleAnnualMaintenanceCost },
+    { label: "EV Annual Charging Cost", data: EVAnnualChargingCosts },
+    { label: "Existing Vehicle Annual Fuel Costs", data: existingVehicleAnnualFuelCosts },
+    { label: "HVIP", data: HVIP },
+    { label: "IRA", data: IRA },
+    { label: "Vehicle Counts", data: vehicleCounts }
+  ];
 
   if (loading) {
     return <div>Loading...</div>;
@@ -35,66 +45,20 @@ function Calculations() {
         <thead>
           <tr>
             <th>Year</th>
-            {years.map((year) => (
+            {YEARS.map((year) => (
               <th key={year}>{year}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Electric Vehicle Purchase Cost</td>
-            {years.map((year) => (
-              <td key={year}>{evPurchaseCostSums[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Default Replacement Allocation</td>
-            {years.map((year) => (
-              <td key={year}>{defaultReplacementAllocationSums[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>EV Annual Maintenance Cost</td>
-            {years.map((year) => (
-              <td key={year}>{EVAnnualMaintenanceCost[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Existing Vehicle Annual Maintenance Cost</td>
-            {years.map((year) => (
-              <td key={year}>{existingVehicleAnnualMaintenanceCost[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>EV Annual Charging Cost</td>
-            {years.map((year) => (
-              <td key={year}>{EVAnnualChargingCosts[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Existing Vehicle Annual Fuel Costs</td>
-            {years.map((year) => (
-              <td key={year}>{existingVehicleAnnualFuelCosts[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>HVIP</td>
-            {years.map((year) => (
-              <td key={year}>{HVIP[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>IRA</td>
-            {years.map((year) => (
-              <td key={year}>{IRA[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>IRA</td>
-            {years.map((year) => (
-              <td key={year}>{vehicleCounts[year]}</td>
-            ))}
-          </tr>
+        {rows.map((row) => (
+      <tr key={row.label}>
+        <td>{row.label}</td>
+        {YEARS.map((year) => (
+          <td key={year}>{Math.round(row.data[year])}</td>
+        ))}
+      </tr>
+    ))}
         </tbody>
       </table>
     </div>

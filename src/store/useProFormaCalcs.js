@@ -1,6 +1,6 @@
 import { create } from "zustand";
+import useYears from './useYears';
 
-const YEARS = Array.from({ length: 17 }, (_, i) => 2024 + i);
 
 // Create Zustand store
 const useProFormaCalcs = create((set) => ({
@@ -15,7 +15,7 @@ const useProFormaCalcs = create((set) => ({
   vehicleCounts: {},
   setYearSums: (data, controls) => {
     const calculateYearSums = (field) => {
-      return YEARS.reduce((acc, year) => {
+      return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
           .filter((item) => item["Replacement Year"] === year)
           .filter((item) => {
@@ -41,7 +41,7 @@ const useProFormaCalcs = create((set) => ({
 
     const countVehicles = () => {
       let yearCount = 0;
-      return YEARS.reduce((acc, year) => {
+      return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
           .filter((item) => item["Replacement Year"] === year)
           .filter((item) => {
@@ -67,7 +67,7 @@ const useProFormaCalcs = create((set) => ({
     };
 
     const calculateYearSumsWithinRange = (field) => {
-      return YEARS.reduce((acc, year) => {
+      return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
           .filter(
             (item) =>

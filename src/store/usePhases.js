@@ -25,7 +25,7 @@ const usePhases = create((set, get) => ({
     }
   },
   calculateCosts: (phases) => {
-    const { chargerCosts, installationCosts } = useChargerCosts.getState();
+    const { chargerCosts, installationCosts,setChargerCost,setInstallCost } = useChargerCosts.getState();
     const phaseCosts = phases.map((phase, index) => {
       const cost = phase.ports * chargerCosts["Level 2 (10-20 kW)"];
       let installCost = 0;

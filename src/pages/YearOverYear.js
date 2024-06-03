@@ -5,10 +5,12 @@ import usePhases from "../store/usePhases";
 import useAuthStore from "../store/useAuthStore";
 import useProFormaCalcs from "../store/useProFormaCalcs";
 import useYearOverYear from "../store/useYearOverYear";
+import useYears from "../store/useYears";
 
 const YearOverYear = () => {
   const { user, controlsData } = useAuthStore();
   const { phases } = usePhases();
+  const {YEARS} = useYears();
   const {
     estimatedElectricVehicles,
     costOfElectricVehicles,
@@ -21,10 +23,50 @@ const YearOverYear = () => {
     loanAmount,
     loanPrincipalRemaining,
     loanAnnualInterest,
-    loanAnnualPayments,chargerInstallCosts,chargerPurchaseCosts
+    loanAnnualPayments,
+    chargerInstallCosts,
+    chargerPurchaseCosts,
+    chargerMaintenanceCosts,
+    chargerNetworkAndManagementCosts,
+    chargeMangementSavings,
+    totalVehicleCosts,
+    totalVehicleSavings,
+    totalChargingInfrastructureCosts,
+    totalChargingInfrastructureSavings,
+    totalCosts,
+    totalSavings,
+    annualCostBenefit,
+    cumulativeCostBenefit,
   } = useYearOverYear();
 
-  const years = Array.from({ length: 17 }, (_, i) => 2024 + i);
+  const rows = [
+    { label: "Estimated Electric Vehicles", data: estimatedElectricVehicles },
+    { label: "Number of New Ports", data: numberOfNewPorts },
+    { label: "Electric Vehicle Purchase Cost", data: costOfElectricVehicles },
+    { label: "Estimated EV Maintenance Cost", data: estimatedEVMaintenanceCosts },
+    { label: "Electric Vehicle Charging Costs", data: electricVehicleChargingCosts },
+    { label: "Default Vehicle Replacement Fund Allocation", data: defaultVehicleReplacementFundAllocation },
+    { label: "Existing Vehicle Maintenance Cost", data: existingVehicleMaintenanceCosts },
+    { label: "Existing Vehicle Annual Fuel Cost", data: existingVehicleAnnualFuelCost },
+    { label: "Loan Amount", data: loanAmount },
+    { label: "Loan Principal Remaining", data: loanPrincipalRemaining },
+    { label: "Loan Annual Interest", data: loanAnnualInterest },
+    { label: "Charger Purchase Costs", data: chargerPurchaseCosts },
+    { label: "Charger Install Costs", data: chargerInstallCosts },
+    { label: "Loan Annual Payments", data: loanAnnualPayments },
+    { label: "Charger Maintenance Costs", data: chargerMaintenanceCosts },
+    { label: "Charger Network And Management Costs", data: chargerNetworkAndManagementCosts },
+    { label: "Charge Management Savings", data: chargeMangementSavings },
+    { label: "Total Vehicle Costs", data: totalVehicleCosts },
+    { label: "Total Vehicle Savings", data: totalVehicleSavings },
+    { label: "Total Charging Infrastructure Costs", data: totalChargingInfrastructureCosts },
+    { label: "Total Charging Infrastructure Savings", data: totalChargingInfrastructureSavings },
+    { label: "Total Costs", data: totalCosts },
+    { label: "Total Savings", data: totalSavings },
+    { label: "Annual Cost Benefit", data: annualCostBenefit },
+    { label: "Cumulative Cost Benefit", data: cumulativeCostBenefit }
+  ];
+  
 
   if (!user) {
     return <div>Please log in</div>;
@@ -37,98 +79,20 @@ const YearOverYear = () => {
         <thead>
           <tr>
             <th>Year</th>
-            {years.map((year) => (
+            {YEARS.map((year) => (
               <th key={year}>{year}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Estimated Electric Vehicles</td>
-            {years.map((year) => (
-              <td key={year}>{estimatedElectricVehicles[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Number of New Ports</td>
-            {years.map((year) => (
-              <td key={year}>{numberOfNewPorts[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Electric Vehicle Purchase Cost</td>
-            {years.map((year) => (
-              <td key={year}>{costOfElectricVehicles[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Estimated EV Maintenance Cost</td>
-            {years.map((year) => (
-              <td key={year}>{estimatedEVMaintenanceCosts[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Electric Vehicle Charging Costs</td>
-            {years.map((year) => (
-              <td key={year}>{electricVehicleChargingCosts[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Default Vehicle Replacement Fund Allocation</td>
-            {years.map((year) => (
-              <td key={year}>
-                {defaultVehicleReplacementFundAllocation[year]}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <td>Existing Vehicle Maintenance Cost</td>
-            {years.map((year) => (
-              <td key={year}>{existingVehicleMaintenanceCosts[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Existing Vehicle Annual Fuel Cost</td>
-            {years.map((year) => (
-              <td key={year}>{existingVehicleAnnualFuelCost[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Loan Amount</td>
-            {years.map((year) => (
-              <td key={year}>{loanAmount[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Loan Principal Remaining</td>
-            {years.map((year) => (
-              <td key={year}>{loanPrincipalRemaining[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Loan Annual Interest</td>
-            {years.map((year) => (
-              <td key={year}>{loanAnnualInterest[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Charger Purchase Costs</td>
-            {years.map((year) => (
-              <td key={year}>{chargerPurchaseCosts[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Charger Install Costs</td>
-            {years.map((year) => (
-              <td key={year}>{chargerInstallCosts[year]}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Loan Annual Payments</td>
-            {years.map((year) => (
-              <td key={year}>{loanAnnualPayments[year]}</td>
-            ))}
-          </tr>
+        {rows.map((row) => (
+      <tr key={row.label}>
+        <td>{row.label}</td>
+        {YEARS.map((year) => (
+          <td key={year}>{Math.round(row.data[year])}</td>
+        ))}
+      </tr>
+    ))}
         </tbody>
       </table>
       <h2>Charging Infrastructure</h2>
