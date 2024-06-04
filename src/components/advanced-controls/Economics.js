@@ -1,34 +1,62 @@
 import React, { forwardRef, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { useEffect } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
+import useAdvancedCalc from "../../store/useAdvancedCalc";
 
 const Economics = forwardRef((props, ref) => {
-
+  const { advancedCalcs } = useAdvancedCalc();
   const [formState, setFormState] = useState({
     inflation: false,
-    inflation_escalation_rate: "3",
-    electricity_escalation_rate: "3",
-    gasoline_escalation_rate: "3",
-    infrastructure_loan_term: "10",
-    infrastructure_loan_interest_rate: "3",
-    discount_rate_npv: "3",
-    maintenance_costs_annual_per_station: "400"
+    inflation_escalation_rate: "",
+    electricity_escalation_rate: "",
+    gasoline_escalation_rate: "",
+    infrastructure_loan_term: "",
+    infrastructure_loan_interest_rate: "",
+    discount_rate_npv: "",
+    maintenance_costs_annual_per_station: "",
   });
+
+  useEffect(() => {
+    if (advancedCalcs) {
+      setFormState({
+        inflation: advancedCalcs.inflation || false,
+        inflation_escalation_rate:
+          advancedCalcs.inflation_escalation_rate || "",
+        electricity_escalation_rate:
+          advancedCalcs.electricity_escalation_rate || "",
+        gasoline_escalation_rate: advancedCalcs.gasoline_escalation_rate || "",
+        infrastructure_loan_term:
+          advancedCalcs.infrastructure_loan_term || "",
+        infrastructure_loan_interest_rate:
+          advancedCalcs.infrastructure_loan_interest_rate || "",
+        discount_rate_npv: advancedCalcs.discount_rate_npv || "",
+        maintenance_costs_annual_per_station:
+          advancedCalcs.maintenance_costs_annual_per_station || "",
+      });
+    }
+  }, [advancedCalcs]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormState((prevState) => ({
       ...prevState,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const handleSwitchChange = () => {
     setFormState((prevState) => ({
       ...prevState,
-      inflation: !prevState.inflation
+      inflation: !prevState.inflation,
     }));
   };
   return (
