@@ -232,7 +232,6 @@ const useYearOverYear = create((set, get) => {
     },
     setChargerMaintenanceCosts: () => {
       const { advancedCalcs } = useAdvancedCalc.getState();
-      // console.log("advancedCalcs", advancedCalcs);
       let costs = 0;
       const chargerMaintenanceCosts = useYears.getState().YEARS.reduce((acc, year) => {
         costs +=

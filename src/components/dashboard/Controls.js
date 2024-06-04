@@ -1,8 +1,8 @@
 import React from "react";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import useAuthStore from "../store/useAuthStore";
-import useYearOverYear from "../store/useYearOverYear";
+import useAuthStore from "../../store/useAuthStore";
+import useYearOverYear from "../../store/useYearOverYear";
 import {
   Card,
   CardContent,
@@ -10,17 +10,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+} from "../ui/card";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { Switch } from "./ui/switch";
+} from "../ui/select";
+import { Switch } from "../ui/switch";
 
 const Controls = () => {
   const { controlsData, setControlsData, user } = useAuthStore();

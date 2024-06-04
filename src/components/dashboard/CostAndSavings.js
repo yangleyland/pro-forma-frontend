@@ -8,18 +8,36 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-  } from "./ui/card";
+  } from "../ui/card";
+import useYearOverYear from '../../store/useYearOverYear';
 
-const data = [
-  { name: 'Cumulative Cost', value: 1485566 },
-  { name: 'Cumulative Savings', value: 1149666 },
-];
+
+
+
 
 const ComparisonBarChart = () => {
+  const { totalCosts, totalSavings } = useYearOverYear();
+
+  const sumValues = (data) => {
+    let sum = 0;
+    for (const year in data) {
+      sum += data[year];
+    }
+    return sum;
+  };
+
+  const totalCost = sumValues(totalCosts);
+  const totalSaving = sumValues(totalSavings);
+
+  const data = [
+    { name: 'Cumulative Cost', value: totalCost },
+    { name: 'Cumulative Savings', value: totalSaving },
+  ];
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Cost Benefit Analysis</CardTitle>
+        <CardTitle>Cost And Savings</CardTitle>
       </CardHeader>
       <CardContent>
       <ResponsiveContainer width="100%" height={400}>

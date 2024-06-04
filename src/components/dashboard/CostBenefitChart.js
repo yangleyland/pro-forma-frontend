@@ -17,8 +17,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import useYearOverYear from "../store/useYearOverYear";
+} from "../ui/card";
+import useYearOverYear from "../../store/useYearOverYear";
 
 const transformData = (annualCostBenefit, cumulativeCostBenefit) => {
   const data = [];

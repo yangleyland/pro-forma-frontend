@@ -9,8 +9,7 @@ import useYears from "../store/useYears";
 import DemoPage from "../components/table/page.js";
 
 const YearOverYear = () => {
-  const { user, controlsData } = useAuthStore();
-  const { phases } = usePhases();
+  const { user } = useAuthStore();
   const { YEARS } = useYears();
   const {
     estimatedElectricVehicles,
@@ -123,7 +122,6 @@ const YearOverYear = () => {
           ))}
         </tbody>
       </table>
-      <h2>Charging Infrastructure</h2>
     </div>
   );
 };

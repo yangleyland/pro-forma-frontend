@@ -27,9 +27,24 @@ function Login() {
   };
 
   return (
-    <div className="w-full flex">
-      <div className="bg-black flex-1"></div>
-      <div className="bg-white flex-1 flex justify-center items-center">
+    <div className="flex h-screen w-full">
+      <div className="relative bg-black flex-1 h-full">
+        <img
+          src="/logo2.png"
+          alt="Logo"
+          className="z-10 absolute left-0 bottom-0 h-auto w-[200px] m-10"
+        />
+        {/* <div class="absolute left-0 bottom-0 m-10 text-white text-4xl font-bold z-10 text-[#C45911]">
+          Optony
+        </div> */}
+
+        <img
+          className="h-full object-cover filter grayscale"
+          src="evcharge.png"
+          alt="evtruck"
+        />
+      </div>
+      <div className="flex-1 bg-white h-full flex justify-center items-center border">
         <div className="w-[400px]">
           <LoginForm />
         </div>

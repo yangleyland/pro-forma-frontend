@@ -3,11 +3,13 @@ import React from "react";
 import { useEffect } from "react";
 import useAuthStore from "../store/useAuthStore";
 import Calculations from "../components/Calculations";
-import Controls from "../components/Controls";
+import Controls from "../components/dashboard/Controls";
 import { Button } from "../components/ui/button";
-import CostBenefitChart from "../components/CostBenefitChart";
-import CostAndSavings from "../components/CostAndSavings";
+import CostBenefitChart from "../components/dashboard/CostBenefitChart";
+import CostAndSavings from "../components/dashboard/CostAndSavings";
 import { useNavigate } from "react-router-dom";
+import GHGReductionsGraph from "../components/dashboard/GHGReductionsGraph";
+import GHGReductions from "../components/dashboard/GHGReductions";
 
 import {
   Table,
@@ -18,9 +20,13 @@ import {
   TableHeader,
   TableRow,
 } from "../components/ui/table";
+import ElectrificationScenario from "../components/dashboard/ElectrificationScenario";
+import PrioritySite from "../components/PrioritySite";
+import CashFlow from "../components/dashboard/CashFlow";
+import CapitalCostsGraph from "../components/dashboard/CapitalCostsGraph";
 
 function Dashboard() {
-  const { user, logout, data,loading } = useAuthStore();
+  const { user, logout, data, loading } = useAuthStore();
   const navigate = useNavigate();
 
   const renderTable = () => {
@@ -56,16 +62,31 @@ function Dashboard() {
       <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
         Dashboard
       </h1>
-      
+
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4 p-4">
         <div className="col-span-3 h-fill">
           <Controls />
         </div>
-        <div className="col-span-5 h-fill">
+        <div className="col-span-5 row-span-1 h-fill">
           <CostBenefitChart />
         </div>
-        <div className="col-span-4 h-fill">
+        <div className="col-span-4  row-span-1 h-fill">
           <CostAndSavings />
+        </div>
+        <div className="col-span-4 row-span-1 h-full">
+          <GHGReductionsGraph />
+        </div>
+        <div className="col-span-3 row-span-1 flex gap-4 flex-col h-full justify-between">
+          <GHGReductions />
+          <PrioritySite />
+        </div>
+
+        <div className="col-span-3 row-span-1 flex gap-4 flex-col h-full justify-between">
+          <ElectrificationScenario />
+          <CashFlow />
+        </div>
+        <div className="col-span-4 row-span-1 h-full">
+          <CapitalCostsGraph />
         </div>
       </div>
 
