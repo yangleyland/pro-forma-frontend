@@ -5,16 +5,16 @@ import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 
 const Economics = forwardRef((props, ref) => {
-  
+
   const [formState, setFormState] = useState({
     inflation: false,
-    inflationRate: "3",
-    electricityRate: "3",
-    gasolineRate: "3",
-    loanTerm: "10",
-    loanInterestRate: "3",
-    discountRate: "3",
-    maintenanceCosts: "400"
+    inflation_escalation_rate: "3",
+    electricity_escalation_rate: "3",
+    gasoline_escalation_rate: "3",
+    infrastructure_loan_term: "10",
+    infrastructure_loan_interest_rate: "3",
+    discount_rate_npv: "3",
+    maintenance_costs_annual_per_station: "400"
   });
 
   const handleChange = (e) => {
@@ -55,8 +55,8 @@ const Economics = forwardRef((props, ref) => {
                 <Label>Inflation Escalation Rate</Label>
                 <Input
                   variant="blank"
-                  name="inflationRate"
-                  value={formState.inflationRate}
+                  name="inflation_escalation_rate"
+                  value={formState.inflation_escalation_rate}
                   onChange={handleChange}
                   type="text"
                   placeholder=""
@@ -66,8 +66,8 @@ const Economics = forwardRef((props, ref) => {
                 <Label>Electricity Escalation Rate</Label>
                 <Input
                   variant="blank"
-                  name="electricityRate"
-                  value={formState.electricityRate}
+                  name="electricity_escalation_rate"
+                  value={formState.electricity_escalation_rate}
                   onChange={handleChange}
                   type="text"
                   placeholder=""
@@ -77,8 +77,8 @@ const Economics = forwardRef((props, ref) => {
                 <Label>Gasoline Escalation Rate</Label>
                 <Input
                   variant="blank"
-                  name="gasolineRate"
-                  value={formState.gasolineRate}
+                  name="gasoline_escalation_rate"
+                  value={formState.gasoline_escalation_rate}
                   onChange={handleChange}
                   type="text"
                   placeholder=""
@@ -88,8 +88,8 @@ const Economics = forwardRef((props, ref) => {
                 <Label>Infrastructure Loan Term</Label>
                 <Input
                   variant="blank"
-                  name="loanTerm"
-                  value={formState.loanTerm}
+                  name="infrastructure_loan_term"
+                  value={formState.infrastructure_loan_term}
                   onChange={handleChange}
                   type="text"
                   placeholder=""
@@ -99,8 +99,8 @@ const Economics = forwardRef((props, ref) => {
                 <Label>Infrastructure Loan Interest Rate</Label>
                 <Input
                   variant="blank"
-                  name="loanInterestRate"
-                  value={formState.loanInterestRate}
+                  name="infrastructure_loan_interest_rate"
+                  value={formState.infrastructure_loan_interest_rate}
                   onChange={handleChange}
                   type="text"
                   placeholder=""
@@ -110,8 +110,8 @@ const Economics = forwardRef((props, ref) => {
                 <Label>Discount Rate (NPV)</Label>
                 <Input
                   variant="blank"
-                  name="discountRate"
-                  value={formState.discountRate}
+                  name="discount_rate_npv"
+                  value={formState.discount_rate_npv}
                   onChange={handleChange}
                   type="text"
                   placeholder=""
@@ -122,7 +122,7 @@ const Economics = forwardRef((props, ref) => {
                 <Input
                   variant="blank"
                   name="maintenanceCosts"
-                  value={formState.maintenanceCosts}
+                  value={formState.maintenance_costs_annual_per_station}
                   onChange={handleChange}
                   type="text"
                   placeholder=""

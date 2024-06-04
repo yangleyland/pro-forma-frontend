@@ -4,10 +4,15 @@ import { useRef } from "react";
 import Economics from "../components/advanced-controls/Economics";
 import SoftwareCosts from "../components/advanced-controls/SoftwareCosts";
 import { Button } from "../components/ui/button";
+import useAuthStore from "../store/useAuthStore";
+import useAdvancedCalc from "../store/useAdvancedCalc";
+
 
 function AdvancedControls() {
   const economicsRef = useRef(null);
   const softwareCostsRef = useRef(null);
+  const {user} = useAuthStore();
+  const {fetchAdvancedCalcs} =  useAdvancedCalc();
 
 
   const handleSubmit = async () => {
@@ -21,18 +26,27 @@ function AdvancedControls() {
     softwareCostsData.forEach((value, key) => {
       data[key] = value;
     });
+    data["id"] = user.id;
     console.log(data);
-    // Perform API call with the combined data
-    // const response = await fetch('/your-api-endpoint', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data),
-    // });
-
-    // const result = await response.json();
-    // console.log(result);
+    try {
+      const response = await fetch('http://localhost:3002/api/advancedcontrols', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const result = await response.json();
+      console.log("API response:", result);
+      await fetchAdvancedCalcs(user.id);
+    } catch (error) {
+      console.error("Error during API call:", error);
+    }
   };
 
   return (
@@ -50,5 +64,9 @@ function AdvancedControls() {
     </div>
   );
 }
+
+
+
+
 
 export default AdvancedControls;
