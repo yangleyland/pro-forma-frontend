@@ -1,16 +1,32 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useState ,useEffect} from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
+import useAdvancedCalc from "../../store/useAdvancedCalc";
+
 
 const SoftwareCosts = forwardRef((props, ref) => {
+    const { advancedCalcs } = useAdvancedCalc();
+
   const [formState, setFormState] = useState({
     charging_optimization: false,
-    charging_optimization_savings: "1000",
-    charge_management_subscription_costs: "450",
-    charger_network_costs: "0"
+    charging_optimization_savings: "",
+    charge_management_subscription_costs: "",
+    charger_network_costs: ""
   });
+
+  useEffect(() => {
+    if (advancedCalcs) {
+      setFormState({
+        charging_optimization: advancedCalcs.charging_optimization || false,
+        charging_optimization_savings: advancedCalcs.charging_optimization_savings || "",
+        charge_management_subscription_costs: advancedCalcs.charge_management_subscription_costs || "",
+        charger_network_costs: advancedCalcs.charger_network_costs || "",
+      });
+    }
+  }, [advancedCalcs]);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
