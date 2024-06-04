@@ -7,6 +7,7 @@ import Controls from "../components/Controls";
 import { Button } from "../components/ui/button";
 import CostBenefitChart from "../components/CostBenefitChart";
 import CostAndSavings from "../components/CostAndSavings";
+import { useNavigate } from "react-router-dom";
 
 import {
   Table,
@@ -19,7 +20,8 @@ import {
 } from "../components/ui/table";
 
 function Dashboard() {
-  const { user, logout, data } = useAuthStore();
+  const { user, logout, data,loading } = useAuthStore();
+  const navigate = useNavigate();
 
   const renderTable = () => {
     if (data.length === 0) {
@@ -48,14 +50,13 @@ function Dashboard() {
       </Table>
     );
   };
-  if (!user) {
-    return <div>Please log in</div>;
-  }
+
   return (
     <div>
       <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
         Dashboard
       </h1>
+      
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4 p-4">
         <div className="col-span-3 h-fill">
           <Controls />

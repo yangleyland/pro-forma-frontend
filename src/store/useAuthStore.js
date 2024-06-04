@@ -9,7 +9,7 @@ import useAdvancedCalc from "./useAdvancedCalc";
 const useAuthStore = create((set, get) => ({
   user: null,
   controlsData: null,
-  loading: false,
+  loading: true,
   data: [],
   message: "",
 
@@ -32,8 +32,10 @@ const useAuthStore = create((set, get) => ({
       if (error) throw error;
       set({ user: data.user });
       await useAuthStore.getState().fetchData(data.user.id); // Fetch data after login
+      return true;
     } catch (error) {
       set({ message: `Login error: ${error.message}` });
+      return false;
     } finally {
       set({ loading: false });
     }
@@ -45,6 +47,7 @@ const useAuthStore = create((set, get) => ({
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      console.log("Logged out successfully");
       set({ user: null, data: [] });
     } catch (error) {
       set({ message: `Logout error: ${error.message}` });
@@ -53,7 +56,11 @@ const useAuthStore = create((set, get) => ({
     }
   },
 
-  getUser: () => supabase.auth.getUser(),
+
+  isLoggedIn: () => {
+    const user = useAuthStore.getState().user;
+    return user !== null;
+  },
 
   // Fetch user data
   fetchData: async (userId) => {
@@ -96,7 +103,9 @@ const useAuthStore = create((set, get) => ({
     if (session) {
       set({ user: session.user });
       await useAuthStore.getState().fetchData(session.user.id); // Fetch data after initializing auth
+      
     }
+    set({ loading: false });
   },
 }));
 

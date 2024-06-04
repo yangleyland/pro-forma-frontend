@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   FaSignInAlt,
   FaUser,
@@ -14,6 +15,11 @@ import useAuthStore from "../store/useAuthStore";
 
 const Navbar = () => {
   const { logout } = useAuthStore();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  }
   return (
     <div className="h-screen w-1/6 bg-white border-r fixed">
       <div className="flex items-center justify-left h-16 pl-4">
@@ -39,12 +45,7 @@ const Navbar = () => {
               Year Over Year
             </li>
           </Link>
-          <Link to="/admin" className=" ">
-            <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <FaUser className="mr-2"  size={20} />
-              Admin
-            </li>
-          </Link>
+
           <Link to="/phases" className="">
             <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
               <FaCalendarAlt className="mr-2"  size={20} />
@@ -59,7 +60,7 @@ const Navbar = () => {
             </li>
           </Link>
         </ul>
-        <Button variant="outline" onClick={logout}>Logout</Button>
+        <Button variant="outline" onClick={handleLogout}>Logout</Button>
       </nav>
     </div>
   );
