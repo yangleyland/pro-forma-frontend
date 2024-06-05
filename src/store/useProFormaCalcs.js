@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import useYears from './useYears';
-
+import useYears from "./useYears";
+import useAuthStore from "./useAuthStore";
+import useAdvancedCalc from "./useAdvancedCalc";
 
 // Create Zustand store
 const useProFormaCalcs = create((set) => ({
@@ -14,9 +15,26 @@ const useProFormaCalcs = create((set) => ({
   IRA: {},
   vehicleCounts: {},
   annualkwh: {},
-  ghgReductions : {},
+  ghgReductions: {},
 
-  setYearSums: (data, controls) => {
+  setYearSums: () => {
+    const { data, controlsData } = useAuthStore.getState();
+    const { advancedCalcs } = useAdvancedCalc.getState();
+    const{START_YEAR}=useYears.getState();
+    
+
+    const inflationRate = advancedCalcs.inflation
+      ? 1 + advancedCalcs.inflation_escalation_rate
+      : 1;
+    const electricityInflation = advancedCalcs.inflation
+      ? 1 + advancedCalcs.electricity_escalation_rate
+      : 1;
+    const gasolineInflation = advancedCalcs.inflation
+      ? 1 + advancedCalcs.gasoline_escalation_rate
+      : 1;
+
+      console.log("inflationRate",inflationRate );
+    const controls = controlsData;
     const calculateYearSums = (field) => {
       return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
@@ -36,8 +54,15 @@ const useProFormaCalcs = create((set) => ({
               "Medium- and Heavy-Duty Vehicles Only"
             );
           })
-          .reduce((sum, item) => sum + item[field], 0);
-        acc[year] = yearTotal;
+          .reduce((sum, item) => {
+            const value = item[field];
+            return sum + value;
+          }, 0);
+          let res=yearTotal;
+          if (field === "EV Purchase Cost pre-incentive" || field === "Default Replacement Allocation") {
+            res *= Math.pow(inflationRate, (year - START_YEAR));
+          }
+        acc[year] = res;
         return acc;
       }, {});
     };
@@ -92,20 +117,26 @@ const useProFormaCalcs = create((set) => ({
             );
           })
           .reduce((sum, item) => {
-            const value = parseFloat(item[field] || 0);
+            const value = item[field];
+            
             return sum + value;
           }, 0);
-        acc[year] = yearTotal;
+          let res = yearTotal;
+          if (field === "EV Annual Maintenance Costs" || field === "Existing Vehicle Annual Maintenance") {
+            res *= Math.pow(inflationRate, (year - START_YEAR));
+          }if (field === "EV Annual Charging Costs") {
+            res *= Math.pow(electricityInflation, (year - START_YEAR));
+          }if (field === "Existing Vehicle Annual Fuel Costs") {
+            res *= Math.pow(gasolineInflation, (year - START_YEAR));
+          }
+        acc[year] = res;
         return acc;
       }, {});
     };
     const calculateYearSumsGreaterThan = (field) => {
       return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
-          .filter(
-            (item) =>
-              item["Replacement Year"] <= year
-          )
+          .filter((item) => item["Replacement Year"] <= year)
           .filter((item) => {
             if (controls["electrification_scenario"] === "All Vehicles") {
               return true; // Include all items if scenario is "All Vehicles"
@@ -130,24 +161,23 @@ const useProFormaCalcs = create((set) => ({
       }, {});
     };
 
-    const evPurchaseCostSums = calculateYearSums(
-      "EV Purchase Cost pre-incentive"
-    );
-    const defaultReplacementAllocationSums = calculateYearSums(
-      "Default Replacement Allocation"
-    );
-    const EVAnnualMaintenanceCost = calculateYearSumsWithinRange(
-      "EV Annual Maintenance Costs"
-    );
-    const existingVehicleAnnualMaintenanceCost = calculateYearSumsWithinRange(
-      "Existing Vehicle Annual Maintenance"
-    );
-    const EVAnnualChargingCosts = calculateYearSumsWithinRange(
-      "EV Annual Charging Costs"
-    );
-    const existingVehicleAnnualFuelCosts = calculateYearSumsWithinRange(
-      "Existing Vehicle Annual Fuel Costs"
-    );
+    
+
+
+    
+
+    const evPurchaseCostSums =
+      calculateYearSums("EV Purchase Cost pre-incentive");
+    const defaultReplacementAllocationSums =
+      calculateYearSums("Default Replacement Allocation");
+    const EVAnnualMaintenanceCost =
+      calculateYearSumsWithinRange("EV Annual Maintenance Costs") ;
+    const existingVehicleAnnualMaintenanceCost =
+      calculateYearSumsWithinRange("Existing Vehicle Annual Maintenance") ;
+    const EVAnnualChargingCosts =
+      calculateYearSumsWithinRange("EV Annual Charging Costs") ;
+    const existingVehicleAnnualFuelCosts =
+      calculateYearSumsWithinRange("Existing Vehicle Annual Fuel Costs") ;
 
     const HVIP = calculateYearSums(
       "HVIP, PG&E EV Fleet Program, and Other Incentives"

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import usePhases from "../store/usePhases";
 import useChargerCosts from "../store/useChargerCosts";
+import DemoPage from "../components/table/page.js";
 
 function Phases() {
   const { user } = useAuthStore();
@@ -67,7 +68,12 @@ function Phases() {
 
   return (
     <div>
-      <h1>Phases Page</h1>
+      <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
+        Infrastructure Phases
+      </h1>
+
+      <DemoPage />
+      
       <table>
         <thead>
           <tr>

@@ -6,7 +6,7 @@ import useAuthStore from "../store/useAuthStore";
 import useProFormaCalcs from "../store/useProFormaCalcs";
 import useYearOverYear from "../store/useYearOverYear";
 import useYears from "../store/useYears";
-import DemoPage from "../components/table/page.js";
+
 
 const YearOverYear = () => {
   const { user } = useAuthStore();
@@ -96,7 +96,6 @@ const YearOverYear = () => {
   }
   return (
     <div>
-      <DemoPage/>
       <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
         Year-Over-Year
       </h1>

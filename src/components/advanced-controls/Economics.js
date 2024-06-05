@@ -149,7 +149,7 @@ const Economics = forwardRef((props, ref) => {
                 <Label>Maintenance Costs (annual)</Label>
                 <Input
                   variant="blank"
-                  name="maintenanceCosts"
+                  name="maintenance_costs_annual_per_station"
                   value={formState.maintenance_costs_annual_per_station}
                   onChange={handleChange}
                   type="text"

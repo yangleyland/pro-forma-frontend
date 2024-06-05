@@ -49,7 +49,7 @@ const Navbar = () => {
           <Link to="/phases" className="">
             <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
               <FaCalendarAlt className="mr-2"  size={20} />
-              Phases
+              Infrastructure Phases
             </li>
           </Link>
 

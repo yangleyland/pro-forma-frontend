@@ -6,6 +6,7 @@ import useAdvancedCalc from "./useAdvancedCalc";
 import useYears from "./useYears";
 
 
+
 const useYearOverYear = create((set, get) => {
 
   return {
@@ -211,8 +212,8 @@ const useYearOverYear = create((set, get) => {
       loanAnnualPayments[curYear - 1] = 0;
       while (curYear <= useYears.getState().END_YEAR) {
         curLoanAmount += loanAmount[curYear];
-        if (loanAmount[curYear - 10]) {
-          curLoanAmount -= loanAmount[curYear - 10];
+        if (loanAmount[curYear - advancedCalcs.infrastructure_loan_term ]) {
+          curLoanAmount -= loanAmount[curYear - advancedCalcs.infrastructure_loan_term ];
         }
         loanPrincipalRemaining[curYear] =
           loanAmount[curYear] +

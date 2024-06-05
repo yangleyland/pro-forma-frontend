@@ -1,19 +1,33 @@
 "use client"
-
 import { ColumnDef } from "@tanstack/react-table"
-import useYears from "../../store/useYears.js"
 
 export const columns = [
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "year",
+    header: "Year",
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "site",
+    header: "Site",
   },
   {
-    accessorKey: "amount",
-    header: "Amount",
+    accessorKey: "loan_amount",
+    header: "Loan Amount",
+  },
+  {
+    accessorKey: "trenching_costs",
+    header: "Trenching Costs",
+  },
+  {
+    accessorKey: "upgrade_cost_utility",
+    header: "Upgrade Cost Utility",
+  },
+  {
+    accessorKey: "upgrade_cost_customer",
+    header: "Upgrade Cost Customer",
+  },
+  {
+    accessorKey: "procurement_management_cost",
+    header: "Procurement Management Cost",
   },
 ]

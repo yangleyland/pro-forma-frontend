@@ -18,7 +18,7 @@ const useAuthStore = create((set, get) => ({
     set({ controlsData: controls });
     const { setYearSums } = useProFormaCalcs.getState();
     //not sure if this is good enough
-    setYearSums(get().data, controls);
+    setYearSums();
   },
 
   // Log in function
@@ -80,13 +80,13 @@ const useAuthStore = create((set, get) => ({
       if (!controlsResponse.ok) {
         throw new Error("Failed to fetch controls data");
       }
-
+      const {advancedCalcs,fetchAdvancedCalcs} = useAdvancedCalc.getState();
+      await fetchAdvancedCalcs(userId);
       const controls = await controlsResponse.json();
       get().setControlsData(controls.data);
 
       const { initYearOverYear } = useYearOverYear.getState();
-      const {advancedCalcs,fetchAdvancedCalcs} = useAdvancedCalc.getState();
-      await fetchAdvancedCalcs(userId);
+      
       initYearOverYear();
       
 

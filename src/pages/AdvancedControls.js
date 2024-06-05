@@ -6,14 +6,16 @@ import SoftwareCosts from "../components/advanced-controls/SoftwareCosts";
 import { Button } from "../components/ui/button";
 import useAuthStore from "../store/useAuthStore";
 import useAdvancedCalc from "../store/useAdvancedCalc";
-
+import useYearOverYear from "../store/useYearOverYear";
+import useProFormaCalcs from "../store/useProFormaCalcs";
 
 function AdvancedControls() {
   const economicsRef = useRef(null);
   const softwareCostsRef = useRef(null);
-  const {user} = useAuthStore();
-  const {fetchAdvancedCalcs} =  useAdvancedCalc();
-
+  const { user } = useAuthStore();
+  const { fetchAdvancedCalcs } = useAdvancedCalc();
+  const { initYearOverYear } = useYearOverYear();
+  const { setYearSums } = useProFormaCalcs();
 
   const handleSubmit = async () => {
     const economicsData = new FormData(economicsRef.current);
@@ -29,21 +31,26 @@ function AdvancedControls() {
     data["id"] = user.id;
     console.log(data);
     try {
-      const response = await fetch('http://localhost:3002/api/advancedcontrols', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-  
+      const response = await fetch(
+        "http://localhost:3002/api/advancedcontrols",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
-  
+
       const result = await response.json();
       console.log("API response:", result);
       await fetchAdvancedCalcs(user.id);
+      setYearSums();
+      initYearOverYear();
     } catch (error) {
       console.error("Error during API call:", error);
     }
@@ -55,18 +62,14 @@ function AdvancedControls() {
         Advanced Controls
       </h1>
       <div className="flex flex-col w-1/4 gap-5">
-        <Economics ref={economicsRef} />
-        <SoftwareCosts ref={softwareCostsRef} />
-        <Button className="w-full mb-5" onClick={handleSubmit}>
+        <Button className="w-full" onClick={handleSubmit}>
           Save
         </Button>
+        <Economics ref={economicsRef} />
+        <SoftwareCosts ref={softwareCostsRef} />
       </div>
     </div>
   );
 }
-
-
-
-
 
 export default AdvancedControls;
