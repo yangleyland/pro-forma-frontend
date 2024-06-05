@@ -6,6 +6,8 @@ import useAuthStore from "../store/useAuthStore";
 import useProFormaCalcs from "../store/useProFormaCalcs";
 import useYearOverYear from "../store/useYearOverYear";
 import useYears from "../store/useYears";
+import YearTable from "../components/year-year-table/YearTable";
+import DemoPage from "../components/year-year-table/DemoPage";
 
 
 const YearOverYear = () => {
@@ -96,11 +98,12 @@ const YearOverYear = () => {
   }
   return (
     <div>
+     
       <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
         Year-Over-Year
       </h1>
-
-      <h2>Vehicles</h2>
+      <DemoPage />
+      {/* <h2>Vehicles</h2>
       <table>
         <thead>
           <tr>
@@ -120,7 +123,7 @@ const YearOverYear = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
     </div>
   );
 };

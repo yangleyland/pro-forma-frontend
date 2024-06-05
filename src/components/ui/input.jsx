@@ -6,6 +6,7 @@ const variantClasses = {
   default: "border border-input bg-background",
   blank: "border border-gray-100 bg-white w-[80px]",
   filled: "border border-input bg-gray-200",
+  disabled: "border-0 bg-transparent text-muted-foreground focus-visible:ring-0 focus-visible:ring-ring-0 focus-visible:ring-offset-0 pointer-events-none",
 };
 
 const Input = React.forwardRef(({ className, type,variant="default" , ...props }, ref) => {

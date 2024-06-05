@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import usePhases from "../store/usePhases";
 import useChargerCosts from "../store/useChargerCosts";
-import DemoPage from "../components/table/page.js";
+
+import {PhaseTable} from "../components/table/PhaseTable.js";
 
 function Phases() {
   const { user } = useAuthStore();
@@ -72,56 +73,7 @@ function Phases() {
         Infrastructure Phases
       </h1>
 
-      <DemoPage />
-      
-      <table>
-        <thead>
-          <tr>
-            <th>Year</th>
-            <th>Site</th>
-            <th>Ports</th>
-            <th>Charger Purchase Cost</th>
-            <th>Installation Cost</th>
-          </tr>
-        </thead>
-        <tbody>
-          {phases &&
-            sortedPhases.map((phase) => (
-              <tr key={phase.id}>
-                <td>{phase.year}</td>
-                <td>{phase.site}</td>
-                <td>{phase.ports}</td>
-                <td>{phase.cost}</td>
-                <td>{phase.installCost}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="site"
-          placeholder="Site"
-          value={site}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="year"
-          placeholder="Year"
-          value={year}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="ports"
-          placeholder="Ports"
-          value={ports}
-          onChange={handleChange}
-        />
-        <button type="submit">Add Phase</button>
-      </form>
+      <PhaseTable />
     </div>
   );
 }

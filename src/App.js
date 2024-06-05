@@ -43,6 +43,8 @@ function App() {
   useEffect(() => {
     initializeAuth();
   }, [initializeAuth]);
+  
+
   useEffect(() => {
     if (user) {
       fetchPhases(user.id);

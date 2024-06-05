@@ -3,13 +3,31 @@ import useChargerCosts from "./useChargerCosts";
 
 const usePhases = create((set, get) => ({
   phases: [],
-  addPhase: (phase) => set((state) => ({ phases: [...state.phases, phase] })),
+  addPhase: async (phase) => {
+    try {
+      const response = await fetch("http://localhost:3002/api/phases", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(phase),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add phase");
+      }
+      const newPhase = await response.json();
+      set((state) => ({ phases: [...state.phases, newPhase] }));
+    } catch (error) {
+      console.error(error);
+    }
+  },
   removePhase: (phaseId) =>
     set((state) => ({
       phases: state.phases.filter((phase) => phase.id !== phaseId),
     })),
   setPhases: (phases) => set({ phases }),
   fetchPhases: async (userId) => {
+    console.log("userid",userId);
     try {
       const response = await fetch(
         `http://localhost:3002/api/phases/${userId}`
@@ -18,8 +36,9 @@ const usePhases = create((set, get) => ({
         throw new Error("Failed to fetch phases");
       }
       const phases = await response.json();
-
+      console.log("phasecosts",phases);
       get().calculateCosts(phases);
+
     } catch (error) {
       console.error(error);
     }
@@ -37,8 +56,9 @@ const usePhases = create((set, get) => ({
   },
 
   calculateCosts: (phases) => {
-    const { chargerCosts, installationCosts, setChargerCost, setInstallCost } =
+    const { chargerCosts } =
       useChargerCosts.getState();
+    
     const phaseCosts = phases.map((phase, index) => {
       const cost =
         phase.port_less_than_10_kw * chargerCosts["port_less_than_10_kw"] +
@@ -57,6 +77,8 @@ const usePhases = create((set, get) => ({
         installCost,
       };
     });
+  const sortedPhases = phaseCosts.sort((a, b) => a.id - b.id);
+  set({ phases: sortedPhases });
     set({ phases: phaseCosts });
   },
 }));

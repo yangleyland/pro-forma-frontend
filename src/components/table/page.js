@@ -1,5 +1,5 @@
-import { Payment, columns } from "./columns"
-import { DataTable } from "./data-table"
+import { Payment, columns } from "./columns";
+import { DataTable } from "./data-table";
 
 function getData() {
   return [
@@ -12,6 +12,10 @@ function getData() {
       upgrade_cost_utility: 15000,
       upgrade_cost_customer: 5000,
       procurement_management_cost: 2000,
+      port_less_than_10_kw: 12,
+      port_10_20_kw: 12,
+      port_25_kw: 12,
+      port_180_200_kw: 12,
     },
     {
       id: "2",
@@ -22,17 +26,20 @@ function getData() {
       upgrade_cost_utility: 25000,
       upgrade_cost_customer: 8000,
       procurement_management_cost: 3000,
+      port_less_than_10_kw: 12,
+      port_10_20_kw: 12,
+      port_25_kw: 12,
+      port_180_200_kw: 12,
     },
-  ]
+  ];
 }
 
-
-export default  function DemoPage() {
-  const data = getData()
+export default function DemoPage() {
+  const data = getData();
 
   return (
     <div className="container mx-auto py-10">
       <DataTable columns={columns} data={data} />
     </div>
-  )
+  );
 }
