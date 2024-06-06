@@ -30,6 +30,13 @@ export default function DemoPage() {
         loanAnnualInterest,
         loanAnnualPayments,
         chargerInstallCosts,
+        trenchingCosts,
+        upgradeCostUtility,
+        upgradeCostCustomer,
+        procurementManagementCost,
+
+
+
         chargerPurchaseCosts,
         chargerMaintenanceCosts,
         chargerNetworkAndManagementCosts,
@@ -56,6 +63,11 @@ export default function DemoPage() {
       loanAnnualInterest["title"] = "Loan Annual Interest";
       loanAnnualPayments["title"] = "Loan Annual Payments";
       chargerInstallCosts["title"] = "Charger Install Costs";
+      trenchingCosts["title"] = "Trenching Costs";
+      upgradeCostUtility["title"] = "Infrastructure Upgrade Cost (utility)";
+    upgradeCostCustomer["title"] = "Infrastructure Upgrade Cost (customer)";
+    procurementManagementCost["title"] = "Procurement Management Cost";
+
       chargerPurchaseCosts["title"] = "Charger Purchase Costs";
       chargerMaintenanceCosts["title"] = "Charger Maintenance Costs";
       chargerNetworkAndManagementCosts["title"] = "Charger Network and Management Costs";
@@ -70,22 +82,31 @@ export default function DemoPage() {
       cumulativeCostBenefit["title"] = "Cumulative Cost Benefit";
       const data = [
         estimatedElectricVehicles,
+        numberOfNewPorts,
+
         costOfElectricVehicles,
-        defaultVehicleReplacementFundAllocation,
         estimatedEVMaintenanceCosts,
         electricVehicleChargingCosts,
+        defaultVehicleReplacementFundAllocation,
         existingVehicleMaintenanceCosts,
         existingVehicleAnnualFuelCost,
-        numberOfNewPorts,
+
+        chargerPurchaseCosts,
+        chargerInstallCosts,
+        trenchingCosts,
+        upgradeCostUtility,
+        upgradeCostCustomer,
+        procurementManagementCost,
+        
+        chargerMaintenanceCosts,
+        chargerNetworkAndManagementCosts,
+        chargeMangementSavings,
+
         loanAmount,
         loanPrincipalRemaining,
         loanAnnualInterest,
         loanAnnualPayments,
-        chargerInstallCosts,
-        chargerPurchaseCosts,
-        chargerMaintenanceCosts,
-        chargerNetworkAndManagementCosts,
-        chargeMangementSavings,
+
         totalVehicleCosts,
         totalVehicleSavings,
         totalChargingInfrastructureCosts,

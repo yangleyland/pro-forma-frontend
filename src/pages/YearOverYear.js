@@ -6,7 +6,6 @@ import useAuthStore from "../store/useAuthStore";
 import useProFormaCalcs from "../store/useProFormaCalcs";
 import useYearOverYear from "../store/useYearOverYear";
 import useYears from "../store/useYears";
-import YearTable from "../components/year-year-table/YearTable";
 import DemoPage from "../components/year-year-table/DemoPage";
 
 

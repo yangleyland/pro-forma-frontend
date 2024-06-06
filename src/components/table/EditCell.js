@@ -37,7 +37,7 @@ const EditCell = ({ row, table }) => {
           // Handle the response from the API
           await fetchPhases(user.id);
           
-        //   initYearOverYear();
+          initYearOverYear();
         })
         .catch((error) => {
           // Handle any errors that occur during the API request

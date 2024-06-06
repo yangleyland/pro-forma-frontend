@@ -2,7 +2,7 @@ const ChargerCostCell = ({ getValue }) => {
     const cost = getValue();
     return (
       <div>
-        <div>{cost}</div>
+        <div className="font-semibold	">{cost}</div>
       </div>
     );
   };

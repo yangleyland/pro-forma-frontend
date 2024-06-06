@@ -30,6 +30,10 @@ const columns = [
   columnHelper.display({
     id: "edit",
     cell: EditCell,
+    meta: {
+      className:
+        "sticky left-0",
+     },
   }),
   columnHelper.accessor("year", {
     header: "Year",
@@ -194,7 +198,7 @@ export const PhaseTable = () => {
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
+              <TableHead className="text-nowrap" key={header.id}>
                 {header.isPlaceholder
                   ? null
                   : flexRender(
@@ -210,7 +214,7 @@ export const PhaseTable = () => {
         {table.getRowModel().rows.map((row) => (
           <TableRow key={row.id}>
             {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
+              <TableCell className="" key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </TableCell>
             ))}

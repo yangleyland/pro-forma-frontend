@@ -13,6 +13,10 @@ years.forEach(year => {
     columns.push({
         accessorKey: year.toString(),
         header: year.toString(),
+        cell: info => {
+            const value = info.getValue();
+            return typeof value === 'number' ? Math.round(value) : value;
+          }
     });
 });
 

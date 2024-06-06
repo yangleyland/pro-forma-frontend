@@ -24,6 +24,12 @@ const useYearOverYear = create((set, get) => {
     loanAnnualPayments: {},
     chargerPurchaseCosts: {},
     chargerInstallCosts: {},
+
+    trenchingCosts: {},
+    upgradeCostUtility: {},
+    upgradeCostCustomer: {},
+    procurementManagementCost: {},
+
     chargerMaintenanceCosts: {},
     chargerNetworkAndManagementCosts: {},
     chargeMangementSavings: {},
@@ -145,7 +151,7 @@ const useYearOverYear = create((set, get) => {
         phases
           .filter((phase) => phase.year === year)
           .forEach((phase) => {
-            acc[year] += phase.ports;
+            acc[year] += phase.port_less_than_10_kw+phase.port_10_20_kw+phase.port_25_kw+phase.port_180_200_kw;
           });
 
         return acc;
@@ -198,6 +204,22 @@ const useYearOverYear = create((set, get) => {
       }, {});
       set({ chargerInstallCosts });
     },
+    sumCostsByYear: (accessor) => {
+      const { phases } = usePhases.getState();
+      console.log("phases", phases);
+      const costs = useYears.getState().YEARS.reduce((acc, year) => {
+      acc[year] = 0;
+      phases
+        .filter((phase) => phase.year === year)
+        .forEach((phase) => {
+        acc[year] += phase[accessor];
+        });
+
+      return acc;
+      }, {});
+      return costs
+    },
+
     setPrincipalRemaining: () => {
       const { advancedCalcs } = useAdvancedCalc.getState();
 
@@ -314,6 +336,10 @@ const useYearOverYear = create((set, get) => {
         loanAnnualPayments,
         chargerMaintenanceCosts,
         chargerNetworkAndManagementCosts,
+        trenchingCosts,
+        upgradeCostUtility,
+        upgradeCostCustomer,
+        procurementManagementCost,
       } = get();
       const totalChargingInfrastructureCosts = useYears.getState().YEARS.reduce((acc, year) => {
         acc[year] =
@@ -321,7 +347,11 @@ const useYearOverYear = create((set, get) => {
           chargerMaintenanceCosts[year] +
           chargerNetworkAndManagementCosts[year] +
           chargerPurchaseCosts[year] +
-          chargerInstallCosts[year] -
+          chargerInstallCosts[year] +
+          trenchingCosts[year] +
+          upgradeCostUtility[year] +
+          upgradeCostCustomer[year] +
+          procurementManagementCost[year]  -
           loanAmount[year];
 
         return acc;
@@ -370,6 +400,10 @@ const useYearOverYear = create((set, get) => {
       }, {});
       set({ cumulativeCostBenefit });
     },
+
+   
+
+
     initYearOverYear: () => {
       get().setCostOfElectricVehicles();
       get().setDefaultVehicleReplacementFundAllocation();
@@ -383,6 +417,17 @@ const useYearOverYear = create((set, get) => {
       get().setPrincipalRemaining();
       get().setChargerPurchaseAmount();
       get().setChargerInstallCosts();
+      const trenchingCosts = get().sumCostsByYear("trenching_costs");
+      set({ trenchingCosts });
+      const upgradeCostUtility = get().sumCostsByYear("upgrade_cost_utility");
+      set({ upgradeCostUtility });
+      const upgradeCostCustomer = get().sumCostsByYear("upgrade_cost_customer");
+      set({ upgradeCostCustomer });
+      const procurementManagementCost = get().sumCostsByYear("procurement_management_cost");
+      set({ procurementManagementCost });
+
+
+
       get().setChargerMaintenanceCosts();
       get().setChargerNetworkAndManagementCosts();
       get().setChargeMangementSavings();

@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table"
+import { getBackgroundColor } from './getColor'; 
 
 
 
@@ -51,14 +52,25 @@ export function DataTable({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+            table.getRowModel().rows.map((row,i) => (
+              
               <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
+
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  style={{
+                    backgroundColor: getBackgroundColor(row.original.title), // Change 'Specific Title' to your condition
+                  }}
+                >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <TableCell className="" key={cell.id}>
+                   {flexRender(cell.column.columnDef.cell, {
+                        ...cell.getContext(),
+                        // Always round numeric cell values to the nearest whole number
+                        value: typeof cell.getValue() === 'number'
+                          ? Math.round(cell.getValue())
+                          : cell.getValue(),
+                      })}
                   </TableCell>
                 ))}
               </TableRow>
