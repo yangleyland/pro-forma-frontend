@@ -33,26 +33,16 @@ const useProFormaCalcs = create((set) => ({
       ? 1 + advancedCalcs.gasoline_escalation_rate
       : 1;
 
-      console.log("inflationRate",inflationRate );
     const controls = controlsData;
     const calculateYearSums = (field) => {
       return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
           .filter((item) => item["Replacement Year"] === year)
           .filter((item) => {
-            if (controls["electrification_scenario"] === "All Vehicles") {
-              return true; // Include all items if scenario is "All Vehicles"
-            }
-            if (
-              controls["electrification_scenario"] ===
-              "Whole Fleet Electrification Excluding Exemptions"
-            ) {
-              return item["Exclude?"] === "No";
-            }
-            return (
-              item["Electrification Scenario"] ===
-              "Medium- and Heavy-Duty Vehicles Only"
-            );
+            return item.electrification_scenario[controls["electrification_scenario"]];
+          })
+          .filter((item) => {
+            return item["Simplified Domicile"]===controls["site"];
           })
           .reduce((sum, item) => {
             const value = item[field];
@@ -73,19 +63,10 @@ const useProFormaCalcs = create((set) => ({
         const yearTotal = data
           .filter((item) => item["Replacement Year"] === year)
           .filter((item) => {
-            if (controls["electrification_scenario"] === "All Vehicles") {
-              return true; // Include all items if scenario is "All Vehicles"
-            }
-            if (
-              controls["electrification_scenario"] ===
-              "Whole Fleet Electrification Excluding Exemptions"
-            ) {
-              return item["Exclude?"] === "No";
-            }
-            return (
-              item["Electrification Scenario"] ===
-              "Medium- and Heavy-Duty Vehicles Only"
-            );
+            return item.electrification_scenario[controls["electrification_scenario"]];
+          })
+          .filter((item) => {
+            return item["Simplified Domicile"]===controls["site"];
           })
           .reduce((sum, item) => sum + 1, 0);
         yearCount += yearTotal;
@@ -102,19 +83,10 @@ const useProFormaCalcs = create((set) => ({
               item["Replacement Year"] <= year && item["End of life"] > year
           )
           .filter((item) => {
-            if (controls["electrification_scenario"] === "All Vehicles") {
-              return true; // Include all items if scenario is "All Vehicles"
-            }
-            if (
-              controls["electrification_scenario"] ===
-              "Whole Fleet Electrification Excluding Exemptions"
-            ) {
-              return item["Exclude?"] === "No";
-            }
-            return (
-              item["Electrification Scenario"] ===
-              "Medium- and Heavy-Duty Vehicles Only"
-            );
+            return item["Simplified Domicile"]===controls["site"];
+          })
+          .filter((item) => {
+            return item.electrification_scenario[controls["electrification_scenario"]];
           })
           .reduce((sum, item) => {
             const value = item[field];
@@ -138,19 +110,10 @@ const useProFormaCalcs = create((set) => ({
         const yearTotal = data
           .filter((item) => item["Replacement Year"] <= year)
           .filter((item) => {
-            if (controls["electrification_scenario"] === "All Vehicles") {
-              return true; // Include all items if scenario is "All Vehicles"
-            }
-            if (
-              controls["electrification_scenario"] ===
-              "Whole Fleet Electrification Excluding Exemptions"
-            ) {
-              return item["Exclude?"] === "No";
-            }
-            return (
-              item["Electrification Scenario"] ===
-              "Medium- and Heavy-Duty Vehicles Only"
-            );
+            return item.electrification_scenario[controls["electrification_scenario"]];
+          })
+          .filter((item) => {
+            return item["Simplified Domicile"]===controls["site"];
           })
           .reduce((sum, item) => {
             const value = parseFloat(item[field] || 0);
@@ -184,6 +147,7 @@ const useProFormaCalcs = create((set) => ({
     );
     const IRA = calculateYearSums("IRA Incentives");
     const vehicleCounts = countVehicles();
+
 
     const annualkwh = calculateYearSumsGreaterThan("Annual KWh");
     const ghgReductions = calculateYearSumsGreaterThan("ghg");

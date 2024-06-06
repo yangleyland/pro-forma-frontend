@@ -20,7 +20,6 @@ function AdvancedControls() {
   const handleSubmit = async () => {
     const economicsData = new FormData(economicsRef.current);
     const softwareCostsData = new FormData(softwareCostsRef.current);
-    console.log("economics data", economicsData);
     const data = {};
     economicsData.forEach((value, key) => {
       data[key] = value;
@@ -47,7 +46,6 @@ function AdvancedControls() {
       }
 
       const result = await response.json();
-      console.log("API response:", result);
       await fetchAdvancedCalcs(user.id);
       setYearSums();
       initYearOverYear();

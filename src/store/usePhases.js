@@ -27,7 +27,6 @@ const usePhases = create((set, get) => ({
     })),
   setPhases: (phases) => set({ phases }),
   fetchPhases: async (userId) => {
-    console.log("userid",userId);
     try {
       const response = await fetch(
         `http://localhost:3002/api/phases/${userId}`
@@ -36,7 +35,6 @@ const usePhases = create((set, get) => ({
         throw new Error("Failed to fetch phases");
       }
       const phases = await response.json();
-      console.log("phasecosts",phases);
       get().calculateCosts(phases);
 
     } catch (error) {

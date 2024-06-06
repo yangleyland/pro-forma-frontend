@@ -2,6 +2,17 @@
 import React, { useState } from "react";
 import supabase from "../supabaseClient";
 import { useDropzone } from "react-dropzone";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
 
 const Admin = () => {
   const [email, setEmail] = useState("");
@@ -55,13 +66,28 @@ const Admin = () => {
 
       const defaultControlsData = {
         id: userId,
-        electrification_scenario: "Medium- and Heavy-Duty Vehicles Only",
-        site: "site 1",
-        incentives: true,
+        electrification_scenario: "",
+        site: "",
+        incentives: false,
         ira_incentives: false,
         phase1: 2024,
         phase2: 2025,
         phase3: 2026,
+      };
+      const defaultAdvancedControls = {
+        id: userId,
+        inflation: false,
+        inflation_escalation_rate: 0.03,
+        electricity_escalation_rate: 0.03,
+        gasoline_escalation_rate: 0.03,
+        infrastructure_loan_term: 10,
+        infrastructure_loan_interest_rate: 0.03,
+        discount_rate_npv: 0.03,
+        maintenance_costs_annual_per_station: 0,
+        charging_optimization: false,
+        charging_optimization_savings: 0,
+        charge_management_subscription_costs: 0,
+        charger_network_costs: 0,
       };
 
       // Call the /api/controls endpoint with the default data
@@ -75,8 +101,20 @@ const Admin = () => {
           body: JSON.stringify(defaultControlsData),
         }
       );
+      const advancedControlRes = await fetch(
+        "http://localhost:3002/api/advancedcontrols/add",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(defaultAdvancedControls),
+        }
+      );
 
-      if (!controlsResponse.ok) {
+
+
+      if (!controlsResponse.ok || !advancedControlRes.ok) {
         throw new Error("Failed to set controls data");
       }
     } catch (error) {
@@ -85,34 +123,56 @@ const Admin = () => {
   };
 
   return (
-    <div>
-      <h1>Admin Page</h1>
-      <form onSubmit={handleSignup}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <div {...getRootProps()}>
-          <input {...getInputProps()} />
-          {csvFile ? (
-            <p>{csvFile.name}</p>
-          ) : (
-            <p>Drag 'n' drop a CSV file here, or click to select one</p>
-          )}
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-      {message && <p>{message}</p>}
+    <div className="w-full h-full border flex justify-center items-center">
+      <Card className="h-[500px] w-[500px] p-4">
+        <CardHeader className="pb-5">
+          <CardTitle>Pro Forma Account Addition</CardTitle>
+          <CardDescription>Add Pro Forma Users Here</CardDescription>
+          <p className="text-sm text-red-400">{message}</p>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSignup}>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label>Email</Label>
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label>Password</Label>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div
+                className="border border-4 rounded-md border-dashed p-5 hover:border-gray-400 text-center"
+                {...getRootProps()}
+              >
+                <Input {...getInputProps()} />
+                {csvFile ? (
+                  <p>{csvFile.name}</p>
+                ) : (
+                  <p>Drag & Drop Vehicle CSV file here</p>
+                )}
+              </div>
+
+              <div className="flex flex-col space-y-1.5">
+                <Button type="submit">Create Account</Button>
+              </div>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };

@@ -129,7 +129,6 @@ export const PhaseTable = () => {
   const [data, setData] = useState(() => [...phases] || []);
   const [originalData, setOriginalData] = useState(() => [...phases]);
   useEffect(() => {
-    console.log("data/phases",phases);
     setData([...phases] || []);
     setOriginalData([...phases] || []);
   }, [phases]);

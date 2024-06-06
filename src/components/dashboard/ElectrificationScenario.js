@@ -15,7 +15,6 @@ const ElectrificationScenario = () => {
         "All Vehicles":"All vehicles are electrified",
         "Medium- and Heavy-Duty Vehicles Only":"Only Medium and Heavy Duty vehicles are electrified",
         "Whole Fleet Electrification Excluding Exemptions":"Light-Duty, Medium-Duty, and Heavy-Duty Vehicles including vehicles without an EV replacement option currently on market",
-        
     }
     
   return (

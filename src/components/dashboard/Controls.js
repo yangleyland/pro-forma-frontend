@@ -21,44 +21,51 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Switch } from "../ui/switch";
+import usePhases from "../../store/usePhases";
 
 const Controls = () => {
-  const { controlsData, setControlsData, user } = useAuthStore();
+  const { controlsData, setControlsData, user,data } = useAuthStore();
   const [electrificationScenario, setElectrificationScenario] = useState("");
   const [site, setSite] = useState("");
   const [incentives, setIncentives] = useState(false);
   const [iraIncentives, setIraIncentives] = useState(false);
-  const [phase1, setPhase1] = useState("");
-  const [phase2, setPhase2] = useState("");
-  const [phase3, setPhase3] = useState("");
+  const {phases} = usePhases
+  const [electrificationOptions, setElectrificationOptions] = useState([]);
+  const [siteOptions,setSiteOptions] = useState([]);
 
   const initialLoad = useRef(true);
 
-  const electrificationOptions = [
-    "All Vehicles",
-    "Medium- and Heavy-Duty Vehicles Only",
-    "Whole Fleet Electrification Excluding Exemptions",
-  ];
-
-  const siteOptions = ["Site 1", "Site 2", "Site 3"];
 
   useEffect(() => {
+    if (data && data[0] && data[0].electrification_scenario) {
+      const options = Object.keys(data[0].electrification_scenario);
+      setElectrificationOptions(options);
+    }
+  }, [data]);
+
+
+
+  
+
+  useEffect(() => {
+    
     if (controlsData) {
+
+      console.log("controldata",controlsData.domiciles);
       setElectrificationScenario(
-        controlsData["electrification_scenario"] || ""
+        controlsData["electrification_scenario"]
       );
-      setSite(controlsData.site || "");
+      setSite(controlsData["site"] || "");
+      setSiteOptions(controlsData.domiciles || "");
       setIncentives(controlsData.incentives || false);
       setIraIncentives(controlsData.ira_incentives || false);
-      setPhase1(controlsData.phase1 || "");
-      setPhase2(controlsData.phase2 || "");
-      setPhase3(controlsData.phase3 || "");
 
       initialLoad.current = false;
     }
-  }, [controlsData]);
+  }, [controlsData,electrificationOptions,siteOptions]);
 
   const updateControl = async (attribute, value) => {
+    if (value === "" || value === null) return;
     try {
       const response = await fetch(
         `http://localhost:3002/api/controls/${user.id}`,
@@ -76,7 +83,6 @@ const Controls = () => {
       }
 
       const result = await response.json();
-      console.log("Control updated successfully:", result);
       setControlsData(result.data);
       const { initYearOverYear } = useYearOverYear.getState();
       initYearOverYear();
@@ -88,6 +94,7 @@ const Controls = () => {
   const handleElectrificationScenarioChange = (str) => {
     const newValue = str;
     setElectrificationScenario(newValue);
+    console.log("called",newValue);
     updateControl("electrification_scenario", newValue);
   };
 
@@ -108,21 +115,6 @@ const Controls = () => {
     const newValue = checked;
     setIraIncentives(newValue);
     updateControl("ira_incentives", newValue);
-  };
-  const handlePhase1Change = (e) => {
-    const newValue = e.target.value;
-    setPhase1(newValue);
-    updateControl("phase1", newValue);
-  };
-  const handlePhase2Change = (e) => {
-    const newValue = e.target.value;
-    setPhase2(newValue);
-    updateControl("phase2", newValue);
-  };
-  const handlePhase3Change = (e) => {
-    const newValue = e.target.value;
-    setPhase3(newValue);
-    updateControl("phase3", newValue);
   };
 
   return (
@@ -185,12 +177,7 @@ const Controls = () => {
             </form>
           </CardContent>
         </CardHeader>
-              {/* <div>
-        <label>Phases:</label>
-        <input type="text" value={phase1} onChange={handlePhase1Change} />
-        <input type="text" value={phase2} onChange={handlePhase2Change} />
-        <input type="text" value={phase3} onChange={handlePhase3Change} />
-      </div> */}
+
       </Card>
 
   );
