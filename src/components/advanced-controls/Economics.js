@@ -28,19 +28,19 @@ const Economics = forwardRef((props, ref) => {
   useEffect(() => {
     if (advancedCalcs) {
       setFormState({
-        inflation: advancedCalcs.inflation || false,
+        inflation: advancedCalcs.inflation ?? false,
         inflation_escalation_rate:
-          advancedCalcs.inflation_escalation_rate || "",
+          advancedCalcs.inflation_escalation_rate ?? "",
         electricity_escalation_rate:
-          advancedCalcs.electricity_escalation_rate || "",
-        gasoline_escalation_rate: advancedCalcs.gasoline_escalation_rate || "",
+          advancedCalcs.electricity_escalation_rate ?? "",
+        gasoline_escalation_rate: advancedCalcs.gasoline_escalation_rate ?? "",
         infrastructure_loan_term:
-          advancedCalcs.infrastructure_loan_term || "",
+          advancedCalcs.infrastructure_loan_term ?? "",
         infrastructure_loan_interest_rate:
-          advancedCalcs.infrastructure_loan_interest_rate || "",
-        discount_rate_npv: advancedCalcs.discount_rate_npv || "",
+          advancedCalcs.infrastructure_loan_interest_rate ?? "",
+        discount_rate_npv: advancedCalcs.discount_rate_npv ?? "",
         maintenance_costs_annual_per_station:
-          advancedCalcs.maintenance_costs_annual_per_station || "",
+          advancedCalcs.maintenance_costs_annual_per_station ?? "",
       });
     }
   }, [advancedCalcs]);
@@ -146,7 +146,7 @@ const Economics = forwardRef((props, ref) => {
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label>Maintenance Costs (annual)</Label>
+                <Label>Charger Maintenance Costs (annual)</Label>
                 <Input
                   variant="blank"
                   name="maintenance_costs_annual_per_station"

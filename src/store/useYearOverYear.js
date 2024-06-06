@@ -48,11 +48,11 @@ const useYearOverYear = create((set, get) => {
         .getState()
         .YEARS.reduce((acc, year) => {
           acc[year] = evPurchaseCostSums[year];
-           if (controlsData.incentives) {
-            if (controlsData.ira_incentives) {
-              acc[year] -= IRA[year];
-            }
+          if (controlsData.incentives) {
             acc[year] -= HVIP[year];
+          }
+          if (controlsData.ira_incentives) {
+            acc[year] -= IRA[year];
           }
 
           return acc;
@@ -221,7 +221,11 @@ const useYearOverYear = create((set, get) => {
         acc[year] = 0;
         phases
           .filter((phase) => phase.year === year)
-          .filter((phase) => phase.site === controlsData.site)
+          .filter(
+            (phase) =>
+              phase.site === controlsData.site ||
+              controlsData.site === "All Sites"
+          )
           .forEach((phase) => {
             acc[year] += phase[accessor];
           });

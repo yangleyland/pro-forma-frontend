@@ -19,10 +19,10 @@ const SoftwareCosts = forwardRef((props, ref) => {
   useEffect(() => {
     if (advancedCalcs) {
       setFormState({
-        charging_optimization: advancedCalcs.charging_optimization || false,
-        charging_optimization_savings: advancedCalcs.charging_optimization_savings || "",
-        charge_management_subscription_costs: advancedCalcs.charge_management_subscription_costs || "",
-        charger_network_costs: advancedCalcs.charger_network_costs || "",
+        charging_optimization: advancedCalcs.charging_optimization ?? false,
+        charging_optimization_savings: advancedCalcs.charging_optimization_savings ?? "",
+        charge_management_subscription_costs: advancedCalcs.charge_management_subscription_costs ?? "",
+        charger_network_costs: advancedCalcs.charger_network_costs ?? "",
       });
     }
   }, [advancedCalcs]);

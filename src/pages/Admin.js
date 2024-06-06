@@ -13,12 +13,14 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [csvFile, setCsvFile] = useState(null);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const onDrop = (acceptedFiles) => {
     setCsvFile(acceptedFiles[0]);
@@ -41,7 +43,8 @@ const Admin = () => {
     } else {
       setMessage("User created successfully!");
       if (csvFile) {
-        uploadCSVFile(data.user.id);
+        await uploadCSVFile(data.user.id);
+        navigate("/");
       }
     }
   };
@@ -134,19 +137,19 @@ const Admin = () => {
           <form onSubmit={handleSignup}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label>Email</Label>
+                <Label>New Email</Label>
                 <Input
                   type="email"
-                  placeholder="Email"
+                  placeholder="m@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label>Password</Label>
+                <Label>New Password</Label>
                 <Input
-                  type="password"
+                  type="text"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

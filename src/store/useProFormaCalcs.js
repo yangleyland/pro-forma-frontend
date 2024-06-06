@@ -42,7 +42,7 @@ const useProFormaCalcs = create((set) => ({
             return item.electrification_scenario[controls["electrification_scenario"]];
           })
           .filter((item) => {
-            return item["Simplified Domicile"]===controls["site"];
+            return (item["Simplified Domicile"]===controls["site"] || controls["site"]==="All Sites");
           })
           .reduce((sum, item) => {
             const value = item[field];
@@ -66,7 +66,7 @@ const useProFormaCalcs = create((set) => ({
             return item.electrification_scenario[controls["electrification_scenario"]];
           })
           .filter((item) => {
-            return item["Simplified Domicile"]===controls["site"];
+            return (item["Simplified Domicile"]===controls["site"] || controls["site"]==="All Sites");
           })
           .reduce((sum, item) => sum + 1, 0);
         yearCount += yearTotal;
@@ -83,7 +83,7 @@ const useProFormaCalcs = create((set) => ({
               item["Replacement Year"] <= year && item["End of life"] > year
           )
           .filter((item) => {
-            return item["Simplified Domicile"]===controls["site"];
+            return (item["Simplified Domicile"]===controls["site"] || controls["site"]==="All Sites");
           })
           .filter((item) => {
             return item.electrification_scenario[controls["electrification_scenario"]];

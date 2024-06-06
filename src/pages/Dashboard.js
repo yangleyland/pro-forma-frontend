@@ -1,6 +1,6 @@
 // src/pages/Dashboard.js
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import Calculations from "../components/Calculations";
 import Controls from "../components/dashboard/Controls";
@@ -26,9 +26,17 @@ import CashFlow from "../components/dashboard/CashFlow";
 import CapitalCostsGraph from "../components/dashboard/CapitalCostsGraph";
 
 function Dashboard() {
-  const { user, logout, data, loading } = useAuthStore();
+  const { user, logout, data, loading,initializeAuth } = useAuthStore();
   const navigate = useNavigate();
+  const [renderKey, setRenderKey] = useState(0);
 
+  const forceRerender = async () => {
+    await initializeAuth();
+  };
+  // useEffect(() => {initializeAuth()}, [initializeAuth]);
+
+
+  
   const renderTable = () => {
     if (data.length === 0) {
       return <p>No data available</p>;
@@ -71,7 +79,7 @@ function Dashboard() {
           <CostBenefitChart />
         </div>
         <div className="col-span-4  row-span-1 h-fill">
-          <CostAndSavings />
+          <CostAndSavings  key={renderKey}/>
         </div>
         <div className="col-span-4 row-span-1 h-full">
           <GHGReductionsGraph />
@@ -89,6 +97,7 @@ function Dashboard() {
           <CapitalCostsGraph />
         </div>
       </div>
+      <Button onClick={forceRerender}>Force</Button>
 
       {/* <Calculations /> */}
     </div>

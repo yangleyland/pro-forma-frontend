@@ -15,6 +15,11 @@ const useAuthStore = create((set, get) => ({
 
   //setting controls
   setControlsData: (controls) => {
+
+    const uniqueDomiciles = [...new Set(get().data.map(item => item["Simplified Domicile"]))];
+    controls.domiciles=uniqueDomiciles;
+    set({ controlsData: controls});
+
     set({ controlsData: controls });
     const { setYearSums } = useProFormaCalcs.getState();
     //not sure if this is good enough

@@ -15,12 +15,15 @@ import useYearOverYear from '../../store/useYearOverYear';
 
 
 
-const ComparisonBarChart = () => {
+const CostAndSavings = () => {
   const { totalCosts, totalSavings } = useYearOverYear();
-
+  
   const sumValues = (data) => {
     let sum = 0;
     for (const year in data) {
+      if (year==="title"){
+        continue;
+      }
       sum += data[year];
     }
     return sum;
@@ -33,7 +36,7 @@ const ComparisonBarChart = () => {
     { name: 'Cumulative Cost', value: totalCost },
     { name: 'Cumulative Savings', value: totalSaving },
   ];
-
+  
   return (
     <Card>
       <CardHeader>
@@ -61,4 +64,4 @@ const ComparisonBarChart = () => {
   );
 };
 
-export default ComparisonBarChart;
+export default CostAndSavings;
