@@ -75,7 +75,8 @@ const useAuthStore = create((set, get) => ({
         throw new Error("Failed to fetch data");
       }
       const jsonData = await response.json();
-      set({ data: jsonData });
+      const sortedJson = jsonData.sort((a, b) => a.equipment_id - b.equipment_id);
+      set({ data: sortedJson });
 
       // set({ user: userId });
       // Fetch controls data
