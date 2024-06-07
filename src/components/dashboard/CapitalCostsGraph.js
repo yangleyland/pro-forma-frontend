@@ -51,7 +51,7 @@ const CapitalCostsGraph = () => {
             <Line
               type="monotone"
               dataKey="totalCosts"
-              stroke="#8884d8"
+              stroke="#6a7b9e"
               name="Total Costs"
             />
           </LineChart>

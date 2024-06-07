@@ -7,18 +7,20 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import useAuthStore from "../store/useAuthStore";
 
 
 const PrioritySite = () => {
+  const {controlsData} = useAuthStore();
 
   return (
-    <Card className="h-1/2">
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>📍 Priority Site</CardTitle>
       </CardHeader>
 
       <CardContent>
-      City Hall/City Plaza
+      {controlsData && controlsData.site}
       </CardContent>
     </Card>
   );

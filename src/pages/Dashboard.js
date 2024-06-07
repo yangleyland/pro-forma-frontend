@@ -10,6 +10,7 @@ import CostAndSavings from "../components/dashboard/CostAndSavings";
 import { useNavigate } from "react-router-dom";
 import GHGReductionsGraph from "../components/dashboard/GHGReductionsGraph";
 import GHGReductions from "../components/dashboard/GHGReductions";
+import Timeline from "../components/dashboard/Timeline";
 
 import {
   Table,
@@ -26,17 +27,10 @@ import CashFlow from "../components/dashboard/CashFlow";
 import CapitalCostsGraph from "../components/dashboard/CapitalCostsGraph";
 
 function Dashboard() {
-  const { user, logout, data, loading,initializeAuth } = useAuthStore();
+  const { user, logout, data, loading, initializeAuth } = useAuthStore();
   const navigate = useNavigate();
   const [renderKey, setRenderKey] = useState(0);
 
-  const forceRerender = async () => {
-    await initializeAuth();
-  };
-  // useEffect(() => {initializeAuth()}, [initializeAuth]);
-
-
-  
   const renderTable = () => {
     if (data.length === 0) {
       return <p>No data available</p>;
@@ -72,6 +66,9 @@ function Dashboard() {
       </h1>
 
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4 p-4">
+        
+
+        
         <div className="col-span-3 h-fill">
           <Controls />
         </div>
@@ -79,12 +76,31 @@ function Dashboard() {
           <CostBenefitChart />
         </div>
         <div className="col-span-4  row-span-1 h-fill">
-          <CostAndSavings  key={renderKey}/>
+          <CostAndSavings key={renderKey} />
+        </div>
+        
+        <div className="col-span-3 row-span-1 h-fill">
+          <PrioritySite />
+        </div>
+        <div className="col-span-3  row-span-1 h-fill">
+          <ElectrificationScenario />
+        </div>
+        <div className="col-span-3  row-span-1 h-fill">
+          <GHGReductions />
+        </div>
+        <div className="col-span-3  row-span-1 h-fill">
+          <CashFlow />
         </div>
         <div className="col-span-4 row-span-1 h-full">
           <GHGReductionsGraph />
         </div>
-        <div className="col-span-3 row-span-1 flex gap-4 flex-col h-full justify-between">
+        <div className="col-span-4 row-span-1 h-full">
+          <CapitalCostsGraph />
+        </div>
+        <div className="col-span-4 row-span-1 h-full">
+          <Timeline />
+        </div>
+        {/* <div className="col-span-3 row-span-1 flex gap-4 flex-col h-full justify-between">
           <GHGReductions />
           <PrioritySite />
         </div>
@@ -92,12 +108,9 @@ function Dashboard() {
         <div className="col-span-3 row-span-1 flex gap-4 flex-col h-full justify-between">
           <ElectrificationScenario />
           <CashFlow />
-        </div>
-        <div className="col-span-4 row-span-1 h-full">
-          <CapitalCostsGraph />
-        </div>
+        </div> */}
+        
       </div>
-      <Button onClick={forceRerender}>Force</Button>
 
       {/* <Calculations /> */}
     </div>

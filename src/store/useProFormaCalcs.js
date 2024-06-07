@@ -113,7 +113,7 @@ const useProFormaCalcs = create((set) => ({
             return item.electrification_scenario[controls["electrification_scenario"]];
           })
           .filter((item) => {
-            return item["Simplified Domicile"]===controls["site"];
+            return (item["Simplified Domicile"]===controls["site"] || controls["site"]==="All Sites");
           })
           .reduce((sum, item) => {
             const value = parseFloat(item[field] || 0);

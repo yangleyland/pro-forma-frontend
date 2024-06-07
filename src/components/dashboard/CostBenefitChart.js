@@ -19,6 +19,11 @@ import {
   CardTitle,
 } from "../ui/card";
 import useYearOverYear from "../../store/useYearOverYear";
+import useAuthStore from "../../store/useAuthStore";
+
+function formatAsCurrency(value) {
+  return `$${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+}
 
 const transformData = (annualCostBenefit, cumulativeCostBenefit) => {
   const data = [];
@@ -26,8 +31,8 @@ const transformData = (annualCostBenefit, cumulativeCostBenefit) => {
   Object.keys(annualCostBenefit).forEach(year => {
     data.push({
       year: parseInt(year, 10),
-      annualCostBenefit: annualCostBenefit[year],
-      cumulativeCostBenefit: cumulativeCostBenefit[year]
+      annualCostBenefit:parseInt(annualCostBenefit[year]),
+      cumulativeCostBenefit: parseInt(cumulativeCostBenefit[year])
     });
   });
 
@@ -36,11 +41,12 @@ const transformData = (annualCostBenefit, cumulativeCostBenefit) => {
 
 const CostBenefitChart = () => {
   const { annualCostBenefit, cumulativeCostBenefit } = useYearOverYear();
+  const {controlsData} = useAuthStore();
   const data = transformData(annualCostBenefit, cumulativeCostBenefit);
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Cost Benefit Analysis</CardTitle>
+        <CardTitle>Cost Benefit Analysis<span className="text-xl text-gray-600"> - {controlsData && controlsData.site}</span></CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={400}>
@@ -48,18 +54,18 @@ const CostBenefitChart = () => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
             <YAxis />
-            <Tooltip />
+            <Tooltip  formatter={formatAsCurrency}/>
             <Legend />
             <Line
               type="monotone"
               dataKey="cumulativeCostBenefit"
-              stroke="#8884d8"
+              stroke="#88a37f"
               name="Cumulative Cost Benefit"
             />
             <Line
               type="monotone"
               dataKey="annualCostBenefit"
-              stroke="#82ca9d"
+              stroke="#6a7b9e"
               name="Annual Cost Benefit"
             />
           </LineChart>

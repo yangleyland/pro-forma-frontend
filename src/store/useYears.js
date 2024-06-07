@@ -3,7 +3,7 @@ import {create} from 'zustand';
 
 const useStore = create((set) => ({
   START_YEAR: 2024,
-  END_YEAR: 2060,
+  END_YEAR: 2040,
   YEARS: [],
 
   initializeYears: () => {

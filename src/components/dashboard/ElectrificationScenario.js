@@ -18,13 +18,13 @@ const ElectrificationScenario = () => {
     }
     
   return (
-    <Card className="h-1/2">
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>🔋 Electrification Scenario</CardTitle>
       </CardHeader>
 
       <CardContent>
-      {controlsData && electrificationScenarioDescriptions[controlsData.electrification_scenario]}
+      {controlsData && controlsData.electrification_scenario}
       </CardContent>
     </Card>
   );

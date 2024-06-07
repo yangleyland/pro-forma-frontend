@@ -51,7 +51,7 @@ const GHGReductionsGraph = () => {
             <Line
               type="monotone"
               dataKey="ghgReductions"
-              stroke="#8884d8"
+              stroke="#88a37f"
               name="GHG Reductions"
             />
           </LineChart>

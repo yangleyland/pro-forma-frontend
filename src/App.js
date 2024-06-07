@@ -12,6 +12,7 @@ import usePhases from "./store/usePhases.js";
 import useYearOverYear from "./store/useYearOverYear.js";
 import useYears from "./store/useYears.js";
 import Navbar from "./components/Navbar";
+import FleetEditor from "./pages/FleetEditor";
 
 const MainLayout = ({ children }) => {
   const { user, loading } = useAuthStore();
@@ -34,9 +35,10 @@ const MainLayout = ({ children }) => {
 };
 
 function App() {
-  const { initializeAuth, user, loading } = useAuthStore();
+  const { initializeAuth, user, controlsData } = useAuthStore();
   const { fetchPhases } = usePhases();
   const { initializeYears } = useYears();
+  const {initYearOverYear} = useYearOverYear();
   useEffect(() => {
     initializeYears();
   }, [initializeYears]);
@@ -46,10 +48,15 @@ function App() {
   
 
   useEffect(() => {
-    if (user) {
-      fetchPhases(user.id);
-    }
-  }, [user, fetchPhases]);
+    const fetchData = async () => {
+      if (user && controlsData) {
+        await fetchPhases(user.id);
+        initYearOverYear();
+        console.log("fetching data");
+      }
+    };
+    fetchData();
+  }, [user, fetchPhases, controlsData, initializeYears]);
 
   return (
     <div className="flex h-screen">
@@ -83,6 +90,14 @@ function App() {
           element={
             <MainLayout>
               <YearOverYear />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/fleet-editor"
+          element={
+            <MainLayout>
+              <FleetEditor />
             </MainLayout>
           }
         />

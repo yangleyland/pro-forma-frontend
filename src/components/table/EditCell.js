@@ -10,7 +10,7 @@ import { MdCheckCircle } from "react-icons/md";
 
 const EditCell = ({ row, table }) => {
   const meta = table.options.meta;
-  const { phases, fetchPhases,setPhases } = usePhases();
+  const { phases, fetchPhases } = usePhases();
   const { initYearOverYear } = useYearOverYear();
   const {user} = useAuthStore();
   const setEditedRows = (e) => {

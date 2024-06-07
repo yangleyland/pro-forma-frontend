@@ -8,6 +8,8 @@ import {
   FaCalendarAlt,
 } from "react-icons/fa";
 import { LuBarChart3,LuCog,LuAreaChart} from "react-icons/lu";
+import { MdModeEdit } from "react-icons/md";
+
 import useAuthStore from "../store/useAuthStore";
 
 
@@ -50,6 +52,12 @@ const Navbar = () => {
             <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
               <FaCalendarAlt className="mr-2"  size={20} />
               Infrastructure Phases
+            </li>
+          </Link>
+          <Link to="/fleet-editor" className="">
+            <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
+              <MdModeEdit className="mr-2"  size={20} />
+              Fleet Editor
             </li>
           </Link>
 

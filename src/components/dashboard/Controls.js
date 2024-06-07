@@ -21,7 +21,6 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Switch } from "../ui/switch";
-import usePhases from "../../store/usePhases";
 
 const Controls = () => {
   const { controlsData, setControlsData, user, data } = useAuthStore();
@@ -29,7 +28,6 @@ const Controls = () => {
   const [site, setSite] = useState("");
   const [incentives, setIncentives] = useState(false);
   const [iraIncentives, setIraIncentives] = useState(false);
-  const { phases } = usePhases;
   const [electrificationOptions, setElectrificationOptions] = useState([]);
   const [siteOptions, setSiteOptions] = useState([]);
 
@@ -154,6 +152,7 @@ const Controls = () => {
               <div className="flex flex-col space-y-1.5">
                 <Label>Federal Incentives</Label>
                 <Switch
+                  
                   checked={iraIncentives}
                   onCheckedChange={handleIraIncentivesChange}
                 />

@@ -15,7 +15,7 @@ const CashFlow = () => {
   const { cumulativeCostBenefit } = useYearOverYear();
   const val = cumulativeCostBenefit[2040];
   return (
-    <Card className="h-1/2">
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>💸 Cash Flow</CardTitle>
         <CardDescription>Estimated Cash Flow By INSERTYEAR</CardDescription>

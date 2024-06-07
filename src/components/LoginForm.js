@@ -43,7 +43,7 @@ const LoginForm = () => {
   return (
     <Card className="h-full p-4">
       <CardHeader className="pb-14">
-        <CardTitle>Pro Forma User Access Login</CardTitle>
+        <CardTitle className="text-optonygreen">Pro Forma User Access Login</CardTitle>
         <CardDescription>
           Enter your email and password below to login to your account
         </CardDescription>

@@ -38,6 +38,7 @@ const useYearOverYear = create((set, get) => {
     totalSavings: {},
     annualCostBenefit: {},
     cumulativeCostBenefit: {},
+    netPresentValue: 0,
 
     setCostOfElectricVehicles: () => {
       const { evPurchaseCostSums, HVIP, IRA } = useProFormaCalcs.getState();
@@ -151,10 +152,10 @@ const useYearOverYear = create((set, get) => {
       set({ estimatedElectricVehicles });
     },
     setNumberOfNewPorts: () => {
-      const { phases } = usePhases.getState();
+      const { filteredPhases } = usePhases.getState();
       const numberOfNewPorts = useYears.getState().YEARS.reduce((acc, year) => {
         acc[year] = 0;
-        phases
+        filteredPhases
           .filter((phase) => phase.year === year)
           .forEach((phase) => {
             acc[year] +=
@@ -169,10 +170,10 @@ const useYearOverYear = create((set, get) => {
       set({ numberOfNewPorts });
     },
     setLoanAmount: () => {
-      const { phases } = usePhases.getState();
+      const { filteredPhases } = usePhases.getState();
       const loanAmount = useYears.getState().YEARS.reduce((acc, year) => {
         acc[year] = 0;
-        phases
+        filteredPhases
           .filter((phase) => phase.year === year)
           .forEach((phase) => {
             acc[year] += phase.loan_amount;
@@ -183,12 +184,12 @@ const useYearOverYear = create((set, get) => {
       set({ loanAmount });
     },
     setChargerPurchaseAmount: () => {
-      const { phases } = usePhases.getState();
+      const { filteredPhases } = usePhases.getState();
       const chargerPurchaseCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
           acc[year] = 0;
-          phases
+          filteredPhases
             .filter((phase) => phase.year === year)
             .forEach((phase) => {
               acc[year] += phase.cost;
@@ -199,12 +200,12 @@ const useYearOverYear = create((set, get) => {
       set({ chargerPurchaseCosts });
     },
     setChargerInstallCosts: () => {
-      const { phases } = usePhases.getState();
+      const { filteredPhases } = usePhases.getState();
       const chargerInstallCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
           acc[year] = 0;
-          phases
+          filteredPhases
             .filter((phase) => phase.year === year)
             .forEach((phase) => {
               acc[year] += phase.installCost;
@@ -215,17 +216,12 @@ const useYearOverYear = create((set, get) => {
       set({ chargerInstallCosts });
     },
     sumCostsByYear: (accessor) => {
-      const { phases } = usePhases.getState();
+      const { filteredPhases } = usePhases.getState();
       const { controlsData } = useAuthStore.getState();
       const costs = useYears.getState().YEARS.reduce((acc, year) => {
         acc[year] = 0;
-        phases
+        filteredPhases
           .filter((phase) => phase.year === year)
-          .filter(
-            (phase) =>
-              phase.site === controlsData.site ||
-              controlsData.site === "All Sites"
-          )
           .forEach((phase) => {
             acc[year] += phase[accessor];
           });
@@ -432,6 +428,21 @@ const useYearOverYear = create((set, get) => {
       set({ cumulativeCostBenefit });
     },
 
+    setNetPresentValue: () => {
+      const { cumulativeCostBenefit } = get();
+      const { advancedCalcs } = useAdvancedCalc.getState();
+      const netPresentValue = useYears.getState().YEARS.reduce((acc, year) => {
+        acc +=
+          cumulativeCostBenefit[year] /
+          Math.pow(
+            1 + advancedCalcs.discount_rate_npv,
+            year - useYears.getState().START_YEAR
+          );
+        return acc;
+      }, 0);
+      console.log("npv", netPresentValue);
+      set({ netPresentValue });
+    },
     initYearOverYear: () => {
       get().setCostOfElectricVehicles();
       get().setDefaultVehicleReplacementFundAllocation();
@@ -467,6 +478,7 @@ const useYearOverYear = create((set, get) => {
       get().setTotalSavings();
       get().setAnnualCostBenefit();
       get().setCumulativeCostBenefit();
+      get().setNetPresentValue();
     },
   };
 });

@@ -1,8 +1,10 @@
 import { create } from "zustand";
 import useChargerCosts from "./useChargerCosts";
+import useAuthStore from "./useAuthStore";
 
 const usePhases = create((set, get) => ({
   phases: [],
+  filteredPhases: [],
   addPhase: async (phase) => {
     try {
       const response = await fetch("http://localhost:3002/api/phases", {
@@ -25,7 +27,6 @@ const usePhases = create((set, get) => ({
     set((state) => ({
       phases: state.phases.filter((phase) => phase.id !== phaseId),
     })),
-  setPhases: (phases) => set({ phases }),
   fetchPhases: async (userId) => {
     try {
       const response = await fetch(
@@ -36,7 +37,6 @@ const usePhases = create((set, get) => ({
       }
       const phases = await response.json();
       get().calculateCosts(phases);
-
     } catch (error) {
       console.error(error);
     }
@@ -49,14 +49,16 @@ const usePhases = create((set, get) => ({
     if (matchingCost) {
       return matchingCost[type] * phase[type];
     } else {
-      return installationCosts[installationCosts.length - 1][type] * phase[type];
+      return (
+        installationCosts[installationCosts.length - 1][type] * phase[type]
+      );
     }
   },
 
   calculateCosts: (phases) => {
-    const { chargerCosts } =
-      useChargerCosts.getState();
-    
+    const { controlsData } = useAuthStore.getState();
+    const { chargerCosts } = useChargerCosts.getState();
+
     const phaseCosts = phases.map((phase, index) => {
       const cost =
         phase.port_less_than_10_kw * chargerCosts["port_less_than_10_kw"] +
@@ -75,9 +77,18 @@ const usePhases = create((set, get) => ({
         installCost,
       };
     });
-  const sortedPhases = phaseCosts.sort((a, b) => a.id - b.id);
-  set({ phases: sortedPhases });
-    set({ phases: phaseCosts });
+    const sortedPhases = phaseCosts.sort((a, b) => a.id - b.id);
+    
+    if (controlsData) {
+      const filteredPhases = sortedPhases.filter(
+        (phase) =>
+          phase.site === controlsData.site || controlsData.site === "All Sites"
+        
+      );
+      console.log("filteredPhases", filteredPhases)
+      set({ filteredPhases });
+    }
+    set({ phases: sortedPhases });
   },
 }));
 
