@@ -1,23 +1,25 @@
-"use client"
+import { ColumnDef } from "@tanstack/react-table";
+import useYears from '../../store/useYears';
 
-import { ColumnDef } from "@tanstack/react-table"
+export const createColumns = () => {
+  const { YEARS } = useYears.getState();
+  const columns = [];
 
-
-export const columns = [];
-const years = Array.from({ length: 17 }, (_, index) => 2024 + index);
-columns.push({
+  columns.push({
     accessorKey: "title",
     header: "",
-});
-years.forEach(year => {
+  });
+
+  YEARS.forEach(year => {
     columns.push({
-        accessorKey: year.toString(),
-        header: year.toString(),
-        cell: info => {
-            const value = info.getValue();
-            return typeof value === 'number' ? Math.round(value) : value;
-          }
+      accessorKey: year.toString(),
+      header: year.toString(),
+      cell: info => {
+        const value = info.getValue();
+        return typeof value === 'number' ? Math.round(value) : value;
+      }
     });
-});
+  });
 
-
+  return columns;
+};

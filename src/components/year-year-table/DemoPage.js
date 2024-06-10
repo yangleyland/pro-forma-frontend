@@ -1,8 +1,9 @@
-import { Payment, columns } from "./Columns"
+import { Payment, createColumns } from "./Columns"
 import { DataTable } from "./DataTable"
 import useYearOverYear from "../../store/useYearOverYear"
 
 export default function DemoPage() {
+    const columns = createColumns();
     const {
         estimatedElectricVehicles,
         costOfElectricVehicles,

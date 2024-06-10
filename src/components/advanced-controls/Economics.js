@@ -10,7 +10,15 @@ import { useEffect } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 import useAdvancedCalc from "../../store/useAdvancedCalc";
+import { MdInfoOutline } from "react-icons/md";
+import ControlLabel from "./ControlLabel";
 
 const Economics = forwardRef((props, ref) => {
   const { advancedCalcs } = useAdvancedCalc();
@@ -34,8 +42,7 @@ const Economics = forwardRef((props, ref) => {
         electricity_escalation_rate:
           advancedCalcs.electricity_escalation_rate ?? "",
         gasoline_escalation_rate: advancedCalcs.gasoline_escalation_rate ?? "",
-        infrastructure_loan_term:
-          advancedCalcs.infrastructure_loan_term ?? "",
+        infrastructure_loan_term: advancedCalcs.infrastructure_loan_term ?? "",
         infrastructure_loan_interest_rate:
           advancedCalcs.infrastructure_loan_interest_rate ?? "",
         discount_rate_npv: advancedCalcs.discount_rate_npv ?? "",
@@ -68,7 +75,7 @@ const Economics = forwardRef((props, ref) => {
           <form ref={ref}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label>Inflation</Label>
+              <ControlLabel text="Inflation" info="Toggles inflation on and off"/>
                 <Switch
                   checked={formState.inflation}
                   onCheckedChange={handleSwitchChange}
@@ -80,7 +87,9 @@ const Economics = forwardRef((props, ref) => {
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label>Inflation Escalation Rate</Label>
+                <div className="flex">
+                  <ControlLabel text="Inflation Escalation Rate" info="inflation"/>
+                </div>
                 <Input
                   variant="blank"
                   name="inflation_escalation_rate"

@@ -8,13 +8,12 @@ import { MdCancel } from "react-icons/md";
 import { MdCheckCircle } from "react-icons/md";
 import useProFormaCalcs from "../../store/useProFormaCalcs";
 
-
 const EditCell = ({ row, table }) => {
   const meta = table.options.meta;
   const { phases, fetchPhases } = usePhases();
   const { initYearOverYear } = useYearOverYear();
-  const {setYearSums} = useProFormaCalcs();
-  const {user,fetchData} = useAuthStore();
+  const { setYearSums } = useProFormaCalcs();
+  const { user, fetchData } = useAuthStore();
   const setEditedRows = (e) => {
     const elName = e.currentTarget.name;
 
@@ -25,7 +24,7 @@ const EditCell = ({ row, table }) => {
     if (elName !== "edit") {
       meta?.revertData(row.index, e.currentTarget.name === "cancel");
     }
-    console.log("row.original",row.original);
+    console.log("row.original", row.original);
     if (elName === "done") {
       fetch("http://localhost:3002/api/fleet/update", {
         method: "POST",
@@ -37,7 +36,7 @@ const EditCell = ({ row, table }) => {
         .then((response) => response.json())
         .then(async (data) => {
           // Handle the response from the API
-          console.log("data",data);
+          console.log("data", data);
           await fetchData(user.id);
         })
         .catch((error) => {
@@ -48,17 +47,28 @@ const EditCell = ({ row, table }) => {
   };
   return meta?.editedRows[row.id] ? (
     <div className="flex w-16">
-    
-      <button className="flex-1" onClick={setEditedRows} name="done">
-        <MdCheckCircle size={23} className="text-black"/>
+      <button
+        className="flex-1 text-gray-500 hover:text-gray-300"
+        onClick={setEditedRows}
+        name="done"
+      >
+        <MdCheckCircle size={23} className="" />
       </button>
-      <button className="flex-1" onClick={setEditedRows} name="cancel">
-        <MdCancel size={23} className="text-black"/>
+      <button
+        className="flex-1 text-gray-500 hover:text-gray-300"
+        onClick={setEditedRows}
+        name="cancel"
+      >
+        <MdCancel size={23} className="" />
       </button>
     </div>
   ) : (
-    <div className="flex w-16 absolute left-4">
-      <button onClick={setEditedRows} name="edit">
+    <div className="flex w-16 ">
+      <button
+        className="text-gray-500 hover:text-gray-300"
+        onClick={setEditedRows}
+        name="edit"
+      >
         <BiSolidPencil size={23} />
       </button>
       <div className="flex-1 h-full"></div>

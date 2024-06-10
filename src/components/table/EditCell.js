@@ -71,7 +71,7 @@ const EditCell = ({ row, table }) => {
     <div className="flex w-16 ">
     
       <button className="flex-1" onClick={setEditedRows} name="done">
-        <MdCheckCircle size={23} className=" text-gray-500 hover:text-gray-300"/>
+        <MdCheckCircle size={23} className="text-gray-500 hover:text-gray-300"/>
       </button>
       <button className="flex-1" onClick={setEditedRows} name="cancel">
         <MdCancel size={23} className=" text-gray-500 hover:text-gray-300"/>
