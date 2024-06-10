@@ -57,7 +57,7 @@ const EditCell = ({ row, table }) => {
       </button>
     </div>
   ) : (
-    <div className="flex w-16">
+    <div className="flex w-16 absolute left-4">
       <button onClick={setEditedRows} name="edit">
         <BiSolidPencil size={23} />
       </button>

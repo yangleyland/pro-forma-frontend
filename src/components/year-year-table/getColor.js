@@ -36,6 +36,8 @@ export const getBackgroundColor = (title) => {
         return '#F2F2F2';
       case 'Charge Management Savings':
         return '#F2F2F2';
+      case 'Charger Incentives':
+        return '#F2F2F2';
       case 'Loan Amount':
         return '';
       case 'Loan Principal Remaining':

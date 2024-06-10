@@ -74,7 +74,11 @@ const Controls = () => {
 
       const result = await response.json();
       setControlsData(result.data);
+
+      
+
       const { initYearOverYear } = useYearOverYear.getState();
+      console.log("result.data",result.data)
       initYearOverYear();
     } catch (error) {
       console.error(`Error updating control: ${error.message}`);

@@ -36,16 +36,15 @@ const MainLayout = ({ children }) => {
 
 function App() {
   const { initializeAuth, user, controlsData } = useAuthStore();
-  const { fetchPhases } = usePhases();
+  const { fetchPhases, filteredPhases } = usePhases();
   const { initializeYears } = useYears();
-  const {initYearOverYear} = useYearOverYear();
+  const { initYearOverYear } = useYearOverYear();
   useEffect(() => {
     initializeYears();
   }, [initializeYears]);
   useEffect(() => {
     initializeAuth();
   }, [initializeAuth]);
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,6 +56,12 @@ function App() {
     };
     fetchData();
   }, [user, fetchPhases, controlsData, initializeYears]);
+
+  useEffect(() => {
+    if (user && controlsData) {
+      initYearOverYear();
+    }
+  }, [filteredPhases]);
 
   return (
     <div className="flex h-screen">

@@ -6,12 +6,36 @@ import { BiSolidPencil } from "react-icons/bi";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { MdCheckCircle } from "react-icons/md";
+import { FaTrash } from "react-icons/fa6";
+
 
 
 const EditCell = ({ row, table }) => {
   const meta = table.options.meta;
   const { phases, fetchPhases } = usePhases();
-  const { initYearOverYear } = useYearOverYear();
+
+  const removeRow = async () => {
+    meta?.removeRow(row.index);
+    console.log(row.original);
+    try {
+      const response = await fetch(`http://localhost:3002/api/phases/${row.original.id}`, {
+        method: 'DELETE',
+      });
+  
+      const result = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to delete the phase');
+      }
+  
+      console.log('Phase deleted successfully:', result);
+      await fetchPhases(user.id);
+    } catch (error) {
+      console.error('Error deleting phase:', error);
+      // Optionally, handle the UI update or show a message to the user
+    }
+  };
+  
   const {user} = useAuthStore();
   const setEditedRows = (e) => {
     const elName = e.currentTarget.name;
@@ -36,8 +60,6 @@ const EditCell = ({ row, table }) => {
         .then(async (data) => {
           // Handle the response from the API
           await fetchPhases(user.id);
-          
-          initYearOverYear();
         })
         .catch((error) => {
           // Handle any errors that occur during the API request
@@ -46,21 +68,23 @@ const EditCell = ({ row, table }) => {
     }
   };
   return meta?.editedRows[row.id] ? (
-    <div className="flex w-16">
+    <div className="flex w-16 ">
     
       <button className="flex-1" onClick={setEditedRows} name="done">
-        <MdCheckCircle size={23} className="text-black"/>
+        <MdCheckCircle size={23} className=" text-gray-500 hover:text-gray-300"/>
       </button>
       <button className="flex-1" onClick={setEditedRows} name="cancel">
-        <MdCancel size={23} className="text-black"/>
+        <MdCancel size={23} className=" text-gray-500 hover:text-gray-300"/>
       </button>
     </div>
   ) : (
-    <div className="flex w-16">
-      <button onClick={setEditedRows} name="edit">
+    <div className="flex w-16 gap-2">
+      <button className="flex-1 text-gray-500 hover:text-gray-300" onClick={setEditedRows} name="edit">
         <BiSolidPencil size={23} />
       </button>
-      <div className="flex-1 h-full"></div>
+      <button className="flex-1 text-gray-500 hover:text-gray-300" onClick={removeRow} name="cancel">
+        <FaTrash size={18} />
+      </button>
     </div>
   );
 };

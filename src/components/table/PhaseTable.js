@@ -23,7 +23,6 @@ import useAuthStore from "../../store/useAuthStore";
 
 import ChargerCostCell from "./ChargerCostCell";
 
-
 const columnHelper = createColumnHelper();
 
 const columns = [
@@ -31,9 +30,8 @@ const columns = [
     id: "edit",
     cell: EditCell,
     meta: {
-      className:
-        "sticky left-0",
-     },
+      className: "sticky left-0",
+    },
   }),
   columnHelper.accessor("year", {
     header: "Year",
@@ -112,6 +110,13 @@ const columns = [
       type: "text",
     },
   }),
+  columnHelper.accessor("incentives", {
+    header: "Incentives",
+    cell: TableCellInfo,
+    meta: {
+      type: "text",
+    },
+  }),
   columnHelper.accessor("cost", {
     header: "Charger Cost",
     cell: ChargerCostCell,
@@ -134,8 +139,7 @@ export const PhaseTable = () => {
   }, [phases]);
 
   const [editedRows, setEditedRows] = useState({});
-  
-  
+
   const table = useReactTable({
     data,
     columns,
@@ -183,16 +187,23 @@ export const PhaseTable = () => {
           port_10_20_kw: 0,
           port_25_kw: 0,
           port_180_200_kw: 0,
+          incentives: 0,
         };
         addPhase(newRow);
         const setFunc = (old) => [...old, newRow];
         setData(setFunc);
         setOriginalData(setFunc);
       },
+      removeRow: (rowIndex) => {
+        const setFilterFunc = (old) =>
+          old.filter((_row, index) => index !== rowIndex);
+        setData(setFilterFunc);
+        setOriginalData(setFilterFunc);
+      },
     },
   });
   return (
-    <Table>
+    <Table className="">
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>

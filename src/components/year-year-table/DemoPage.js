@@ -2,19 +2,6 @@ import { Payment, columns } from "./Columns"
 import { DataTable } from "./DataTable"
 import useYearOverYear from "../../store/useYearOverYear"
 
-async function getData() {
-  // Fetch data from your API here.
-  return [
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    // ...
-  ]
-}
-
 export default function DemoPage() {
     const {
         estimatedElectricVehicles,
@@ -34,6 +21,7 @@ export default function DemoPage() {
         upgradeCostUtility,
         upgradeCostCustomer,
         procurementManagementCost,
+        chargerIncentives,
 
 
 
@@ -67,6 +55,7 @@ export default function DemoPage() {
       upgradeCostUtility["title"] = "Infrastructure Upgrade Cost (utility)";
     upgradeCostCustomer["title"] = "Infrastructure Upgrade Cost (customer)";
     procurementManagementCost["title"] = "Procurement Management Cost";
+    chargerIncentives["title"] = "Charger Incentives";
 
       chargerPurchaseCosts["title"] = "Charger Purchase Costs";
       chargerMaintenanceCosts["title"] = "Charger Maintenance Costs";
@@ -98,9 +87,11 @@ export default function DemoPage() {
         upgradeCostCustomer,
         procurementManagementCost,
         
+        
         chargerMaintenanceCosts,
         chargerNetworkAndManagementCosts,
         chargeMangementSavings,
+        chargerIncentives,
 
         loanAmount,
         loanPrincipalRemaining,

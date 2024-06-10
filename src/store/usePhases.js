@@ -7,6 +7,7 @@ const usePhases = create((set, get) => ({
   filteredPhases: [],
   addPhase: async (phase) => {
     try {
+      console.log("phase", phase);
       const response = await fetch("http://localhost:3002/api/phases", {
         method: "POST",
         headers: {
@@ -36,7 +37,7 @@ const usePhases = create((set, get) => ({
         throw new Error("Failed to fetch phases");
       }
       const phases = await response.json();
-      get().calculateCosts(phases);
+      await get().calculateCosts(phases);
     } catch (error) {
       console.error(error);
     }
@@ -55,22 +56,32 @@ const usePhases = create((set, get) => ({
     }
   },
 
-  calculateCosts: (phases) => {
+  divideByTwo: (num) => Math.ceil(num / 2),
+
+  calculateCosts: async (phases) => {
     const { controlsData } = useAuthStore.getState();
+    const { fetchChargerCost } = useChargerCosts.getState();
+    const { divideByTwo } = get();
+    await fetchChargerCost();
     const { chargerCosts } = useChargerCosts.getState();
+    console.log("chargerCosts", chargerCosts);
+    if (!chargerCosts) return;
 
     const phaseCosts = phases.map((phase, index) => {
       const cost =
-        phase.port_less_than_10_kw * chargerCosts["port_less_than_10_kw"] +
-        phase.port_10_20_kw * chargerCosts["port_10_20_kw"] +
-        phase.port_25_kw * chargerCosts["port_25_kw"] +
-        phase.port_180_200_kw * chargerCosts["port_180_200_kw"];
+        //round these calculations
+        divideByTwo(phase.port_less_than_10_kw) *
+          chargerCosts["cost_less_than_10_kw"] +
+        divideByTwo(phase.port_10_20_kw) * chargerCosts["cost_10_20_kw"] +
+        divideByTwo(phase.port_25_kw) * chargerCosts["cost_25_kw"] +
+        divideByTwo(phase.port_180_200_kw) * chargerCosts["cost_180_200_kw"];
       let installCost = 0;
       installCost =
-        get().calcInstallCost("port_less_than_10_kw", phase) +
-        get().calcInstallCost("port_10_20_kw", phase) +
-        get().calcInstallCost("port_25_kw", phase) +
-        get().calcInstallCost("port_180_200_kw", phase);
+        divideByTwo(phase.port_less_than_10_kw) *
+          chargerCosts["install_less_than_10_kw"] +
+        divideByTwo(phase.port_10_20_kw) * chargerCosts["install_10_20_kw"] +
+        divideByTwo(phase.port_25_kw) * chargerCosts["install_25_kw"] +
+        divideByTwo(phase.port_180_200_kw) * chargerCosts["install_180_200_kw"];
       return {
         ...phase,
         cost,
@@ -78,14 +89,13 @@ const usePhases = create((set, get) => ({
       };
     });
     const sortedPhases = phaseCosts.sort((a, b) => a.id - b.id);
-    
+
     if (controlsData) {
       const filteredPhases = sortedPhases.filter(
         (phase) =>
           phase.site === controlsData.site || controlsData.site === "All Sites"
-        
       );
-      console.log("filteredPhases", filteredPhases)
+      // console.log("filteredPhases", filteredPhases);
       set({ filteredPhases });
     }
     set({ phases: sortedPhases });

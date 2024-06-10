@@ -114,11 +114,12 @@ const Admin = () => {
           body: JSON.stringify(defaultAdvancedControls),
         }
       );
+      const chargerCostAdd = await fetch(
+        `http://localhost:3002/api/chargerdata/add/${userId}`
+      );
 
-
-
-      if (!controlsResponse.ok || !advancedControlRes.ok) {
-        throw new Error("Failed to set controls data");
+      if (!controlsResponse.ok || !advancedControlRes.ok || !chargerCostAdd.ok) {
+        throw new Error("Failed to set data");
       }
     } catch (error) {
       setMessage(`Error uploading file: ${error.message}`);

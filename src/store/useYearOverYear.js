@@ -29,6 +29,7 @@ const useYearOverYear = create((set, get) => {
     chargerMaintenanceCosts: {},
     chargerNetworkAndManagementCosts: {},
     chargeMangementSavings: {},
+    chargerIncentives: {},
 
     totalVehicleCosts: {},
     totalVehicleSavings: {},
@@ -185,6 +186,7 @@ const useYearOverYear = create((set, get) => {
     },
     setChargerPurchaseAmount: () => {
       const { filteredPhases } = usePhases.getState();
+      console.log("filteredPhases", filteredPhases);
       const chargerPurchaseCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
@@ -380,11 +382,11 @@ const useYearOverYear = create((set, get) => {
       set({ totalChargingInfrastructureCosts });
     },
     setTotalChargingInfrastructureSavings: () => {
-      const { chargeMangementSavings } = get();
+      const { chargeMangementSavings,chargerIncentives } = get();
       const totalChargingInfrastructureSavings = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
-          acc[year] = chargeMangementSavings[year];
+          acc[year] = chargeMangementSavings[year] + chargerIncentives[year];
           return acc;
         }, {});
       set({ totalChargingInfrastructureSavings });
@@ -466,6 +468,10 @@ const useYearOverYear = create((set, get) => {
         "procurement_management_cost"
       );
       set({ procurementManagementCost });
+      const chargerIncentives = get().sumCostsByYear(
+        "incentives"
+      );
+      set({ chargerIncentives });
 
       get().setChargerMaintenanceCosts();
       get().setChargerNetworkAndManagementCosts();
