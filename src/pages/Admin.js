@@ -39,12 +39,10 @@ const Admin = () => {
     });
 
     if (error) {
-      setMessage(`Error: ${error.message}`);
+      setMessage(`${error.message}`);
     } else {
-      setMessage("User created successfully!");
       if (csvFile) {
         await uploadCSVFile(data.user.id);
-        navigate("/");
       }
     }
   };
@@ -118,11 +116,23 @@ const Admin = () => {
         `http://localhost:3002/api/chargerdata/add/${userId}`
       );
 
-      if (!controlsResponse.ok || !advancedControlRes.ok || !chargerCostAdd.ok) {
-        throw new Error("Failed to set data");
+      if (
+        !controlsResponse.ok ||
+        !advancedControlRes.ok ||
+        !chargerCostAdd.ok
+      ) {
+        throw new Error("Failed to set controls data");
       }
+
+      navigate("/");
     } catch (error) {
-      setMessage(`Error uploading file: ${error.message}`);
+      setMessage(`Error creating account: ${error.message}`);
+      await fetch(`http://localhost:3002/api/delete-user/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
   };
 
