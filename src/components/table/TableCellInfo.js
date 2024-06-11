@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Input } from "../../components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 
 const TableCellInfo = ({ getValue, row, column, table }) => {
   const initialValue = getValue();
@@ -9,7 +16,6 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
   const [value, setValue] = useState(initialValue);
   const columnMeta = column.columnDef.meta;
   const tableMeta = table.options.meta;
-
 
   useEffect(() => {
     if (textRef.current) {
@@ -24,18 +30,27 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
     table.options.meta?.updateData(row.index, column.id, value);
   };
   const onSelectChange = (e) => {
+    console.log("triggered");
     setValue(e.target.value);
     tableMeta?.updateData(row.index, column.id, e.target.value);
   };
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
-      <select onChange={onSelectChange} value={initialValue}>
-        {columnMeta?.options?.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <Select
+        onValueChange={(value) => onSelectChange({ target: { value } })}
+        value={initialValue}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select Site" />
+        </SelectTrigger>
+        <SelectContent>
+          {columnMeta?.options?.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     ) : (
       <Input
         ref={inputRef}
@@ -49,7 +64,9 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
     );
   }
   return (
-    <p ref={textRef} className="text-nowrap w-full p-4">{value}</p>
+    <p ref={textRef} className="text-nowrap w-full p-4">
+      {value}
+    </p>
   );
 };
 
