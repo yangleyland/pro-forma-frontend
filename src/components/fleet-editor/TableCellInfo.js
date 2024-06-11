@@ -1,27 +1,24 @@
 import { useState, useEffect,useRef } from "react";
 import { Input } from "../../components/ui/input";
 
-function calculateTextWidth(text, font) {
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
-  context.font = font;
-  return context.measureText(text).width;
-}
 
 const TableCellInfo = ({ getValue, row, column, table }) => {
   const initialValue = getValue();
 
   const inputRef = useRef(null);
   const [value, setValue] = useState(initialValue);
+  const [tempValue, setTempValue] = useState(initialValue);
   const columnMeta = column.columnDef.meta;
   const tableMeta = table.options.meta;
   
   useEffect(() => {
     setValue(initialValue);
+    setTempValue(initialValue); // Keep temp value in sync with initial value
   }, [initialValue]);
 
   const onBlur = () => {
-    table.options.meta?.updateData(row.index, column.id, value);
+
+    table.options.meta?.updateData(row.index, column.id, tempValue);
   };
   const onSelectChange = (e) => {
     setValue(e.target.value);
@@ -49,8 +46,8 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
     ) : (
       <Input
         ref={inputRef}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+        value={tempValue}
+        onChange={(e) => setTempValue(e.target.value)}
         onBlur={onBlur}
         type={columnMeta?.type || "text"}
         className=""

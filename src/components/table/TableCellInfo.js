@@ -29,10 +29,9 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
   }, [initialValue]);
 
   const onBlur = () => {
-    table.options.meta?.updateData(row.index, column.id, value);
+    tableMeta?.updateData(row.index, column.id, value);
   };
   const onSelectChange = (e) => {
-    console.log("triggered");
     setValue(e.target.value);
     tableMeta?.updateData(row.index, column.id, e.target.value);
   };

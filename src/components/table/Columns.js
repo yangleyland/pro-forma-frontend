@@ -9,17 +9,18 @@ import {
 } from "@tanstack/react-table";
 import useAuthStore from "../../store/useAuthStore";
 import { DataTableColumnHeader } from "./ColumnHeader";
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "../ui/button";
 
 const columnHelper = createColumnHelper();
 
 export const createColumns = () => {
   const { controlsData } = useAuthStore.getState();
-const siteOptions = controlsData?.domiciles.map((option) => ({
-    value: option,
-    label: option,
-})) || [];
-
-
+  const siteOptions =
+    controlsData?.domiciles.map((option) => ({
+      value: option,
+      label: option,
+    })) || [];
 
   const columns = [
     columnHelper.display({
@@ -30,14 +31,21 @@ const siteOptions = controlsData?.domiciles.map((option) => ({
       },
     }),
     columnHelper.accessor("year", {
-      
       cell: TableCellInfo,
       meta: {
         type: "text",
       },
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Year" />
-      ),
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Year
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
     }),
     columnHelper.accessor("site", {
       header: "Site",
@@ -53,7 +61,6 @@ const siteOptions = controlsData?.domiciles.map((option) => ({
       meta: {
         type: "currency",
       },
-      
     }),
     columnHelper.accessor("trenching_costs", {
       header: "Trenching Costs",

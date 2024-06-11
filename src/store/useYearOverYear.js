@@ -45,7 +45,6 @@ const useYearOverYear = create((set, get) => {
       const { evPurchaseCostSums, HVIP, IRA } = useProFormaCalcs.getState();
       const { controlsData } = useAuthStore.getState();
 
-      console.log(controlsData);
       const costOfElectricVehicles = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
@@ -59,7 +58,6 @@ const useYearOverYear = create((set, get) => {
 
           return acc;
         }, {});
-      console.log(costOfElectricVehicles);
       set({ costOfElectricVehicles });
     },
     setDefaultVehicleReplacementFundAllocation: () => {
@@ -186,7 +184,6 @@ const useYearOverYear = create((set, get) => {
     },
     setChargerPurchaseAmount: () => {
       const { filteredPhases } = usePhases.getState();
-      console.log("filteredPhases", filteredPhases);
       const chargerPurchaseCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
@@ -442,7 +439,6 @@ const useYearOverYear = create((set, get) => {
           );
         return acc;
       }, 0);
-      console.log("npv", netPresentValue);
       set({ netPresentValue });
     },
     initYearOverYear: () => {

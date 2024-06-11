@@ -2,62 +2,29 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
-import Calculations from "../components/Calculations";
 import Controls from "../components/dashboard/Controls";
-import { Button } from "../components/ui/button";
 import CostBenefitChart from "../components/dashboard/CostBenefitChart";
 import CostAndSavings from "../components/dashboard/CostAndSavings";
-import { useNavigate } from "react-router-dom";
 import GHGReductionsGraph from "../components/dashboard/GHGReductionsGraph";
 import GHGReductions from "../components/dashboard/GHGReductions";
 import Timeline from "../components/dashboard/Timeline";
 
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../components/ui/table";
 import ElectrificationScenario from "../components/dashboard/ElectrificationScenario";
 import PrioritySite from "../components/PrioritySite";
 import CashFlow from "../components/dashboard/CashFlow";
 import CapitalCostsGraph from "../components/dashboard/CapitalCostsGraph";
 
 function Dashboard() {
-  const { user, logout, data, loading, initializeAuth } = useAuthStore();
-  const navigate = useNavigate();
+  const { user, fetchData } = useAuthStore();
   const [renderKey, setRenderKey] = useState(0);
 
-  const renderTable = () => {
-    if (data.length === 0) {
-      return <p>No data available</p>;
+  useEffect(() => {
+    if (user){
+      fetchData(user.id);
     }
+  }, [fetchData,user]);
 
-    const headers = Object.keys(data[0]);
-    return (
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {headers.map((header) => (
-              <th key={header}>{header}</th>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.map((item, index) => (
-            <TableRow key={index}>
-              {headers.map((header) => (
-                <td key={header}>{item[header]}</td>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    );
-  };
+
 
   return (
     <div>

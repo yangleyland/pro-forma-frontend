@@ -14,6 +14,7 @@ const useAuthStore = create((set, get) => ({
   message: "",
 
   //setting controls
+  setData: (newData) => set({ data: newData }),
   setControlsData: (controls) => {
 
     const uniqueDomiciles = [...new Set(get().data.map(item => item["Simplified Domicile"]))];
@@ -86,7 +87,7 @@ const useAuthStore = create((set, get) => ({
       if (!controlsResponse.ok) {
         throw new Error("Failed to fetch controls data");
       }
-      const {advancedCalcs,fetchAdvancedCalcs} = useAdvancedCalc.getState();
+      const {fetchAdvancedCalcs} = useAdvancedCalc.getState();
       await fetchAdvancedCalcs(userId);
       const controls = await controlsResponse.json();
       get().setControlsData(controls.data);

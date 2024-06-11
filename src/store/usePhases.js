@@ -7,7 +7,6 @@ const usePhases = create((set, get) => ({
   filteredPhases: [],
   addPhase: async (phase) => {
     try {
-      console.log("phase", phase);
       const response = await fetch("http://localhost:3002/api/phases", {
         method: "POST",
         headers: {
@@ -64,7 +63,6 @@ const usePhases = create((set, get) => ({
     const { divideByTwo } = get();
     await fetchChargerCost();
     const { chargerCosts } = useChargerCosts.getState();
-    console.log("chargerCosts", chargerCosts);
     if (!chargerCosts) return;
 
     const phaseCosts = phases.map((phase, index) => {
@@ -95,7 +93,6 @@ const usePhases = create((set, get) => ({
         (phase) =>
           phase.site === controlsData.site || controlsData.site === "All Sites"
       );
-      // console.log("filteredPhases", filteredPhases);
       set({ filteredPhases });
     }
     set({ phases: sortedPhases });

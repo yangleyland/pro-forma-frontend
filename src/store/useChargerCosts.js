@@ -65,7 +65,6 @@ const useChargerCosts = create((set, get) => ({
       );
       const res = await response.json();
       const chargerCosts = res[0];
-      console.log("chargerCosts", chargerCosts);
       set({ chargerCosts });
     } catch (error) {
       console.error(error);

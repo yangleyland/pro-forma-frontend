@@ -1,50 +1,45 @@
-import useAuthStore from "../../store/useAuthStore";
-import usePhases from "../../store/usePhases";
-import useYearOverYear from "../../store/useYearOverYear";
-import { Button } from "../../components/ui/button";
 import { BiSolidPencil } from "react-icons/bi";
-import { FaRegCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { MdCheckCircle } from "react-icons/md";
-import useProFormaCalcs from "../../store/useProFormaCalcs";
 
 const EditCell = ({ row, table }) => {
   const meta = table.options.meta;
-  const { phases, fetchPhases } = usePhases();
-  const { initYearOverYear } = useYearOverYear();
-  const { setYearSums } = useProFormaCalcs();
-  const { user, fetchData } = useAuthStore();
-  const setEditedRows = (e) => {
-    const elName = e.currentTarget.name;
 
+  const setEditedRows = async (e) => {
+    const elName = e.currentTarget.name;
+    
+    const updateData = await meta?.syncData(row.index);
     meta?.setEditedRows((old) => ({
       ...old,
       [row.id]: !old[row.id],
     }));
+
     if (elName !== "edit") {
-      meta?.revertData(row.index, e.currentTarget.name === "cancel");
+      meta?.revertData(row.index, elName === "cancel");
     }
-    console.log("row.original", row.original);
+
     if (elName === "done") {
-      fetch("http://localhost:3002/api/fleet/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(row.original),
-      })
-        .then((response) => response.json())
-        .then(async (data) => {
-          // Handle the response from the API
-          console.log("data", data);
-          await fetchData(user.id);
-        })
-        .catch((error) => {
-          // Handle any errors that occur during the API request
-          console.error(error);
+      try {
+        const response = await fetch("http://localhost:3002/api/fleet/update", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateData[row.index]),
         });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+
+      } catch (error) {
+        // Handle any errors that occur during the API request
+        console.error("Error updating fleet data:", error);
+      }
     }
   };
+
   return meta?.editedRows[row.id] ? (
     <div className="flex w-16">
       <button

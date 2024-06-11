@@ -4,6 +4,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getSortedRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -13,12 +14,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  TableFooter,
 } from "../../components/ui/table";
 import TableCellInfo from "./TableCellInfo";
 import EditCell from "./EditCell";
-import usePhases from "../../store/usePhases";
 import useAuthStore from "../../store/useAuthStore";
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "../ui/button";
 
 const columnHelper = createColumnHelper();
 
@@ -45,35 +46,85 @@ const columns = [
     },
   }),
   columnHelper.accessor("Replacement Year", {
-    header: "Replacement Year",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Replacement Year
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: TableCellInfo,
     meta: {
       type: "text",
     },
   }),
   columnHelper.accessor("EV Purchase Cost pre-incentive", {
-    header: "EV Purchase Cost pre-incentive",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          EV Purchase Cost pre-incentive
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: TableCellInfo,
     meta: {
       type: "currency",
     },
   }),
   columnHelper.accessor("Default Replacement Allocation", {
-    header: "Default Replacement Allocation",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Default Replacement Allocation
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: TableCellInfo,
     meta: {
       type: "currency",
     },
   }),
   columnHelper.accessor("HVIP, PG&E EV Fleet Program, and Other Incentives", {
-    header: "HVIP, PG&E EV Fleet Program, and Other Incentives",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          HVIP, PG&E EV Fleet Program, and Other Incentives
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: TableCellInfo,
     meta: {
       type: "currency",
     },
   }),
   columnHelper.accessor("IRA Incentives", {
-    header: "IRA Incentives",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          HVIP, PG&E EV Fleet Program, and Other Incentives
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: TableCellInfo,
     meta: {
       type: "currency",
@@ -82,13 +133,20 @@ const columns = [
 ];
 
 export const FleetTable = () => {
-  const { user, data: authData } = useAuthStore();
+  const [sorting, setSorting] = useState([]);
+  const { data: authData } = useAuthStore();
   const [data, setData] = useState(() => [...authData] || []);
   const [originalData, setOriginalData] = useState(() => [...authData]);
+  const [tempData, setTempData] = useState(() => [...authData]);
   useEffect(() => {
     setData([...authData] || []);
     setOriginalData([...authData] || []);
+    setTempData([...authData] || []);
   }, [authData]);
+
+  useEffect(() => {
+    console.log("tempData", data);
+  }, [tempData,data]);
 
   const [editedRows, setEditedRows] = useState({});
 
@@ -96,12 +154,22 @@ export const FleetTable = () => {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
     meta: {
       editedRows,
       setEditedRows,
       revertData: (rowIndex, revert) => {
         if (revert) {
           setData((old) =>
+            old.map((row, index) =>
+              index === rowIndex ? originalData[rowIndex] : row
+            )
+          );
+          setTempData((old) =>
             old.map((row, index) =>
               index === rowIndex ? originalData[rowIndex] : row
             )
@@ -113,7 +181,18 @@ export const FleetTable = () => {
         }
       },
       updateData: (rowIndex, columnId, value) => {
-        setData((old) =>
+        // setData((old) =>
+        //   old.map((row, index) => {
+        //     if (index === rowIndex) {
+        //       return {
+        //         ...old[rowIndex],
+        //         [columnId]: value,
+        //       };
+        //     }
+        //     return row;
+        //   })
+        // );
+        setTempData((old) =>
           old.map((row, index) => {
             if (index === rowIndex) {
               return {
@@ -124,6 +203,17 @@ export const FleetTable = () => {
             return row;
           })
         );
+      },
+      syncData: async (rowIndex) => {
+        return new Promise((resolve) => {
+          setData((oldData) => {
+            const newData = oldData.map((row, index) =>
+              index === rowIndex ? tempData[rowIndex] : row
+            );
+            resolve(newData); // Return the updated data
+            return newData;
+          });
+        });
       },
     },
   });

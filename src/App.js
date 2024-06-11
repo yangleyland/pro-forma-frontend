@@ -1,6 +1,6 @@
 import "./App.css";
 import { useEffect } from "react";
-import { Route, Routes, Link, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/Login.js";
 import Dashboard from "./pages/Dashboard.js";
 import AdvancedControls from "./pages/AdvancedControls.js";
@@ -18,7 +18,6 @@ const MainLayout = ({ children }) => {
   const { user, loading } = useAuthStore();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(user, loading);
     if (!user && !loading) {
       navigate("/login");
     }
@@ -47,15 +46,15 @@ function App() {
   }, [initializeAuth]);
 
   useEffect(() => {
+    console.log("fetching data")
     const fetchData = async () => {
       if (user && controlsData) {
         await fetchPhases(user.id);
         initYearOverYear();
-        console.log("fetching data");
       }
     };
     fetchData();
-  }, [user, fetchPhases, controlsData, initializeYears]);
+  }, [user, fetchPhases, controlsData, initializeYears,initYearOverYear]);
 
   useEffect(() => {
     if (user && controlsData) {

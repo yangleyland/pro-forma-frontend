@@ -1,16 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import DemoPage from "../components/year-year-table/DemoPage";
 import useYearOverYear from "../store/useYearOverYear";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import {
   Select,
@@ -19,12 +10,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
-import { Switch } from "../components/ui/switch";
+
 
 const YearOverYear = () => {
   const [siteOptions, setSiteOptions] = useState([]);
   const [site, setSite] = useState("");
-  const { controlsData, setControlsData, user, data } = useAuthStore();
+  const { controlsData, setControlsData, user, data, fetchData } =
+    useAuthStore();
+
+  useEffect(() => {
+    if (user){
+      fetchData(user.id);
+    }
+  }, [fetchData,user]);
 
   useEffect(() => {
     if (controlsData) {
@@ -32,7 +30,7 @@ const YearOverYear = () => {
       setSite(controlsData["site"] || "");
       setSiteOptions(tempSites || "");
     }
-  }, [controlsData]);
+  }, [controlsData,data]);
 
   const updateControl = async (attribute, value) => {
     if (value === "" || value === null) return;
@@ -56,7 +54,6 @@ const YearOverYear = () => {
       setControlsData(result.data);
 
       const { initYearOverYear } = useYearOverYear.getState();
-      console.log("result.data", result.data);
       initYearOverYear();
     } catch (error) {
       console.error(`Error updating control: ${error.message}`);

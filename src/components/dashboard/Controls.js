@@ -44,7 +44,6 @@ const Controls = () => {
     if (controlsData) {
       setElectrificationScenario(controlsData["electrification_scenario"]);
       const tempSites = ["All Sites", ...controlsData.domiciles];
-      console.log("tempsites", controlsData["site"]);
       setSite(controlsData["site"] || "");
       setSiteOptions(tempSites || "");
       setIncentives(controlsData.incentives || false);
@@ -78,7 +77,6 @@ const Controls = () => {
       
 
       const { initYearOverYear } = useYearOverYear.getState();
-      console.log("result.data",result.data)
       initYearOverYear();
     } catch (error) {
       console.error(`Error updating control: ${error.message}`);
@@ -88,7 +86,6 @@ const Controls = () => {
   const handleElectrificationScenarioChange = (str) => {
     const newValue = str;
     setElectrificationScenario(newValue);
-    console.log("called", newValue);
     updateControl("electrification_scenario", newValue);
   };
 

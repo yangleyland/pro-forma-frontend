@@ -16,7 +16,6 @@ const EditCell = ({ row, table }) => {
 
   const removeRow = async () => {
     meta?.removeRow(row.index);
-    console.log(row.original);
     try {
       const response = await fetch(`http://localhost:3002/api/phases/${row.original.id}`, {
         method: 'DELETE',

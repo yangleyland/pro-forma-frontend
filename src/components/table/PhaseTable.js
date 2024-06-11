@@ -3,6 +3,8 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  SortingState,
+  getSortedRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -20,6 +22,7 @@ import useAuthStore from "../../store/useAuthStore";
 import { createColumns } from "./Columns";
 
 export const PhaseTable = () => {
+  const [sorting, setSorting] = useState([]);
   const { controlsData } = useAuthStore();
   const [columns, setColumns] = useState([]);
   useEffect(() => {
@@ -42,6 +45,11 @@ export const PhaseTable = () => {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
     meta: {
       editedRows,
       setEditedRows,
@@ -87,7 +95,7 @@ export const PhaseTable = () => {
           port_180_200_kw: 0,
           incentives: 0,
         };
-        
+
         addPhase(newRow);
         const setFunc = (old) => [...old, newRow];
         setData(setFunc);

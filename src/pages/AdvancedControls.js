@@ -28,7 +28,6 @@ function AdvancedControls() {
       data[key] = value;
     });
     data["id"] = user.id;
-    console.log(data);
     try {
       const response = await fetch(
         "http://localhost:3002/api/advancedcontrols",
