@@ -17,6 +17,8 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
   const columnMeta = column.columnDef.meta;
   const tableMeta = table.options.meta;
 
+  
+
   useEffect(() => {
     if (textRef.current) {
       setInputWidth(textRef.current.offsetWidth);
@@ -33,6 +35,16 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
     console.log("triggered");
     setValue(e.target.value);
     tableMeta?.updateData(row.index, column.id, e.target.value);
+  };
+  const formatValue = (value) => {
+    if (columnMeta?.type === "currency") {
+      const amount = parseFloat(value);
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount);
+    }
+    return value;
   };
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
@@ -65,7 +77,7 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
   }
   return (
     <p ref={textRef} className="text-nowrap w-full p-4">
-      {value}
+      {formatValue(value)}
     </p>
   );
 };

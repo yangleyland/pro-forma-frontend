@@ -8,6 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import useAuthStore from "../../store/useAuthStore";
+import { DataTableColumnHeader } from "./ColumnHeader";
 
 const columnHelper = createColumnHelper();
 
@@ -29,11 +30,14 @@ const siteOptions = controlsData?.domiciles.map((option) => ({
       },
     }),
     columnHelper.accessor("year", {
-      header: "Year",
+      
       cell: TableCellInfo,
       meta: {
         type: "text",
       },
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Year" />
+      ),
     }),
     columnHelper.accessor("site", {
       header: "Site",
@@ -47,35 +51,36 @@ const siteOptions = controlsData?.domiciles.map((option) => ({
       header: "Loan Amount",
       cell: TableCellInfo,
       meta: {
-        type: "text",
+        type: "currency",
       },
+      
     }),
     columnHelper.accessor("trenching_costs", {
       header: "Trenching Costs",
       cell: TableCellInfo,
       meta: {
-        type: "text",
+        type: "currency",
       },
     }),
     columnHelper.accessor("upgrade_cost_utility", {
       header: "Upgrade Cost Utility",
       cell: TableCellInfo,
       meta: {
-        type: "text",
+        type: "currency",
       },
     }),
     columnHelper.accessor("upgrade_cost_customer", {
       header: "Upgrade Cost Customer",
       cell: TableCellInfo,
       meta: {
-        type: "text",
+        type: "currency",
       },
     }),
     columnHelper.accessor("procurement_management_cost", {
       header: "Procurement Management Cost",
       cell: TableCellInfo,
       meta: {
-        type: "text",
+        type: "currency",
       },
     }),
     columnHelper.accessor("port_less_than_10_kw", {
@@ -110,7 +115,7 @@ const siteOptions = controlsData?.domiciles.map((option) => ({
       header: "Incentives",
       cell: TableCellInfo,
       meta: {
-        type: "text",
+        type: "currency",
       },
     }),
     columnHelper.accessor("cost", {

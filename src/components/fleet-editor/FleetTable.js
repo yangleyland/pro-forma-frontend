@@ -55,28 +55,28 @@ const columns = [
     header: "EV Purchase Cost pre-incentive",
     cell: TableCellInfo,
     meta: {
-      type: "text",
+      type: "currency",
     },
   }),
   columnHelper.accessor("Default Replacement Allocation", {
     header: "Default Replacement Allocation",
     cell: TableCellInfo,
     meta: {
-      type: "text",
+      type: "currency",
     },
   }),
   columnHelper.accessor("HVIP, PG&E EV Fleet Program, and Other Incentives", {
     header: "HVIP, PG&E EV Fleet Program, and Other Incentives",
     cell: TableCellInfo,
     meta: {
-      type: "text",
+      type: "currency",
     },
   }),
   columnHelper.accessor("IRA Incentives", {
     header: "IRA Incentives",
     cell: TableCellInfo,
     meta: {
-      type: "text",
+      type: "currency",
     },
   }),
 ];

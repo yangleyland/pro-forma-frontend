@@ -87,6 +87,7 @@ export const PhaseTable = () => {
           port_180_200_kw: 0,
           incentives: 0,
         };
+        
         addPhase(newRow);
         const setFunc = (old) => [...old, newRow];
         setData(setFunc);

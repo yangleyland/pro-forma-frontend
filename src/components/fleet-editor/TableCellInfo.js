@@ -27,6 +27,16 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
     setValue(e.target.value);
     tableMeta?.updateData(row.index, column.id, e.target.value);
   };
+  const formatValue = (value) => {
+    if (columnMeta?.type === "currency") {
+      const amount = parseFloat(value);
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount);
+    }
+    return value;
+  };
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
       <select onChange={onSelectChange} value={initialValue}>
@@ -56,7 +66,7 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
     //   type={columnMeta?.type || "text"}
     //   className=""
     // />
-    <p className="text-nowrap w-full p-4">{value}</p>
+    <p className="text-nowrap w-full p-4">{formatValue(value)}</p>
   );
 };
 
