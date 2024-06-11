@@ -7,10 +7,19 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import useAuthStore from "../../store/useAuthStore";
 
 const columnHelper = createColumnHelper();
 
 export const createColumns = () => {
+  const { controlsData } = useAuthStore.getState();
+const siteOptions = controlsData?.domiciles.map((option) => ({
+    value: option,
+    label: option,
+})) || [];
+
+
+
   const columns = [
     columnHelper.display({
       id: "edit",
@@ -31,12 +40,7 @@ export const createColumns = () => {
       cell: TableCellInfo,
       meta: {
         type: "select",
-        options: [
-          { value: "Computer Science", label: "Computer Science" },
-          { value: "Communications", label: "Communications" },
-          { value: "Business", label: "Business" },
-          { value: "Psychology", label: "Psychology" },
-        ],
+        options: siteOptions,
       },
     }),
     columnHelper.accessor("loan_amount", {
