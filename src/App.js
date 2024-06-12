@@ -13,6 +13,7 @@ import useYearOverYear from "./store/useYearOverYear.js";
 import useYears from "./store/useYears.js";
 import Navbar from "./components/Navbar";
 import FleetEditor from "./pages/FleetEditor";
+import useAllSitesYearOverYear from "./store/useAllSitesYearOverYear";
 
 const MainLayout = ({ children }) => {
   const { user, loading } = useAuthStore();
@@ -38,6 +39,7 @@ function App() {
   const { fetchPhases, filteredPhases } = usePhases();
   const { initializeYears } = useYears();
   const { initYearOverYear } = useYearOverYear();
+  const {initYearOverYear:initAllSites } = useAllSitesYearOverYear();
   useEffect(() => {
     initializeYears();
   }, [initializeYears]);
@@ -51,6 +53,7 @@ function App() {
       if (user && controlsData) {
         await fetchPhases(user.id);
         initYearOverYear();
+        initAllSites();
       }
     };
     fetchData();

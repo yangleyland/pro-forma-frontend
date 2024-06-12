@@ -1,4 +1,3 @@
-// src/CostBenefitChart.js
 import React from "react";
 import {
   LineChart,
@@ -13,17 +12,18 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
 import useYearOverYear from "../../store/useYearOverYear";
 import useAuthStore from "../../store/useAuthStore";
+import useAllSitesYearOverYear from '../../store/useAllSitesYearOverYear';
 
-function formatAsCurrency(value) {
-  return `$${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-}
+const formatAsCurrency = (value) => {
+  const absValue = Math.abs(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return value < 0 ? `-$${absValue}` : `$${absValue}`;
+};
+
 
 const transformData = (annualCostBenefit, cumulativeCostBenefit) => {
   const data = [];
@@ -31,7 +31,7 @@ const transformData = (annualCostBenefit, cumulativeCostBenefit) => {
   Object.keys(annualCostBenefit).forEach(year => {
     data.push({
       year: parseInt(year, 10),
-      annualCostBenefit:parseInt(annualCostBenefit[year]),
+      annualCostBenefit: parseInt(annualCostBenefit[year]),
       cumulativeCostBenefit: parseInt(cumulativeCostBenefit[year])
     });
   });
@@ -41,8 +41,28 @@ const transformData = (annualCostBenefit, cumulativeCostBenefit) => {
 
 const CostBenefitChart = () => {
   const { annualCostBenefit, cumulativeCostBenefit } = useYearOverYear();
-  const {controlsData} = useAuthStore();
+  const { annualCostBenefit:allSitesAnnualCostBenefit, annualCostBenefit:allSitesCumulativeCostBenefit } = useAllSitesYearOverYear();
+  const { controlsData } = useAuthStore();
   const data = transformData(annualCostBenefit, cumulativeCostBenefit);
+
+  const allSitesAnnualCostBenefitValues = Object.values(allSitesAnnualCostBenefit).map(value => parseInt(value, 10));
+  const allSitesCumulativeCostBenefitValues = Object.values(allSitesCumulativeCostBenefit).map(value => parseInt(value, 10));
+
+  const minAnnualValue = Math.min(...allSitesAnnualCostBenefitValues);
+  const maxAnnualValue = Math.max(...allSitesAnnualCostBenefitValues);
+
+  const minCumulativeValue = Math.min(...allSitesCumulativeCostBenefitValues);
+  const maxCumulativeValue = Math.max(...allSitesCumulativeCostBenefitValues);
+
+  let minValue = Math.min(minAnnualValue, minCumulativeValue);
+  let maxValue = Math.max(maxAnnualValue, maxCumulativeValue);
+  const diff = maxValue - minValue;
+  minValue -= diff * 0.1;
+  maxValue += diff * 0.1;
+  
+
+
+  console.log("cost benefit",allSitesCumulativeCostBenefit)
   return (
     <Card>
       <CardHeader>
@@ -50,11 +70,11 @@ const CostBenefitChart = () => {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={data}>
+          <LineChart data={data} margin={{left: 40 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
-            <YAxis />
-            <Tooltip  formatter={formatAsCurrency}/>
+            <YAxis tickFormatter={formatAsCurrency}/>
+            <Tooltip formatter={formatAsCurrency} />
             <Legend />
             <Line
               type="monotone"

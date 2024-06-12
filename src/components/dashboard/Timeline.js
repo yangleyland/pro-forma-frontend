@@ -46,8 +46,6 @@ const Timeline = () => {
   const [incentiveSum,setIncentiveSum] = useState("");
   const [capitalCosts,setCapitalCosts] = useState("");
 
-  console.log("netPresentValue", netPresentValue);
-
   useEffect(() => {
     if (vehicleCounts) {
       setVehiclesElectrified(vehicleCounts[END_YEAR]);

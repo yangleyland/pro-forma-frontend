@@ -2,6 +2,8 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
+import useAllSitesCalcs from "../store/useAllSitesCalcs";
+import useAllSitesYearOverYear from "../store/useAllSitesYearOverYear";
 import Controls from "../components/dashboard/Controls";
 import CostBenefitChart from "../components/dashboard/CostBenefitChart";
 import CostAndSavings from "../components/dashboard/CostAndSavings";
@@ -17,6 +19,9 @@ import CapitalCostsGraph from "../components/dashboard/CapitalCostsGraph";
 function Dashboard() {
   const { user, fetchData } = useAuthStore();
   const [renderKey, setRenderKey] = useState(0);
+  const { controlsData,data } = useAuthStore();
+  const { setYearSums } = useAllSitesCalcs();
+  const {initYearOverYear } = useAllSitesYearOverYear();
 
   useEffect(() => {
     if (user){

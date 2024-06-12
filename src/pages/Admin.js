@@ -59,7 +59,7 @@ const Admin = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error("CSV format is incorrect. Please check the file.");
       }
 
       const result = await response.json();
