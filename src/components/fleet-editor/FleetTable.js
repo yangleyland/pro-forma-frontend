@@ -120,7 +120,7 @@ const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          HVIP, PG&E EV Fleet Program, and Other Incentives
+          IRA Incentives
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );

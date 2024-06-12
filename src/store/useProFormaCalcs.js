@@ -14,6 +14,7 @@ const useProFormaCalcs = create((set) => ({
   HVIP: {},
   IRA: {},
   vehicleCounts: {},
+  totalVehicles: 0,
   annualkwh: {},
   ghgReductions: {},
 
@@ -80,6 +81,16 @@ const useProFormaCalcs = create((set) => ({
         acc[year] = yearCount;
         return acc;
       }, {});
+    };
+    const countVehiclesBySite = () => {
+      let siteCounts = 0;
+      data.forEach((item) => {
+        const site = item["Simplified Domicile"];
+        if (site === controls["site"] || controls["site"] === "All Sites") {
+          siteCounts++;
+        }
+      });
+      return siteCounts;
     };
 
     const calculateYearSumsWithinRange = (field) => {
@@ -174,6 +185,8 @@ const useProFormaCalcs = create((set) => ({
     const annualkwh = calculateYearSumsGreaterThan("Annual KWh");
     const ghgReductions = calculateYearSumsGreaterThan("ghg");
 
+    const totalVehicles = countVehiclesBySite();
+
     set({
       evPurchaseCostSums,
       defaultReplacementAllocationSums,
@@ -184,6 +197,7 @@ const useProFormaCalcs = create((set) => ({
       HVIP,
       IRA,
       vehicleCounts,
+      totalVehicles,
       annualkwh,
       ghgReductions,
     });

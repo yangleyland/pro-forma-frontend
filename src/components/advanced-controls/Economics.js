@@ -17,7 +17,6 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import useAdvancedCalc from "../../store/useAdvancedCalc";
-import { MdInfoOutline } from "react-icons/md";
 import ControlLabel from "./ControlLabel";
 
 const Economics = forwardRef((props, ref) => {

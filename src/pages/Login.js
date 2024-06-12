@@ -40,11 +40,11 @@ function Login() {
 
         <img
           className="h-full object-cover filter grayscale"
-          src="evcharge.png"
+          src="charging.JPG"
           alt="evtruck"
         />
       </div>
-      <div className="flex-1 bg-white h-full flex justify-center items-center border">
+      <div className="flex-1 bg-gray-100 h-full flex justify-center items-center border">
         <div className="w-[400px]">
           <LoginForm />
         </div>

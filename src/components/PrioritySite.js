@@ -16,7 +16,7 @@ const PrioritySite = () => {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>📍 Priority Site</CardTitle>
+        <CardTitle>📍 Selected Site</CardTitle>
       </CardHeader>
 
       <CardContent>

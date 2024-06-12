@@ -428,11 +428,11 @@ const useYearOverYear = create((set, get) => {
     },
 
     setNetPresentValue: () => {
-      const { cumulativeCostBenefit } = get();
+      const { annualCostBenefit } = get();
       const { advancedCalcs } = useAdvancedCalc.getState();
       const netPresentValue = useYears.getState().YEARS.reduce((acc, year) => {
         acc +=
-          cumulativeCostBenefit[year] /
+        annualCostBenefit[year] /
           Math.pow(
             1 + advancedCalcs.discount_rate_npv,
             year - useYears.getState().START_YEAR

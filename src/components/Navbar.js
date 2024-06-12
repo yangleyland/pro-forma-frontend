@@ -2,14 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
-import {
-  FaSignInAlt,
-  FaUser,
-  FaCalendarAlt,
-} from "react-icons/fa";
-import { LuBarChart3,LuCog,LuAreaChart} from "react-icons/lu";
-import { MdModeEdit } from "react-icons/md";
-
+import {Pencil2Icon,PersonIcon,CalendarIcon, BarChartIcon, GearIcon, DesktopIcon } from '@radix-ui/react-icons'
 import useAuthStore from "../store/useAuthStore";
 
 
@@ -31,39 +24,39 @@ const Navbar = () => {
         <ul className="">
           <Link to="/" className="text-black">
             <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <LuBarChart3 className="mr-2" size={20} />
+              <DesktopIcon className="mr-2"  width="18" height="18"  />
               Dashboard
             </li>
           </Link>
           <Link to="/advanced-controls" className="text-black">
             <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <LuCog className="mr-2"  size={20} />
+              <GearIcon className="mr-2"  width="18" height="18"  />
               Advanced Controls
             </li>
           </Link>
           <Link to="/yearoveryear" className="">
             <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <LuAreaChart className="mr-2"  size={20} />
+              <BarChartIcon className="mr-2"  width="18" height="18"  />
               Year Over Year
             </li>
           </Link>
 
           <Link to="/phases" className="">
             <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <FaCalendarAlt className="mr-2"  size={20} />
+              <CalendarIcon className="mr-2" width="18" height="18"  />
               Infrastructure Phases
             </li>
           </Link>
           <Link to="/fleet-editor" className="">
             <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <MdModeEdit className="mr-2"  size={20} />
+              <Pencil2Icon className="mr-2" width="18" height="18"  />
               Fleet Editor
             </li>
           </Link>
 
           <Link to="/login" className="text-black">
             <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <FaSignInAlt className="mr-2"  size={20} />
+              <PersonIcon className="mr-2"  width="18" height="18"  />
               Login
             </li>
           </Link>
