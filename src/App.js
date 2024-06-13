@@ -51,7 +51,7 @@ function App() {
 
   useEffect(() => {
     initializeAuth();
-  }, [initializeAuth]);
+  }, [initializeAuth,loading]);
 
 
   useEffect(() => {
