@@ -48,7 +48,6 @@ function App() {
   }, [initializeAuth]);
 
   useEffect(() => {
-    console.log("fetching data")
     const fetchData = async () => {
       if (user && controlsData) {
         await fetchPhases(user.id);

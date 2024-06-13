@@ -155,7 +155,6 @@ const useYearOverYear = create((set, get) => {
     },
     setNumberOfNewPorts: () => {
       const { phases } = usePhases.getState();
-      console.log("phases",phases)
       const numberOfNewPorts = useYears.getState().YEARS.reduce((acc, year) => {
         acc[year] = 0;
         phases
@@ -484,8 +483,6 @@ const useYearOverYear = create((set, get) => {
       get().setAnnualCostBenefit();
       get().setCumulativeCostBenefit();
       get().setNetPresentValue();
-
-      console.log("called")
     },
   };
 });

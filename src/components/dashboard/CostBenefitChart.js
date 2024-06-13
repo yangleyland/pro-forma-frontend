@@ -62,7 +62,6 @@ const CostBenefitChart = () => {
   
 
 
-  console.log("cost benefit",allSitesCumulativeCostBenefit)
   return (
     <Card>
       <CardHeader>
