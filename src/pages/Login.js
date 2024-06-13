@@ -34,9 +34,7 @@ function Login() {
           alt="Logo"
           className="z-10 absolute left-0 bottom-0 h-auto w-[200px] m-10"
         />
-        {/* <div class="absolute left-0 bottom-0 m-10 text-white text-4xl font-bold z-10 text-[#C45911]">
-          Optony
-        </div> */}
+
 
         <img
           className="h-full object-cover filter grayscale"

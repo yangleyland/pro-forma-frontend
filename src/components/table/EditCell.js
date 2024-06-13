@@ -12,7 +12,7 @@ import { FaTrash } from "react-icons/fa6";
 
 const EditCell = ({ row, table }) => {
   const meta = table.options.meta;
-  const { phases, fetchPhases } = usePhases();
+  const { removePhase, fetchPhases ,editPhase} = usePhases();
 
   const removeRow = async () => {
     meta?.removeRow(row.index);
@@ -28,6 +28,7 @@ const EditCell = ({ row, table }) => {
       }
   
       console.log('Phase deleted successfully:', result);
+      // removePhase(row.original.id)
       await fetchPhases(user.id);
     } catch (error) {
       console.error('Error deleting phase:', error);
@@ -58,6 +59,7 @@ const EditCell = ({ row, table }) => {
         .then((response) => response.json())
         .then(async (data) => {
           // Handle the response from the API
+          // editPhase(row.original);
           await fetchPhases(user.id);
         })
         .catch((error) => {

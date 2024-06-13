@@ -14,6 +14,8 @@ import useYears from "./store/useYears.js";
 import Navbar from "./components/Navbar";
 import FleetEditor from "./pages/FleetEditor";
 import useAllSitesYearOverYear from "./store/useAllSitesYearOverYear";
+import useAdvancedCalc from "./store/useAdvancedCalc";
+import useProFormaCalcs from "./store/useProFormaCalcs";
 
 const MainLayout = ({ children }) => {
   const { user, loading } = useAuthStore();
@@ -35,35 +37,38 @@ const MainLayout = ({ children }) => {
 };
 
 function App() {
-  const { initializeAuth, user, controlsData } = useAuthStore();
-  const { fetchPhases, filteredPhases } = usePhases();
-  const { initializeYears } = useYears();
+  const { initializeAuth, user, controlsData,loading,data } = useAuthStore();
+  const { filterPhases, filteredPhases } = usePhases();
+  const { initializeYears,START_YEAR,END_YEAR } = useYears();
   const { initYearOverYear } = useYearOverYear();
   const {initYearOverYear:initAllSites } = useAllSitesYearOverYear();
+  const {advancedCalcs} = useAdvancedCalc();
+  const {setYearSums} = useProFormaCalcs();
+  
   useEffect(() => {
     initializeYears();
-  }, [initializeYears]);
+  }, [initializeYears,START_YEAR,END_YEAR]);
+
   useEffect(() => {
     initializeAuth();
   }, [initializeAuth]);
 
-  useEffect(() => {
-    console.log("fetching data")
-    const fetchData = async () => {
-      if (user && controlsData) {
-        await fetchPhases(user.id);
-        initYearOverYear();
-        initAllSites();
-      }
-    };
-    fetchData();
-  }, [user, fetchPhases, controlsData, initializeYears,initYearOverYear]);
 
   useEffect(() => {
+    if (!loading){
+      filterPhases();
+      setYearSums();
+    }
+  }, [controlsData,advancedCalcs,data,loading,setYearSums]);
+
+
+  useEffect(() => {
+
     if (user && controlsData) {
+      
       initYearOverYear();
     }
-  }, [filteredPhases]);
+  }, [filteredPhases, user, controlsData,initYearOverYear]);
 
   return (
     <div className="flex h-screen">

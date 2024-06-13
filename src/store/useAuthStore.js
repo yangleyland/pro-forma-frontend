@@ -7,6 +7,7 @@ import useYearOverYear from "./useYearOverYear";
 import useAdvancedCalc from "./useAdvancedCalc";
 import useAllSitesCalcs from "./useAllSitesCalcs";
 import useAllSitesYearOverYear from "./useAllSitesYearOverYear";
+import usePhases from "./usePhases";
 
 const useAuthStore = create((set, get) => ({
   user: null,
@@ -74,6 +75,7 @@ const useAuthStore = create((set, get) => ({
 
   // Fetch user data
   fetchData: async (userId) => {
+    set({ loading: true });
     try {
       const response = await fetch(`http://localhost:3002/api/fleet/${userId}`);
       if (!response.ok) {
@@ -91,10 +93,16 @@ const useAuthStore = create((set, get) => ({
       if (!controlsResponse.ok) {
         throw new Error("Failed to fetch controls data");
       }
+
+      
+
       const {fetchAdvancedCalcs} = useAdvancedCalc.getState();
       await fetchAdvancedCalcs(userId);
       const controls = await controlsResponse.json();
       get().setControlsData(controls.data);
+
+      const {fetchPhases}=usePhases.getState();
+      await fetchPhases(userId);
 
       const { initYearOverYear } = useYearOverYear.getState();
       
@@ -105,10 +113,12 @@ const useAuthStore = create((set, get) => ({
     } catch (error) {
       set({ message: `Error: ${error.message}` });
     }
+    set({ loading: false });
   },
 
   // Initialize auth state from Supabase session
   initializeAuth: async () => {
+    set({ loading: true });
     const {
       data: { session },
     } = await supabase.auth.getSession();
@@ -120,7 +130,6 @@ const useAuthStore = create((set, get) => ({
       const {initYearOverYear: initYearOverYearAllSites} = useAllSitesYearOverYear.getState();
       initYearOverYearAllSites();
     }
-    set({ loading: false });
   },
 }));
 

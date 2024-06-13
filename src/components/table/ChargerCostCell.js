@@ -5,12 +5,14 @@ const ChargerCostCell = ({ getValue }) => {
       style: "currency",
       currency: "USD",
     }).format(amount);
-    return value;
   };
-  const cost = getValue();
+
+  const cost = getValue(); // This keeps the value as a number
+  const formattedCost = formatValue(cost); // This formats the value for display
+
   return (
     <div>
-      <div className="font-semibold	">{formatValue(cost)}</div>
+      <div className="font-semibold">{formattedCost}</div>
     </div>
   );
 };

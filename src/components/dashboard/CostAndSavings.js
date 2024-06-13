@@ -48,8 +48,6 @@ const CostAndSavings = () => {
   const allSitesTotalCostsSum = sumValues(allSitesTotalCosts);
   const allSitesTotalSavingsSum = sumValues(allSitesTotalSavings);
 
-  // console.log("allSitesTotalCosts", allSitesTotalCosts);
-
   const data = [
     {
       name: "Cumulative Values",

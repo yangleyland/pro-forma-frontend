@@ -1,6 +1,7 @@
 import { BiSolidPencil } from "react-icons/bi";
 import { MdCancel } from "react-icons/md";
 import { MdCheckCircle } from "react-icons/md";
+import { useEffect } from "react";
 
 const EditCell = ({ row, table }) => {
   const meta = table.options.meta;
@@ -39,6 +40,9 @@ const EditCell = ({ row, table }) => {
       }
     }
   };
+
+
+
 
   return meta?.editedRows[row.id] ? (
     <div className="flex w-16">

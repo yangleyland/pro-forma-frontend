@@ -23,10 +23,21 @@ const usePhases = create((set, get) => ({
       console.error(error);
     }
   },
-  removePhase: (phaseId) =>
+  removePhase: (phaseId) => {
     set((state) => ({
       phases: state.phases.filter((phase) => phase.id !== phaseId),
-    })),
+    }));
+    get().filterPhases();
+  },
+  editPhase: (newPhase) => {
+    set((state) => ({
+      phases: state.phases.map((phase) =>
+        phase.id === newPhase.id ? { ...phase, ...newPhase } : phase
+      ),
+    }));
+    get().filterPhases(); // Call the filterPhases function after updating the state
+  },
+
   fetchPhases: async (userId) => {
     try {
       const response = await fetch(
@@ -36,6 +47,7 @@ const usePhases = create((set, get) => ({
         throw new Error("Failed to fetch phases");
       }
       const phases = await response.json();
+
       await get().calculateCosts(phases);
     } catch (error) {
       console.error(error);
@@ -56,6 +68,17 @@ const usePhases = create((set, get) => ({
   },
 
   divideByTwo: (num) => Math.ceil(num / 2),
+
+  filterPhases: () => {
+    const { controlsData } = useAuthStore.getState();
+    if (controlsData) {
+      const filteredPhases = get().phases.filter(
+        (phase) =>
+          phase.site === controlsData.site || controlsData.site === "All Sites"
+      );
+      set({ filteredPhases });
+    }
+  },
 
   calculateCosts: async (phases) => {
     const { controlsData } = useAuthStore.getState();

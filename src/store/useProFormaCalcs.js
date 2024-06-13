@@ -2,6 +2,7 @@ import { create } from "zustand";
 import useYears from "./useYears";
 import useAuthStore from "./useAuthStore";
 import useAdvancedCalc from "./useAdvancedCalc";
+import useYearOverYear from "./useYearOverYear";
 
 // Create Zustand store
 const useProFormaCalcs = create((set) => ({
@@ -201,6 +202,10 @@ const useProFormaCalcs = create((set) => ({
       annualkwh,
       ghgReductions,
     });
+
+
+    const { initYearOverYear } = useYearOverYear.getState();
+    initYearOverYear();
   },
 }));
 

@@ -61,8 +61,6 @@ const CostBenefitChart = () => {
   maxValue += diff * 0.1;
   
 
-
-  console.log("cost benefit",allSitesCumulativeCostBenefit)
   return (
     <Card>
       <CardHeader>
