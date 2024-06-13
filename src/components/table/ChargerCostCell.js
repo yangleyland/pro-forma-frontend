@@ -7,7 +7,8 @@ const ChargerCostCell = ({ getValue }) => {
     }).format(amount);
   };
 
-  const cost = getValue(); // This keeps the value as a number
+  const cost = getValue() || 0; // This keeps the value as a number
+  
   const formattedCost = formatValue(cost); // This formats the value for display
 
   return (

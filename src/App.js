@@ -21,7 +21,7 @@ const MainLayout = ({ children }) => {
   const { user, loading } = useAuthStore();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!user && !loading) {
+    if (!user) {
       navigate("/login");
     }
   }, [user, loading, navigate]);
@@ -44,7 +44,8 @@ function App() {
   const {initYearOverYear:initAllSites } = useAllSitesYearOverYear();
   const {advancedCalcs} = useAdvancedCalc();
   const {setYearSums} = useProFormaCalcs();
-  
+
+      
   useEffect(() => {
     initializeYears();
 

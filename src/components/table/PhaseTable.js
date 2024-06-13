@@ -94,6 +94,8 @@ export const PhaseTable = () => {
           port_25_kw: 0,
           port_180_200_kw: 0,
           incentives: 0,
+          cost:0,
+          installCost:0,
         };
 
         addPhase(newRow);

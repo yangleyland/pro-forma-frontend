@@ -38,13 +38,13 @@ const columns = [
       type: "text",
     },
   }),
-  // columnHelper.accessor("Exclude?", {
-  //   header: "Exclude?",
-  //   cell: TableCellInfo,
-  //   meta: {
-  //     type: "text",
-  //   },
-  // }),
+  columnHelper.accessor("Exclude?", {
+    header: "Exclude?",
+    cell: TableCellInfo,
+    meta: {
+      type: "text",
+    },
+  }),
   columnHelper.accessor("Electrification Scenario", {
     header: "Electrification Scenario",
     meta: {
@@ -156,6 +156,8 @@ export const FleetTable = () => {
     setTempData([...authData] || []);
   }, [authData]);
 
+  useEffect(() => {
+  }, [tempData,data]);
 
   const [editedRows, setEditedRows] = useState({});
 
