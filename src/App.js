@@ -47,14 +47,16 @@ function App() {
   
   useEffect(() => {
     initializeYears();
+
   }, [initializeYears,START_YEAR,END_YEAR]);
 
   useEffect(() => {
     initializeAuth();
-  }, [initializeAuth,loading]);
+  }, [initializeAuth]);
 
 
   useEffect(() => {
+    
     if (!loading){
       filterPhases();
       setYearSums();
@@ -63,7 +65,7 @@ function App() {
 
 
   useEffect(() => {
-
+    console.log("loop")
     if (user && controlsData) {
       
       initYearOverYear();
