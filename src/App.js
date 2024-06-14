@@ -16,12 +16,14 @@ import FleetEditor from "./pages/FleetEditor";
 import useAllSitesYearOverYear from "./store/useAllSitesYearOverYear";
 import useAdvancedCalc from "./store/useAdvancedCalc";
 import useProFormaCalcs from "./store/useProFormaCalcs";
+import useAllSitesCalcs from "./store/useAllSitesCalcs";
 
 const MainLayout = ({ children }) => {
   const { user, loading } = useAuthStore();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!user) {
+
+    if (!user && !loading) {
       navigate("/login");
     }
   }, [user, loading, navigate]);
@@ -44,11 +46,11 @@ function App() {
   const {initYearOverYear:initAllSites } = useAllSitesYearOverYear();
   const {advancedCalcs} = useAdvancedCalc();
   const {setYearSums} = useProFormaCalcs();
+  const {setYearSums:setYearSumsAllSites} = useAllSitesCalcs();
 
       
   useEffect(() => {
     initializeYears();
-
   }, [initializeYears,START_YEAR,END_YEAR]);
 
   useEffect(() => {
@@ -58,20 +60,20 @@ function App() {
 
   useEffect(() => {
     
-    if (!loading){
+    if (!loading && controlsData){
       filterPhases();
       setYearSums();
+      setYearSumsAllSites();
     }
-  }, [controlsData,advancedCalcs,data,loading,setYearSums]);
+  }, [controlsData,advancedCalcs,data,loading,setYearSums,setYearSumsAllSites,filterPhases]);
 
 
   useEffect(() => {
-    console.log("loop")
     if (user && controlsData) {
-      
       initYearOverYear();
+      initAllSites();
     }
-  }, [filteredPhases, user, controlsData,initYearOverYear]);
+  }, [filteredPhases, user, controlsData,initYearOverYear,initAllSites]);
 
   return (
     <div className="flex h-screen">

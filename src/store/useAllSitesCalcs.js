@@ -2,6 +2,7 @@ import { create } from "zustand";
 import useYears from "./useYears";
 import useAuthStore from "./useAuthStore";
 import useAdvancedCalc from "./useAdvancedCalc";
+import useAllSitesYearOverYear from "./useAllSitesYearOverYear";
 
 // Create Zustand store
 const useAllSitesCalcs = create((set) => ({
@@ -33,11 +34,11 @@ const useAllSitesCalcs = create((set) => ({
       return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
           .filter((item) => item["Replacement Year"] === year)
-          .filter((item) => {
-            return item.electrification_scenario[
-              "Whole Fleet Electrification Excluding Exemptions"
-            ];
-          })
+          // .filter((item) => {
+          //   return item.electrification_scenario[
+          //     "Whole Fleet Electrification Excluding Exemptions"
+          //   ];
+          // })
           .reduce((sum, item) => {
             const value = item[field];
             return sum + value;
@@ -59,11 +60,11 @@ const useAllSitesCalcs = create((set) => ({
       return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
           .filter((item) => item["Replacement Year"] === year)
-          .filter((item) => {
-            return item.electrification_scenario[
-              "Whole Fleet Electrification Excluding Exemptions"
-            ];
-          })
+          // .filter((item) => {
+          //   return item.electrification_scenario[
+          //     "Whole Fleet Electrification Excluding Exemptions"
+          //   ];
+          // })
           .reduce((sum, item) => sum + 1, 0);
         yearCount += yearTotal;
         acc[year] = yearCount;
@@ -85,11 +86,11 @@ const useAllSitesCalcs = create((set) => ({
             (item) =>
               item["Replacement Year"] <= year && item["End of life"] > year
           )
-          .filter((item) => {
-            return item.electrification_scenario[
-              "Whole Fleet Electrification Excluding Exemptions"
-            ];
-          })
+          // .filter((item) => {
+          //   return item.electrification_scenario[
+          //     "Whole Fleet Electrification Excluding Exemptions"
+          //   ];
+          // })
           .reduce((sum, item) => {
             const value = item[field];
 
@@ -116,11 +117,11 @@ const useAllSitesCalcs = create((set) => ({
       return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
           .filter((item) => item["Replacement Year"] <= year)
-          .filter((item) => {
-            return item.electrification_scenario[
-              "Whole Fleet Electrification Excluding Exemptions"
-            ];
-          })
+          // .filter((item) => {
+          //   return item.electrification_scenario[
+          //     "Whole Fleet Electrification Excluding Exemptions"
+          //   ];
+          // })
           .reduce((sum, item) => {
             const value = parseFloat(item[field] || 0);
             return sum + value;
@@ -174,6 +175,9 @@ const useAllSitesCalcs = create((set) => ({
       annualkwh,
       ghgReductions,
     });
+
+    const {initYearOverYear: initYearOverYearAllSites} = useAllSitesYearOverYear.getState();
+    initYearOverYearAllSites();
 
 
   },

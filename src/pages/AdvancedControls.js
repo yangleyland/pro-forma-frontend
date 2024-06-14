@@ -14,8 +14,6 @@ function AdvancedControls() {
   const softwareCostsRef = useRef(null);
   const { user } = useAuthStore();
   const { fetchAdvancedCalcs } = useAdvancedCalc();
-  const { initYearOverYear } = useYearOverYear();
-  const { setYearSums } = useProFormaCalcs();
 
   const handleSubmit = async () => {
     const economicsData = new FormData(economicsRef.current);
@@ -46,8 +44,7 @@ function AdvancedControls() {
 
       const result = await response.json();
       await fetchAdvancedCalcs(user.id);
-      setYearSums();
-      initYearOverYear();
+
     } catch (error) {
       console.error("Error during API call:", error);
     }

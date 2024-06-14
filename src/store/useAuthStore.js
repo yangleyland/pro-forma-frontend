@@ -26,9 +26,11 @@ const useAuthStore = create((set, get) => ({
 
     set({ controlsData: controls });
     const { setYearSums } = useProFormaCalcs.getState();
-    
-    //not sure if this is good enough
     setYearSums();
+    const { setYearSums: setYearSumsAllSites } = useAllSitesCalcs.getState();
+    setYearSumsAllSites();
+
+
 
   },
 
@@ -104,16 +106,15 @@ const useAuthStore = create((set, get) => ({
       const {fetchPhases}=usePhases.getState();
       await fetchPhases(userId);
 
-      const { initYearOverYear } = useYearOverYear.getState();
-      
-      initYearOverYear();
 
       
 
     } catch (error) {
       set({ message: `Error: ${error.message}` });
+    } finally{
+      set({ loading: false });
     }
-    set({ loading: false });
+    
   },
 
   // Initialize auth state from Supabase session
@@ -125,11 +126,9 @@ const useAuthStore = create((set, get) => ({
     if (session) {
       set({ user: session.user });
       await useAuthStore.getState().fetchData(session.user.id); // Fetch data after initializing auth
-      const { setYearSums: setYearSumsAllSites } = useAllSitesCalcs.getState();
-      setYearSumsAllSites();
-      const {initYearOverYear: initYearOverYearAllSites} = useAllSitesYearOverYear.getState();
-      initYearOverYearAllSites();
+      
     }
+    set({ loading: false });
   },
 }));
 

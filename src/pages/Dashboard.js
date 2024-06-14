@@ -20,8 +20,6 @@ function Dashboard() {
   const { user, fetchData } = useAuthStore();
   const [renderKey, setRenderKey] = useState(0);
   const { controlsData,data } = useAuthStore();
-  const { setYearSums } = useAllSitesCalcs();
-  const {initYearOverYear } = useAllSitesYearOverYear();
 
   useEffect(() => {
     if (user){

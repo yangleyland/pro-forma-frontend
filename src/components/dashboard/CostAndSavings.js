@@ -56,7 +56,11 @@ const CostAndSavings = () => {
     },
   ];
 
-  const maxValue = Math.max(allSitesTotalCostsSum, allSitesTotalSavingsSum);
+  const maxValue = (Math.ceil(Math.max(allSitesTotalCostsSum, allSitesTotalSavingsSum)*1.1 / 100000) * 100000);
+
+
+
+
 
   return (
     <Card>
@@ -78,7 +82,7 @@ const CostAndSavings = () => {
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" tick={false} />
-              <YAxis domain={[0, 12000000]} tickFormatter={formatAsCurrency}/>
+              <YAxis domain={[0, maxValue]} tickFormatter={formatAsCurrency}/>
               <Tooltip formatter={formatAsCurrency} />
               <Legend />
               <Bar dataKey="cost" fill="#88a37f" name="Cumulative Cost">
