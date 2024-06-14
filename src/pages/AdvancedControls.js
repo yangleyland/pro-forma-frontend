@@ -8,6 +8,7 @@ import useAuthStore from "../store/useAuthStore";
 import useAdvancedCalc from "../store/useAdvancedCalc";
 import useYearOverYear from "../store/useYearOverYear";
 import useProFormaCalcs from "../store/useProFormaCalcs";
+import ResetButton from "../components/ResetButton";
 
 function AdvancedControls() {
   const economicsRef = useRef(null);
@@ -44,7 +45,6 @@ function AdvancedControls() {
 
       const result = await response.json();
       await fetchAdvancedCalcs(user.id);
-
     } catch (error) {
       console.error("Error during API call:", error);
     }
@@ -52,9 +52,12 @@ function AdvancedControls() {
 
   return (
     <div>
-      <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
-        Advanced Controls
-      </h1>
+      <div className="flex gap-9">
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
+          Advanced Controls
+        </h1>
+        <ResetButton tableName="advanced controls" />
+      </div>
       <div className="flex flex-col w-1/4 gap-5">
         <Button className="w-full" onClick={handleSubmit}>
           Save

@@ -17,6 +17,7 @@ import useAllSitesYearOverYear from "./store/useAllSitesYearOverYear";
 import useAdvancedCalc from "./store/useAdvancedCalc";
 import useProFormaCalcs from "./store/useProFormaCalcs";
 import useAllSitesCalcs from "./store/useAllSitesCalcs";
+import SetDefaults from "./pages/SetDefaults";
 
 const MainLayout = ({ children }) => {
   const { user, loading } = useAuthStore();
@@ -115,6 +116,14 @@ function App() {
           element={
             <MainLayout>
               <FleetEditor />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/set-defaults"
+          element={
+            <MainLayout>
+              <SetDefaults />
             </MainLayout>
           }
         />

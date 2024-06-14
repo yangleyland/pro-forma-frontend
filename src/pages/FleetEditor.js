@@ -13,6 +13,7 @@ import {
 } from "../components/ui/dialog";
 import { Label } from "../components/ui/label";
 import useAuthStore from "../store/useAuthStore";
+import ResetButton from "../components/ResetButton";
 
 function FleetEditor() {
   const { user, fetchData } = useAuthStore();
@@ -50,33 +51,7 @@ function FleetEditor() {
         <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
           Fleet Editor
         </h1>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="relative top-2">Reset to default</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Are you sure you want to do this?</DialogTitle>
-              <DialogDescription>
-                Resetting to default will lose all changes in the fleet editor.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="flex items-center space-x-2">
-              <div className="grid flex-1 gap-2">
-                <Label htmlFor="link" className="sr-only">
-                  Link
-                </Label>
-              </div>
-            </div>
-            <DialogFooter className="">
-              <DialogClose asChild>
-                <Button onClick={handleReset} type="submit">
-                  Reset
-                </Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <ResetButton tableName="fleet data"/>
       </div>
 
       <FleetTable />

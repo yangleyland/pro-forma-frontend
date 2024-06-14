@@ -1,8 +1,11 @@
 // store.js
 import {create} from 'zustand';
 
+const currentYear = new Date().getFullYear();
+
+
 const useStore = create((set) => ({
-  START_YEAR: 2024,
+  START_YEAR: currentYear,
   END_YEAR: 2050,
   YEARS: [],
 
