@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -14,20 +14,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../components/ui/table"
-import { getBackgroundColor } from './getColor'; 
+} from "../../components/ui/table";
+import { getBackgroundColor } from "./getColor";
 
-
-
-export function DataTable({
-  columns,
-  data,
-}) {
+export function DataTable({ columns, data }) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
 
   return (
     <div className="rounded-md border">
@@ -45,32 +40,39 @@ export function DataTable({
                           header.getContext()
                         )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row,i) => (
-              
+            table.getRowModel().rows.map((row, i) => (
               <TableRow
-
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  style={{
-                    backgroundColor: getBackgroundColor(row.original.title), // Change 'Specific Title' to your condition
-                  }}
-                >
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+                style={{
+                  backgroundColor: getBackgroundColor(row.original.title), // Change 'Specific Title' to your condition
+                }}
+              >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell className="" key={cell.id}>
-                   {flexRender(cell.column.columnDef.cell, {
-                        ...cell.getContext(),
-                        // Always round numeric cell values to the nearest whole number
-                        value: typeof cell.getValue() === 'number'
+                  <TableCell
+                    className=""
+                    key={cell.id}
+                    style={{
+                      color: `${cell.getValue()}`.startsWith("-")
+                        ? "red"
+                        : "inherit",
+                    }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, {
+                      ...cell.getContext(),
+                      // Always round numeric cell values to the nearest whole number
+                      value:
+                        typeof cell.getValue() === "number"
                           ? Math.round(cell.getValue())
                           : cell.getValue(),
-                      })}
+                    })}
                   </TableCell>
                 ))}
               </TableRow>
@@ -85,5 +87,5 @@ export function DataTable({
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

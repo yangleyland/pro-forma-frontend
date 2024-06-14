@@ -1,117 +1,101 @@
-import { Payment, createColumns } from "./Columns"
-import { DataTable } from "./DataTable"
-import useYearOverYear from "../../store/useYearOverYear"
+import { Payment, createColumns } from "./Columns";
+import { DataTable } from "./DataTable";
+import useYearOverYear from "../../store/useYearOverYear";
+
+// Function to format values as currency
+const formatAsCurrency = (value) => {
+  const absValue = Math.abs(value).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return value < 0 ? `-$${absValue}` : `$${absValue}`;
+};
+
+// Function to format the entire object
+const formatElectricVehicles = (data) => {
+  const formattedData = {};
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      if (key === "title") {
+        formattedData[key] = data[key]; // Do not format if the key is "title"
+      } else {
+        formattedData[key] = formatAsCurrency(data[key]);
+      }
+    }
+  }
+  return formattedData;
+};
 
 export default function DemoPage() {
-    const columns = createColumns();
-    const {
-        estimatedElectricVehicles,
-        costOfElectricVehicles,
-        defaultVehicleReplacementFundAllocation,
-        estimatedEVMaintenanceCosts,
-        electricVehicleChargingCosts,
-        existingVehicleMaintenanceCosts,
-        existingVehicleAnnualFuelCost,
-        numberOfNewPorts,
-        loanAmount,
-        loanPrincipalRemaining,
-        loanAnnualInterest,
-        loanAnnualPayments,
-        chargerInstallCosts,
-        trenchingCosts,
-        upgradeCostUtility,
-        upgradeCostCustomer,
-        procurementManagementCost,
-        chargerIncentives,
+  const columns = createColumns();
+  const {
+    estimatedElectricVehicles,
+    costOfElectricVehicles,
+    defaultVehicleReplacementFundAllocation,
+    estimatedEVMaintenanceCosts,
+    electricVehicleChargingCosts,
+    existingVehicleMaintenanceCosts,
+    existingVehicleAnnualFuelCost,
+    numberOfNewPorts,
+    loanAmount,
+    loanPrincipalRemaining,
+    loanAnnualInterest,
+    loanAnnualPayments,
+    chargerInstallCosts,
+    trenchingCosts,
+    upgradeCostUtility,
+    upgradeCostCustomer,
+    procurementManagementCost,
+    chargerIncentives,
+    chargerPurchaseCosts,
+    chargerMaintenanceCosts,
+    chargerNetworkAndManagementCosts,
+    chargeMangementSavings,
+    totalVehicleCosts,
+    totalVehicleSavings,
+    totalChargingInfrastructureCosts,
+    totalChargingInfrastructureSavings,
+    totalCosts,
+    totalSavings,
+    annualCostBenefit,
+    cumulativeCostBenefit,
+  } = useYearOverYear();
 
+  const createDataWithTitles = (data, title) => ({ ...data, title });
 
-
-        chargerPurchaseCosts,
-        chargerMaintenanceCosts,
-        chargerNetworkAndManagementCosts,
-        chargeMangementSavings,
-        totalVehicleCosts,
-        totalVehicleSavings,
-        totalChargingInfrastructureCosts,
-        totalChargingInfrastructureSavings,
-        totalCosts,
-        totalSavings,
-        annualCostBenefit,
-        cumulativeCostBenefit,
-      } = useYearOverYear();
-      estimatedElectricVehicles["title"] = "Estimated Electric Vehicles";
-      costOfElectricVehicles["title"] = "Cost of Electric Vehicles";
-      defaultVehicleReplacementFundAllocation["title"] = "Default Vehicle Replacement Fund Allocation";
-      estimatedEVMaintenanceCosts["title"] = "Estimated EV Maintenance Costs";
-      electricVehicleChargingCosts["title"] = "Electric Vehicle Charging Costs";
-      existingVehicleMaintenanceCosts["title"] = "Existing Vehicle Maintenance Costs";
-      existingVehicleAnnualFuelCost["title"] = "Existing Vehicle Annual Fuel Cost";
-      numberOfNewPorts["title"] = "Number of New Ports";
-      loanAmount["title"] = "Loan Amount";
-      loanPrincipalRemaining["title"] = "Loan Principal Remaining";
-      loanAnnualInterest["title"] = "Loan Annual Interest";
-      loanAnnualPayments["title"] = "Loan Annual Payments";
-      chargerInstallCosts["title"] = "Charger Install Costs";
-      trenchingCosts["title"] = "Trenching Costs";
-      upgradeCostUtility["title"] = "Infrastructure Upgrade Cost (utility)";
-    upgradeCostCustomer["title"] = "Infrastructure Upgrade Cost (customer)";
-    procurementManagementCost["title"] = "Procurement Management Cost";
-    chargerIncentives["title"] = "Charger Incentives";
-
-      chargerPurchaseCosts["title"] = "Charger Purchase Costs";
-      chargerMaintenanceCosts["title"] = "Charger Maintenance Costs";
-      chargerNetworkAndManagementCosts["title"] = "Charger Network and Management Costs";
-      chargeMangementSavings["title"] = "Charge Management Savings";
-      totalVehicleCosts["title"] = "Total Vehicle Costs";
-      totalVehicleSavings["title"] = "Total Vehicle Savings";
-      totalChargingInfrastructureCosts["title"] = "Total Charging Infrastructure Costs";
-      totalChargingInfrastructureSavings["title"] = "Total Charging Infrastructure Savings";
-      totalCosts["title"] = "Total Costs";
-      totalSavings["title"] = "Total Savings";
-      annualCostBenefit["title"] = "Annual Cost Benefit";
-      cumulativeCostBenefit["title"] = "Cumulative Cost Benefit";
-      const data = [
-        estimatedElectricVehicles,
-        numberOfNewPorts,
-
-        costOfElectricVehicles,
-        estimatedEVMaintenanceCosts,
-        electricVehicleChargingCosts,
-        defaultVehicleReplacementFundAllocation,
-        existingVehicleMaintenanceCosts,
-        existingVehicleAnnualFuelCost,
-
-        chargerPurchaseCosts,
-        chargerInstallCosts,
-        trenchingCosts,
-        upgradeCostUtility,
-        upgradeCostCustomer,
-        procurementManagementCost,
-        
-        
-        chargerMaintenanceCosts,
-        chargerNetworkAndManagementCosts,
-        chargeMangementSavings,
-        chargerIncentives,
-
-        loanAmount,
-        loanPrincipalRemaining,
-        loanAnnualInterest,
-        loanAnnualPayments,
-
-        totalVehicleCosts,
-        totalVehicleSavings,
-        totalChargingInfrastructureCosts,
-        totalChargingInfrastructureSavings,
-        totalCosts,
-        totalSavings,
-        annualCostBenefit,
-        cumulativeCostBenefit,
-      ];
+  const data = [
+    createDataWithTitles(estimatedElectricVehicles, "Estimated Electric Vehicles"),
+    createDataWithTitles(numberOfNewPorts, "Number of New Ports"),
+    formatElectricVehicles(createDataWithTitles(costOfElectricVehicles, "Cost of Electric Vehicles")),
+    formatElectricVehicles(createDataWithTitles(estimatedEVMaintenanceCosts, "Estimated EV Maintenance Costs")),
+    formatElectricVehicles(createDataWithTitles(electricVehicleChargingCosts, "Electric Vehicle Charging Costs")),
+    formatElectricVehicles(createDataWithTitles(defaultVehicleReplacementFundAllocation, "Default Vehicle Replacement Fund Allocation")),
+    formatElectricVehicles(createDataWithTitles(existingVehicleMaintenanceCosts, "Existing Vehicle Maintenance Costs")),
+    formatElectricVehicles(createDataWithTitles(existingVehicleAnnualFuelCost, "Existing Vehicle Annual Fuel Cost")),
+    formatElectricVehicles(createDataWithTitles(chargerPurchaseCosts, "Charger Purchase Costs")),
+    formatElectricVehicles(createDataWithTitles(chargerInstallCosts, "Charger Install Costs")),
+    formatElectricVehicles(createDataWithTitles(trenchingCosts, "Trenching Costs")),
+    formatElectricVehicles(createDataWithTitles(upgradeCostUtility, "Infrastructure Upgrade Cost (utility)")),
+    formatElectricVehicles(createDataWithTitles(upgradeCostCustomer, "Infrastructure Upgrade Cost (customer)")),
+    formatElectricVehicles(createDataWithTitles(procurementManagementCost, "Procurement Management Cost")),
+    formatElectricVehicles(createDataWithTitles(chargerMaintenanceCosts, "Charger Maintenance Costs")),
+    formatElectricVehicles(createDataWithTitles(chargerNetworkAndManagementCosts, "Charger Network and Management Costs")),
+    formatElectricVehicles(createDataWithTitles(chargeMangementSavings, "Charge Management Savings")),
+    formatElectricVehicles(createDataWithTitles(chargerIncentives, "Charger Incentives")),
+    formatElectricVehicles(createDataWithTitles(loanAmount, "Loan Amount")),
+    formatElectricVehicles(createDataWithTitles(loanPrincipalRemaining, "Loan Principal Remaining")),
+    formatElectricVehicles(createDataWithTitles(loanAnnualInterest, "Loan Annual Interest")),
+    formatElectricVehicles(createDataWithTitles(loanAnnualPayments, "Loan Annual Payments")),
+    formatElectricVehicles(createDataWithTitles(totalVehicleCosts, "Total Vehicle Costs")),
+    formatElectricVehicles(createDataWithTitles(totalVehicleSavings, "Total Vehicle Savings")),
+    formatElectricVehicles(createDataWithTitles(totalChargingInfrastructureCosts, "Total Charging Infrastructure Costs")),
+    formatElectricVehicles(createDataWithTitles(totalChargingInfrastructureSavings, "Total Charging Infrastructure Savings")),
+    formatElectricVehicles(createDataWithTitles(totalCosts, "Total Costs")),
+    formatElectricVehicles(createDataWithTitles(totalSavings, "Total Savings")),
+    formatElectricVehicles(createDataWithTitles(annualCostBenefit, "Annual Cost Benefit")),
+    formatElectricVehicles(createDataWithTitles(cumulativeCostBenefit, "Cumulative Cost Benefit")),
+  ];
 
   return (
     <div className="container mx-auto py-10">
       <DataTable columns={columns} data={data} />
     </div>
-  )
+  );
 }
