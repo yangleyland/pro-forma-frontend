@@ -17,6 +17,7 @@ const useYearOverYear = create((set, get) => {
     numberOfNewPorts: {},
 
     loanAmount: {},
+    capitalPlanningFunding: {},
     loanPrincipalRemaining: {},
     loanAnnualInterest: {},
     loanAnnualPayments: {},
@@ -358,6 +359,7 @@ const useYearOverYear = create((set, get) => {
         upgradeCostUtility,
         upgradeCostCustomer,
         procurementManagementCost,
+        capitalPlanningFunding,
       } = get();
       const totalChargingInfrastructureCosts = useYears
         .getState()
@@ -372,7 +374,8 @@ const useYearOverYear = create((set, get) => {
             upgradeCostUtility[year] +
             upgradeCostCustomer[year] +
             procurementManagementCost[year] -
-            loanAmount[year];
+            loanAmount[year]-
+            capitalPlanningFunding[year];
 
           return acc;
         }, {});
@@ -468,6 +471,10 @@ const useYearOverYear = create((set, get) => {
         "incentives"
       );
       set({ chargerIncentives });
+      const capitalPlanningFunding = get().sumCostsByYear(
+        "capital_planning_funding"
+      );
+      set({ capitalPlanningFunding });
 
       get().setChargerMaintenanceCosts();
       get().setChargerNetworkAndManagementCosts();

@@ -64,8 +64,8 @@ const CostBenefitChart = () => {
   minValue -= diff * 0.1;
   maxValue += diff * 0.1;
 
-  minValue = (Math.ceil(minValue / 100000) * 100000);
-  maxValue = (Math.ceil(maxValue / 100000) * 100000);
+  minValue = Math.floor(minValue / 50000) * 50000;
+  maxValue = (Math.ceil(maxValue / 50000) * 50000);
 
 
   useEffect(() => {

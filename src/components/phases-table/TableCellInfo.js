@@ -75,6 +75,7 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
         type={columnMeta?.type || "text"}
         className={alignmentClass}
         style={{ width: inputWidth }}
+        variant="table"
       />
     );
   }

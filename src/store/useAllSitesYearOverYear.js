@@ -49,6 +49,7 @@ const useYearOverYear = create((set, get) => {
         .getState()
         .YEARS.reduce((acc, year) => {
           acc[year] = evPurchaseCostSums[year];
+
         //   if (controlsData.incentives) {
         //     acc[year] -= HVIP[year];
         //   }

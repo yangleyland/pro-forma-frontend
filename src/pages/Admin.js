@@ -33,12 +33,15 @@ const Admin = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    const newEmail = email+"@optonyusa.com";
+    console.log(newEmail)
     const { data, error } = await supabase.auth.signUp({
-      email,
+      email:newEmail,
       password,
     });
-
+    
     if (error) {
+      console.log("called")
       setMessage(`${error.message}`);
     } else {
       if (csvFile) {
@@ -148,10 +151,10 @@ const Admin = () => {
           <form onSubmit={handleSignup}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label>New Email</Label>
+                <Label>New Username</Label>
                 <Input
-                  type="email"
-                  placeholder="m@example.com"
+                  type="text"
+                  placeholder="username"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

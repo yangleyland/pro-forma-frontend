@@ -92,6 +92,7 @@ export const PhaseTable = () => {
           upgrade_cost_utility: 0,
           upgrade_cost_customer: 0,
           procurement_management_cost: 0,
+          capital_planning_funding: 0,
           port_less_than_10_kw: 0,
           port_10_20_kw: 0,
           port_25_kw: 0,

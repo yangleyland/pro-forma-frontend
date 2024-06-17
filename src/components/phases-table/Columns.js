@@ -73,6 +73,13 @@ export const createColumns = () => {
         type: "currency",
       },
     }),
+    columnHelper.accessor("capital_planning_funding", {
+      header: "Capital Planning Funding",
+      cell: TableCellInfo,
+      meta: {
+        type: "currency",
+      },
+    }),
     columnHelper.accessor("trenching_costs", {
       header: "Trenching Costs",
       cell: TableCellInfo,

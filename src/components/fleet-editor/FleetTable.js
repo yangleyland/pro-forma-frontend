@@ -25,7 +25,7 @@ import "./sticky.css";
 const columnHelper = createColumnHelper();
 
 const paddedAndClampedCell = (info) => (
-  <div className="p-4 w-60 truncate">{info.getValue()}</div>
+  <div className="px-4 w-60 truncate">{info.getValue()}</div>
 );
 
 const createTruncatedHeader =
@@ -35,7 +35,7 @@ const createTruncatedHeader =
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="flex items-center justify-between whitespace-nowrap overflow-hidden text-left truncate max-w-60"
+        className="flex items-center justify-between whitespace-nowrap overflow-hidden text-left truncate max-w-60 p-0"
       >
         <span className="truncate">{headerText}</span>
         <ArrowUpDown className="ml-2 h-4 w-4 flex-shrink-0" />
@@ -78,6 +78,7 @@ const mainColumns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="p-0"
         >
           {" "}
           Replacement Year
@@ -271,7 +272,7 @@ export const FleetTable = () => {
                 {headerGroup.headers
                   .filter((header) => header.column.columnDef.id !== "edit")
                   .map((header) => (
-                    <TableHead key={header.id}>
+                    <TableHead className="p-1 text-center" key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
