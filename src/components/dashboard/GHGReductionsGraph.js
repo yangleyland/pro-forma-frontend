@@ -53,8 +53,8 @@ const GHGReductionsGraph = () => {
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
-            <YAxis domain={[0, yAxisMax]} />
-            <Tooltip />
+            <YAxis domain={[0, yAxisMax]} tickFormatter={(value) => Math.round(value)} />
+            <Tooltip formatter={(value) => Math.round(value)} />
             <Legend />
             <Line
               type="monotone"

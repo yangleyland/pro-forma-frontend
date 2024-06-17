@@ -32,6 +32,14 @@ const transformData = (totalCosts) => {
   return data;
 };
 
+const formatAsCurrency = (value) => {
+  const roundedValue = Math.round(value);
+  const absValue = Math.abs(roundedValue)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return roundedValue < 0 ? `-$${absValue}` : `$${absValue}`;
+};
+
 const CapitalCostsGraph = () => {
   const { totalCosts } = useYearOverYear();
   const data = transformData(totalCosts);
@@ -42,17 +50,17 @@ const CapitalCostsGraph = () => {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={data}>
+          <LineChart data={data} margin={{ left: 40 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
-            <YAxis />
-            <Tooltip />
+            <YAxis tickFormatter={formatAsCurrency}/>
+            <Tooltip  formatter={formatAsCurrency}/>
             <Legend />
             <Line
               type="monotone"
               dataKey="totalCosts"
               stroke="#6a7b9e"
-              name="Total Costs"
+              name="Total Costs ($)"
             />
           </LineChart>
         </ResponsiveContainer>

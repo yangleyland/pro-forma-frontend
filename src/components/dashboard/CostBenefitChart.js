@@ -95,13 +95,13 @@ const CostBenefitChart = () => {
               type="monotone"
               dataKey="cumulativeCostBenefit"
               stroke="#88a37f"
-              name="Cumulative Cost Benefit"
+              name="Cumulative Cost Benefit ($)"
             />
             <Line
               type="monotone"
               dataKey="annualCostBenefit"
               stroke="#6a7b9e"
-              name="Annual Cost Benefit"
+              name="Annual Cost Benefit ($)"
             />
           </LineChart>
         </ResponsiveContainer>

@@ -85,14 +85,14 @@ const CostAndSavings = () => {
               <YAxis domain={[0, maxValue]} tickFormatter={formatAsCurrency}/>
               <Tooltip formatter={formatAsCurrency} />
               <Legend />
-              <Bar dataKey="cost" fill="#88a37f" name="Cumulative Cost">
+              <Bar dataKey="cost" fill="#88a37f" name="Cumulative Cost ($)">
                 <LabelList
                   dataKey="cost"
                   position="top"
                   formatter={formatAsCurrency}
                 />
               </Bar>
-              <Bar dataKey="savings" fill="#6a7b9e" name="Cumulative Savings">
+              <Bar dataKey="savings" fill="#6a7b9e" name="Cumulative Savings ($)">
                 <LabelList
                   dataKey="savings"
                   position="top"
