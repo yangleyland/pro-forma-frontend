@@ -20,6 +20,7 @@ import usePhases from "../../store/usePhases";
 import { FooterCell } from "./FooterCell";
 import useAuthStore from "../../store/useAuthStore";
 import { createColumns } from "./Columns";
+import EditColumn from "./EditColumn";
 
 export const PhaseTable = () => {
   const [sorting, setSorting] = useState([]);
@@ -94,8 +95,8 @@ export const PhaseTable = () => {
           port_25_kw: 0,
           port_180_200_kw: 0,
           incentives: 0,
-          cost:0,
-          installCost:0,
+          cost: 0,
+          installCost: 0,
         };
 
         addPhase(newRow);
@@ -112,44 +113,57 @@ export const PhaseTable = () => {
     },
   });
   return (
-    <Table className="">
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead className="text-nowrap" key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+    <div className="grid grid-cols-12 gap-4">
+      <div className="col-span-11">
+        <Table className="">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.filter((header) => header.column.columnDef.id !== "edit").map((header) => (
+                  <TableHead className="text-nowrap" key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row
+                  .getVisibleCells()
+                  .filter((cell) => cell.column.columnDef.id !== "edit")
+                  .map((cell) => (
+                    <TableCell className="" key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableHead
+                colSpan={table.getCenterLeafColumns().length}
+                align="right"
+              >
+                <FooterCell table={table} />
               </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell className="" key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableHead
-            colSpan={table.getCenterLeafColumns().length}
-            align="right"
-          >
-            <FooterCell table={table} />
-          </TableHead>
-        </TableRow>
-      </TableFooter>
-    </Table>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </div>
+      <div className="col-span-1">
+        <EditColumn table={table} />
+      </div>
+    </div>
   );
 };

@@ -240,17 +240,6 @@ export const FleetTable = () => {
         }
       },
       updateData: (rowIndex, columnId, value) => {
-        // setData((old) =>
-        //   old.map((row, index) => {
-        //     if (index === rowIndex) {
-        //       return {
-        //         ...old[rowIndex],
-        //         [columnId]: value,
-        //       };
-        //     }
-        //     return row;
-        //   })
-        // );
         setTempData((old) =>
           old.map((row, index) => {
             if (index === rowIndex) {
@@ -303,7 +292,6 @@ export const FleetTable = () => {
                 .filter((cell) => cell.column.columnDef.id !== "edit")
                 .map((cell) => (
                   <TableCell
-                    // className={`${cell.column.columnDef.meta?.className ?? ""}`}
                     key={cell.id}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
