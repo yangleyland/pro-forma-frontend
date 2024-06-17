@@ -19,10 +19,12 @@ import {
   CardTitle,
 } from "../ui/card";
 import useProFormaCalcs from "../../store/useProFormaCalcs";
+import useAllSitesCalcs from "../../store/useAllSitesCalcs";
+
 const transformData = (ghgReductions) => {
   const data = [];
 
-  Object.keys(ghgReductions).forEach(year => {
+  Object.keys(ghgReductions).forEach((year) => {
     data.push({
       year: parseInt(year, 10),
       ghgReductions: ghgReductions[year],
@@ -33,10 +35,16 @@ const transformData = (ghgReductions) => {
 };
 
 const GHGReductionsGraph = () => {
-    const { ghgReductions } = useProFormaCalcs();
+  const { ghgReductions } = useProFormaCalcs();
+  const { ghgReductions: allSitesGHGReductions } = useAllSitesCalcs();
+  const maxGHGReductions = Math.max(...Object.values(allSitesGHGReductions));
+  const yAxisMax = Math.ceil(maxGHGReductions / 5) * 5;
+
+  // Rest of the code...
+
   const data = transformData(ghgReductions);
   return (
-    <Card className ="h-full">
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>GHG Reductions</CardTitle>
       </CardHeader>
@@ -45,7 +53,7 @@ const GHGReductionsGraph = () => {
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
-            <YAxis />
+            <YAxis domain={[0, yAxisMax]} />
             <Tooltip />
             <Legend />
             <Line

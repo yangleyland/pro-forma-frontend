@@ -68,9 +68,6 @@ const CostBenefitChart = () => {
   maxValue = (Math.ceil(maxValue / 50000) * 50000);
 
 
-  useEffect(() => {
-    console.log(minValue, maxValue);
-  }, [minValue, maxValue]);
 
   return (
     <Card>
