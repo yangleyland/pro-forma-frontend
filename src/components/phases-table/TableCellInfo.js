@@ -71,13 +71,13 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
         onChange={(e) => setValue(e.target.value)}
         onBlur={onBlur}
         type={columnMeta?.type || "text"}
-        className=""
+        className="text-right"
         style={{ width: inputWidth }}
       />
     );
   }
   return (
-    <p ref={textRef} className="text-nowrap w-full p-4">
+    <p ref={textRef} className="text-right text-nowrap w-full p-4">
       {formatValue(value)}
     </p>
   );

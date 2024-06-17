@@ -45,30 +45,30 @@ const EditCell = ({ row, table }) => {
 
 
   return meta?.editedRows[row.id] ? (
-    <div className="flex w-16">
+    <div className="flex w-16 p-4 gap-2">
       <button
         className="flex-1 text-gray-500 hover:text-gray-300"
         onClick={setEditedRows}
         name="done"
       >
-        <MdCheckCircle size={23} className="" />
+        <MdCheckCircle size={20} className="" />
       </button>
       <button
         className="flex-1 text-gray-500 hover:text-gray-300"
         onClick={setEditedRows}
         name="cancel"
       >
-        <MdCancel size={23} className="" />
+        <MdCancel size={20} className="" />
       </button>
     </div>
   ) : (
-    <div className="flex w-16 ">
+    <div className="flex w-16 p-4">
       <button
         className="text-gray-500 hover:text-gray-300"
         onClick={setEditedRows}
         name="edit"
       >
-        <BiSolidPencil size={23} />
+        <BiSolidPencil size={20} />
       </button>
       <div className="flex-1 h-full"></div>
     </div>

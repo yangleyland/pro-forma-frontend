@@ -15,7 +15,7 @@ const ChargerCostCell = ({ getValue }) => {
 
   return (
     <div>
-      <div className="font-semibold">{formattedCost}</div>
+      <div className="font-semibold  p-4 text-right">{formattedCost}</div>
     </div>
   );
 };

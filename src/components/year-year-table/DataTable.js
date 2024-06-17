@@ -57,7 +57,7 @@ export function DataTable({ columns, data }) {
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
-                    className=""
+                    className="p-4 text-nowrap text-right"
                     key={cell.id}
                     style={{
                       color: `${cell.getValue()}`.startsWith('-') ? "red" : "inherit",

@@ -1,0 +1,62 @@
+.view {
+  margin: auto;
+  width: 600px;
+}
+
+.wrapper {
+  position: relative;
+  overflow: auto;
+  border: 1px solid black;
+  white-space: nowrap;
+}
+
+.sticky-col {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: white;
+}
+
+.first-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 0px;
+}
+
+.second-col {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  left: 100px;
+}
+
+td:last-of-type.custom-column-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  right: 0;
+  top: 0;
+  background-color: white;
+  border: 2px solid red;
+  z-index: 10;
+}
+
+.sticky-important {
+    position: -webkit-sticky;
+    position: sticky !important;
+    right: 0 !important;
+    top: 0 !important;
+    z-index: 10 !important; /* Adjust the z-index as needed */
+
+  }
+  
+  .sticky-important::after {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ddd; /* Matches your table's border color */
+    z-index: 11; /* Make sure it appears above the sticky element */
+    box-shadow: -2px 0 5px -2px rgba(0, 0, 0, 0.1); /* Add shadow to the left */
+  }

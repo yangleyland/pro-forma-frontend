@@ -51,6 +51,7 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
         onBlur={onBlur}
         type={columnMeta?.type || "text"}
         className=""
+        variant="table"
       />
     );
   }

@@ -20,17 +20,30 @@ import EditCell from "./EditCell";
 import useAuthStore from "../../store/useAuthStore";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../ui/button";
+import "./sticky.css";
 
 const columnHelper = createColumnHelper();
 
-const columns = [
-  columnHelper.display({
-    id: "edit",
-    cell: EditCell,
-    meta: {
-      className: "sticky left-0",
-    },
-  }),
+const paddedAndClampedCell = (info) => (
+  <div className="p-4 w-60 truncate">{info.getValue()}</div>
+);
+
+const createTruncatedHeader =
+  (headerText) =>
+  ({ column }) => {
+    return (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="flex items-center justify-between whitespace-nowrap overflow-hidden text-left truncate max-w-60"
+      >
+        <span className="truncate">{headerText}</span>
+        <ArrowUpDown className="ml-2 h-4 w-4 flex-shrink-0" />
+      </Button>
+    );
+  };
+
+const mainColumns = [
   columnHelper.accessor("Equipment ID", {
     header: "Equipment ID",
     cell: TableCellInfo,
@@ -47,12 +60,14 @@ const columns = [
   }),
   columnHelper.accessor("Electrification Scenario", {
     header: "Electrification Scenario",
+    cell: paddedAndClampedCell,
     meta: {
       type: "text",
     },
   }),
   columnHelper.accessor("Domicile Facility", {
     header: "Domicile Facility",
+    cell: (info) => <div className="p-4 w-40 truncate">{info.getValue()}</div>,
     meta: {
       type: "text",
     },
@@ -64,8 +79,9 @@ const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
+          {" "}
           Replacement Year
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className=" ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -75,51 +91,23 @@ const columns = [
     },
   }),
   columnHelper.accessor("EV Purchase Cost pre-incentive", {
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          EV Purchase Cost pre-incentive
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: createTruncatedHeader("EV Purchase Cost pre-incentive"),
     cell: TableCellInfo,
     meta: {
       type: "currency",
     },
   }),
   columnHelper.accessor("Default Replacement Allocation", {
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Default Replacement Allocation
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: createTruncatedHeader("Default Replacement Allocation"),
     cell: TableCellInfo,
     meta: {
       type: "currency",
     },
   }),
   columnHelper.accessor("HVIP, PG&E EV Fleet Program, and Other Incentives", {
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          HVIP, PG&E EV Fleet Program, and Other Incentives
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: createTruncatedHeader(
+      "HVIP, PG&E EV Fleet Program, and Other Incentives"
+    ),
     cell: TableCellInfo,
     meta: {
       type: "currency",
@@ -142,9 +130,70 @@ const columns = [
       type: "currency",
     },
   }),
+  // columnHelper.display({
+  //   id: "edit",
+  //   cell: EditCell,
+  //   sticky: "right",
+  //   meta: {
+  //     className: "",
+  //   },
+  // }),
 ];
 
+const editColumn = columnHelper.display({
+  id: "edit",
+  cell: EditCell,
+  meta: {
+    className: " bg-white border-red-400",
+  },
+});
+
+const EditColumn = ({ table }) => {
+  return (
+    <Table variant = "borderless" className="table-fixed w-20">
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow className="hover:bg-white border-white" key={headerGroup.id}>
+            {headerGroup.headers
+              .filter((header) => header.id === "edit")
+              .map((header) => (
+                <TableHead
+                  className="border-white"
+                  key={header.id}
+                >
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </TableHead>
+              ))}
+          </TableRow>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows.map((row) => (
+          <TableRow  className="hover:bg-white border-white" key={row.id}>
+            {row
+              .getVisibleCells()
+              .filter((cell) => cell.column.id === "edit")
+              .map((cell) => (
+                <TableCell
+                className=" border-white"
+                  key={cell.id}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+};
+
 export const FleetTable = () => {
+  
+  const sticky = ["edit"];
   const [sorting, setSorting] = useState([]);
   const { data: authData } = useAuthStore();
   const [data, setData] = useState(() => [...authData] || []);
@@ -156,14 +205,13 @@ export const FleetTable = () => {
     setTempData([...authData] || []);
   }, [authData]);
 
-  useEffect(() => {
-  }, [tempData,data]);
+  useEffect(() => {}, [tempData, data]);
 
   const [editedRows, setEditedRows] = useState({});
 
   const table = useReactTable({
     data,
-    columns,
+    columns: [...mainColumns, editColumn],
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
@@ -229,34 +277,46 @@ export const FleetTable = () => {
     },
   });
   return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead className="text-nowrap" key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </TableHead>
+    <div className="grid grid-cols-12 gap-2">
+    
+      <div className="col-span-11">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+              {headerGroup.headers
+                .filter((header) => header.column.columnDef.id !== "edit")
+                .map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
+            </TableRow>
             ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell className="" key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells()
+                .filter((cell) => cell.column.columnDef.id !== "edit")
+                .map((cell) => (
+                  <TableCell
+                    // className={`${cell.column.columnDef.meta?.className ?? ""}`}
+                    key={cell.id}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
             ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+          </TableBody>
+        </Table>
+      </div>
+      <div className="col-span-1 h-full">
+        <EditColumn table={table} />
+      </div>
+    </div>
   );
 };
