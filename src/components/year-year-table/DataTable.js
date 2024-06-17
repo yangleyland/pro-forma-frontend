@@ -32,7 +32,9 @@ export function DataTable({ columns, data }) {
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                  className={`p-4 text-nowrap text-left ${header.column.columnDef.meta?.className ?? ""}`}
+                  key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -55,24 +57,31 @@ export function DataTable({ columns, data }) {
                   backgroundColor: getBackgroundColor(row.original.title), // Change 'Specific Title' to your condition
                 }}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    className="p-4 text-nowrap text-right"
-                    key={cell.id}
-                    style={{
-                      color: `${cell.getValue()}`.startsWith('-') ? "red" : "inherit",
-                    }}
-                  >
-                    {flexRender(cell.column.columnDef.cell, {
-                      ...cell.getContext(),
-                      // Always round numeric cell values to the nearest whole number
-                      value:
-                        typeof cell.getValue() === "number"
-                          ? Math.round(cell.getValue())
-                          : cell.getValue(),
-                    })}
-                  </TableCell>
-                ))}
+                {row.getVisibleCells().map((cell) => {
+                  const isTitle = cell.column.id === "title";
+                  const alignmentClass = isTitle ? "text-left" : "text-right";
+
+                  return (
+                    <TableCell
+                      className={`p-4 text-nowrap ${alignmentClass} ${cell.column.columnDef.meta?.className ?? ""}`}
+                      key={cell.id}
+                      style={{
+                        color: `${cell.getValue()}`.startsWith("-")
+                          ? "red"
+                          : "inherit",
+                      }}
+                    >
+                      {flexRender(cell.column.columnDef.cell, {
+                        ...cell.getContext(),
+                        // Always round numeric cell values to the nearest whole number
+                        value:
+                          typeof cell.getValue() === "number"
+                            ? Math.round(cell.getValue())
+                            : cell.getValue(),
+                      })}
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))
           ) : (

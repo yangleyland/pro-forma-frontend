@@ -150,17 +150,17 @@ const editColumn = columnHelper.display({
 
 const EditColumn = ({ table }) => {
   return (
-    <Table variant = "borderless" className="table-fixed w-20">
+    <Table variant="borderless" className="table-fixed w-20">
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow className="hover:bg-white border-white" key={headerGroup.id}>
+          <TableRow
+            className="hover:bg-white border-white"
+            key={headerGroup.id}
+          >
             {headerGroup.headers
               .filter((header) => header.id === "edit")
               .map((header) => (
-                <TableHead
-                  className="border-white"
-                  key={header.id}
-                >
+                <TableHead className="border-white" key={header.id}>
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
@@ -172,15 +172,12 @@ const EditColumn = ({ table }) => {
       </TableHeader>
       <TableBody>
         {table.getRowModel().rows.map((row) => (
-          <TableRow  className="hover:bg-white border-white" key={row.id}>
+          <TableRow className="hover:bg-white border-white" key={row.id}>
             {row
               .getVisibleCells()
               .filter((cell) => cell.column.id === "edit")
               .map((cell) => (
-                <TableCell
-                className=" border-white"
-                  key={cell.id}
-                >
+                <TableCell className=" border-white" key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
@@ -192,7 +189,6 @@ const EditColumn = ({ table }) => {
 };
 
 export const FleetTable = () => {
-  
   const sticky = ["edit"];
   const [sorting, setSorting] = useState([]);
   const { data: authData } = useAuthStore();
@@ -267,36 +263,40 @@ export const FleetTable = () => {
   });
   return (
     <div className="grid grid-cols-12 gap-2">
-    
       <div className="col-span-11">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-              {headerGroup.headers
-                .filter((header) => header.column.columnDef.id !== "edit")
-                .map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                ))}
-            </TableRow>
+                {headerGroup.headers
+                  .filter((header) => header.column.columnDef.id !== "edit")
+                  .map((header) => (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  ))}
+              </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
-                {row.getVisibleCells()
-                .filter((cell) => cell.column.columnDef.id !== "edit")
-                .map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                {row
+                  .getVisibleCells()
+                  .filter((cell) => cell.column.columnDef.id !== "edit")
+                  .map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
               </TableRow>
             ))}
           </TableBody>

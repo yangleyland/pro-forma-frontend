@@ -47,6 +47,8 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
     }
     return value;
   };
+  const alignmentClass = (columnMeta?.type === "currency"||columnMeta?.type ==="number") ? "text-right" : "text-left";
+
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
       <Select
@@ -71,13 +73,13 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
         onChange={(e) => setValue(e.target.value)}
         onBlur={onBlur}
         type={columnMeta?.type || "text"}
-        className="text-right"
+        className={alignmentClass}
         style={{ width: inputWidth }}
       />
     );
   }
   return (
-    <p ref={textRef} className="text-right text-nowrap w-full p-4">
+    <p ref={textRef} className={`${alignmentClass} text-nowrap w-full p-4`}>
       {formatValue(value)}
     </p>
   );

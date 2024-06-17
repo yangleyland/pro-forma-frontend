@@ -8,6 +8,10 @@ export const createColumns = () => {
   columns.push({
     accessorKey: "title",
     header: "",
+    meta: {
+      className:
+        "sticky top-0 left-0 z-20 bg-white border-r border-gray-200 shadow-sm",
+     },
   });
 
   YEARS.forEach(year => {

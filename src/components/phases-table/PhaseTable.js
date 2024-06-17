@@ -22,6 +22,8 @@ import useAuthStore from "../../store/useAuthStore";
 import { createColumns } from "./Columns";
 import EditColumn from "./EditColumn";
 
+
+
 export const PhaseTable = () => {
   const [sorting, setSorting] = useState([]);
   const { controlsData } = useAuthStore();

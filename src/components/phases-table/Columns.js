@@ -12,6 +12,17 @@ import { DataTableColumnHeader } from "./ColumnHeader";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../ui/button";
 
+const createTruncatedHeader = (headerText, maxWidth = "w-32") => {
+  return (
+    <div
+      className={`flex items-center justify-between whitespace-nowrap overflow-hidden text-left truncate ${maxWidth}`}
+      title={headerText} // Tooltip for full header text on hover
+    >
+      <span className="truncate">{headerText}</span>
+    </div>
+  );
+};
+
 const columnHelper = createColumnHelper();
 
 export const createColumns = () => {
@@ -84,38 +95,38 @@ export const createColumns = () => {
       },
     }),
     columnHelper.accessor("procurement_management_cost", {
-      header: "Procurement Management Cost",
+      header: createTruncatedHeader("Procurement Management Cost","w-44"),
       cell: TableCellInfo,
       meta: {
         type: "currency",
       },
     }),
     columnHelper.accessor("port_less_than_10_kw", {
-      header: "# of ports <10 kw",
+      header: "<10 kw ports",
       cell: TableCellInfo,
       meta: {
-        type: "text",
+        type: "number",
       },
     }),
     columnHelper.accessor("port_10_20_kw", {
-      header: "# of ports 10-20 kw",
+      header: "10-20 kw ports",
       cell: TableCellInfo,
       meta: {
-        type: "text",
+        type: "number",
       },
     }),
     columnHelper.accessor("port_25_kw", {
-      header: "# of ports 25 kw",
+      header: "25 kw ports",
       cell: TableCellInfo,
       meta: {
-        type: "text",
+        type: "number",
       },
     }),
     columnHelper.accessor("port_180_200_kw", {
-      header: "# of ports 180-200 kw",
+      header: "180-200 kw ports",
       cell: TableCellInfo,
       meta: {
-        type: "text",
+        type: "number",
       },
     }),
     columnHelper.accessor("incentives", {

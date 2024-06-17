@@ -34,6 +34,8 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
     }
     return value;
   };
+  const alignmentClass = (columnMeta?.type === "currency"||columnMeta?.type ==="number") ? "text-right" : "text-left";
+
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
       <select onChange={onSelectChange} value={initialValue}>
@@ -50,7 +52,7 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
         onChange={(e) => setTempValue(e.target.value)}
         onBlur={onBlur}
         type={columnMeta?.type || "text"}
-        className=""
+        className={alignmentClass}
         variant="table"
       />
     );
@@ -64,7 +66,7 @@ const TableCellInfo = ({ getValue, row, column, table }) => {
     //   type={columnMeta?.type || "text"}
     //   className=""
     // />
-    <p className="text-nowrap w-full p-4">{formatValue(value)}</p>
+    <p className={`${alignmentClass} text-nowrap w-full p-4`}>{formatValue(value)}</p>
   );
 };
 
