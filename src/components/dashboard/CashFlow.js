@@ -12,14 +12,14 @@ function formatCurrency(value) {
   return `$${Math.abs(Math.round(value)).toLocaleString("en-US")}`;
 }
 const CashFlow = () => {
-  const { cumulativeCostBenefit } = useYearOverYear();
+  const { annualCostBenefit } = useYearOverYear();
   const [year, setYear] = useState(2040); // Default year is 2040
 
   const handleYearChange = (event) => {
     setYear(event.target.value);
   };
 
-  const val = cumulativeCostBenefit[year] ?? cumulativeCostBenefit[2040];
+  const val = annualCostBenefit[year] ?? annualCostBenefit[2040];
 
   return (
     <Card className="h-full">
@@ -36,7 +36,7 @@ const CashFlow = () => {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="text-red-600">{val && formatCurrency(val)}</CardContent>
+      <CardContent className={val<=0?"text-red-500":"text-green-500"}>{val && formatCurrency(val)}</CardContent>
     </Card>
   );
 };
