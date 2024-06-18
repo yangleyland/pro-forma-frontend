@@ -61,7 +61,7 @@ const useChargerCosts = create((set, get) => ({
     try {
       const { user } = useAuthStore.getState();
       const response = await fetch(
-        `http://localhost:3002/api/chargerdata/${user.id}`
+        `${process.env.REACT_APP_API_ROUTE}api/chargerdata/${user.id}`
       );
       const res = await response.json();
       const chargerCosts = res[0];

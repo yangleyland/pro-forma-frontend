@@ -17,7 +17,7 @@ const EditCell = ({ row, table }) => {
   const removeRow = async () => {
     meta?.removeRow(row.index);
     try {
-      const response = await fetch(`http://localhost:3002/api/phases/${row.original.id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_ROUTE}api/phases/${row.original.id}`, {
         method: 'DELETE',
       });
   
@@ -49,7 +49,7 @@ const EditCell = ({ row, table }) => {
     }
 
     if (elName === "done") {
-      fetch("http://localhost:3002/api/phases/update", {
+      fetch(`${process.env.REACT_APP_API_ROUTE}api/phases/update`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

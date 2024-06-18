@@ -7,7 +7,7 @@ const usePhases = create((set, get) => ({
   filteredPhases: [],
   addPhase: async (phase) => {
     try {
-      const response = await fetch("http://localhost:3002/api/phases", {
+      const response = await fetch(`${process.env.REACT_APP_API_ROUTE}api/phases`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const usePhases = create((set, get) => ({
   fetchPhases: async (userId) => {
     try {
       const response = await fetch(
-        `http://localhost:3002/api/phases/${userId}`
+        `${process.env.REACT_APP_API_ROUTE}api/phases/${userId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch phases");

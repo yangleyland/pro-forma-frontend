@@ -56,7 +56,7 @@ const Admin = () => {
     formData.append("userId", userId);
 
     try {
-      const response = await fetch("http://localhost:3002/upload/", {
+      const response = await fetch(`${process.env.REACT_APP_API_ROUTE}upload/`, {
         method: "POST",
         body: formData,
       });
@@ -74,9 +74,6 @@ const Admin = () => {
         site: "",
         incentives: false,
         ira_incentives: false,
-        phase1: 2024,
-        phase2: 2025,
-        phase3: 2026,
       };
       const defaultAdvancedControls = {
         id: userId,
@@ -96,7 +93,7 @@ const Admin = () => {
 
       // Call the /api/controls endpoint with the default data
       const controlsResponse = await fetch(
-        "http://localhost:3002/api/controls",
+        `${process.env.REACT_APP_API_ROUTE}api/controls`,
         {
           method: "POST",
           headers: {
@@ -106,7 +103,7 @@ const Admin = () => {
         }
       );
       const advancedControlRes = await fetch(
-        "http://localhost:3002/api/advancedcontrols/add",
+        `${process.env.REACT_APP_API_ROUTE}api/advancedcontrols/add`,
         {
           method: "POST",
           headers: {
@@ -116,7 +113,7 @@ const Admin = () => {
         }
       );
       const chargerCostAdd = await fetch(
-        `http://localhost:3002/api/chargerdata/add/${userId}`
+        `${process.env.REACT_APP_API_ROUTE}api/chargerdata/add/${userId}`
       );
 
       if (
@@ -130,7 +127,7 @@ const Admin = () => {
       navigate("/");
     } catch (error) {
       setMessage(`Error creating account: ${error.message}`);
-      await fetch(`http://localhost:3002/api/delete-user/${userId}`, {
+      await fetch(`${process.env.REACT_APP_API_ROUTE}api/delete-user/${userId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

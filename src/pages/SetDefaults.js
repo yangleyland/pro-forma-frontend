@@ -11,7 +11,7 @@ function SetDefaults() {
 
     try {
       const response = await fetch(
-        `http://localhost:3002/api/save-default?userId=${userId}&tableName=${tableName}`,
+        `${process.env.REACT_APP_API_ROUTE}api/save-default?userId=${userId}&tableName=${tableName}`,
         {
           method: 'GET', // Use GET method
         }

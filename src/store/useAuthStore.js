@@ -79,7 +79,7 @@ const useAuthStore = create((set, get) => ({
   fetchData: async (userId) => {
     set({ loading: true });
     try {
-      const response = await fetch(`http://localhost:3002/api/fleet/${userId}`);
+      const response = await fetch(`${process.env.REACT_APP_API_ROUTE}api/fleet/${userId}`);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
@@ -90,7 +90,7 @@ const useAuthStore = create((set, get) => ({
       // set({ user: userId });
       // Fetch controls data
       const controlsResponse = await fetch(
-        `http://localhost:3002/api/controls/${userId}`
+        `${process.env.REACT_APP_API_ROUTE}api/controls/${userId}`
       );
       if (!controlsResponse.ok) {
         throw new Error("Failed to fetch controls data");

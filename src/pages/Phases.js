@@ -43,7 +43,7 @@ function Phases() {
       ports: ports,
       user_id: user.id,
     };
-    fetch(`http://localhost:3002/api/phases/`, {
+    fetch(`${process.env.REACT_APP_API_ROUTE}api/phases/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

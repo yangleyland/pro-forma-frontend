@@ -5,7 +5,7 @@ const useAdvancedCalc = create((set, get) => ({
   fetchAdvancedCalcs: async (userId) => {
     try {
       const response = await fetch(
-        `http://localhost:3002/api/advancedcontrols/${userId}`
+        `${process.env.REACT_APP_API_ROUTE}api/advancedcontrols/${userId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch phases");

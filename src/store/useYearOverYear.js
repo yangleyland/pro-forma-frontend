@@ -73,12 +73,13 @@ const useYearOverYear = create((set, get) => {
     },
     setEstimatedEVMaintenanceCosts: () => {
       const { EVAnnualMaintenanceCost } = useProFormaCalcs.getState();
-      const { controlsData } = useAuthStore.getState();
+      const { filteredPhases } = usePhases.getState();
+      const min = Math.min(...filteredPhases.map((phase) => phase.year));
 
       const estimatedEVMaintenanceCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
-          if (year >= controlsData.phase1) {
+          if (year >= min) {
             acc[year] = EVAnnualMaintenanceCost[year];
           } else {
             acc[year] = 0;
@@ -90,7 +91,7 @@ const useYearOverYear = create((set, get) => {
     },
     setElectricVehicleChargingCost: () => {
       const { EVAnnualChargingCosts } = useProFormaCalcs.getState();
-      const { controlsData } = useAuthStore.getState();
+
       const { filteredPhases } = usePhases.getState();
       const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const electricVehicleChargingCosts = useYears
@@ -109,7 +110,6 @@ const useYearOverYear = create((set, get) => {
     setExistingVehicleMaintenanceCosts: () => {
       const { existingVehicleAnnualMaintenanceCost } =
         useProFormaCalcs.getState();
-      const { controlsData } = useAuthStore.getState();
       const { filteredPhases } = usePhases.getState();
       const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const existingVehicleMaintenanceCosts = useYears
@@ -127,7 +127,6 @@ const useYearOverYear = create((set, get) => {
     },
     setExistingVehicleFuelCosts: () => {
       const { existingVehicleAnnualFuelCosts } = useProFormaCalcs.getState();
-      const { controlsData } = useAuthStore.getState();
       const { filteredPhases } = usePhases.getState();
       const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const fuelCost = useYears.getState().YEARS.reduce((acc, year) => {
@@ -143,7 +142,6 @@ const useYearOverYear = create((set, get) => {
     },
     setEstimatedElectricVehicles: () => {
       const { vehicleCounts } = useProFormaCalcs.getState();
-      const { controlsData } = useAuthStore.getState();
       const { filteredPhases } = usePhases.getState();
       const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const estimatedElectricVehicles = useYears

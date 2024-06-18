@@ -21,7 +21,7 @@ const EditCell = ({ row, table }) => {
 
     if (elName === "done") {
       try {
-        const response = await fetch("http://localhost:3002/api/fleet/update", {
+        const response = await fetch(`${process.env.REACT_APP_API_ROUTE}api/fleet/update`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

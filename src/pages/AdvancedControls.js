@@ -29,7 +29,7 @@ function AdvancedControls() {
     data["id"] = user.id;
     try {
       const response = await fetch(
-        "http://localhost:3002/api/advancedcontrols",
+        `${process.env.REACT_APP_API_ROUTE}api/advancedcontrols`,
         {
           method: "POST",
           headers: {

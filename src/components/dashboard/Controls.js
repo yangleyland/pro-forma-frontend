@@ -56,8 +56,9 @@ const Controls = () => {
   const updateControl = async (attribute, value) => {
     if (value === "" || value === null) return;
     try {
+      console.log( `${process.env.REACT_APP_API_ROUTE}api/controls/${user.id}`);
       const response = await fetch(
-        `http://localhost:3002/api/controls/${user.id}`,
+        `${process.env.REACT_APP_API_ROUTE}api/controls/${user.id}`,
         {
           method: "PATCH",
           headers: {

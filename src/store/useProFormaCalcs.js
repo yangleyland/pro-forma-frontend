@@ -22,7 +22,7 @@ const useProFormaCalcs = create((set) => ({
   setYearSums: () => {
     const { data, controlsData } = useAuthStore.getState();
     const { advancedCalcs } = useAdvancedCalc.getState();
-    const { START_YEAR } = useYears.getState();
+    const { START_YEAR,CURRENT_YEAR } = useYears.getState();
 
     const inflationRate = advancedCalcs.inflation
       ? 1 + advancedCalcs.inflation_escalation_rate
@@ -54,7 +54,7 @@ const useProFormaCalcs = create((set) => ({
           field === "EV Purchase Cost pre-incentive" ||
           field === "Default Replacement Allocation"
         ) {
-          res *= Math.pow(inflationRate, year - START_YEAR);
+          res *= Math.pow(inflationRate, year - CURRENT_YEAR);
         }
         acc[year] = res;
         return acc;
@@ -122,13 +122,13 @@ const useProFormaCalcs = create((set) => ({
           field === "EV Annual Maintenance Costs" ||
           field === "Existing Vehicle Annual Maintenance"
         ) {
-          res *= Math.pow(inflationRate, year - START_YEAR);
+          res *= Math.pow(inflationRate, year - CURRENT_YEAR);
         }
         if (field === "EV Annual Charging Costs") {
-          res *= Math.pow(electricityInflation, year - START_YEAR);
+          res *= Math.pow(electricityInflation, year - CURRENT_YEAR);
         }
         if (field === "Existing Vehicle Annual Fuel Costs") {
-          res *= Math.pow(gasolineInflation, year - START_YEAR);
+          res *= Math.pow(gasolineInflation, year - CURRENT_YEAR);
         }
         acc[year] = res;
         return acc;

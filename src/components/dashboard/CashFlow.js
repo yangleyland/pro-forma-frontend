@@ -9,7 +9,7 @@ import {
 } from "../ui/card";
 import useYearOverYear from "../../store/useYearOverYear";
 function formatCurrency(value) {
-  return `$${Math.abs(value).toLocaleString("en-US")}`;
+  return `$${Math.abs(Math.round(value)).toLocaleString("en-US")}`;
 }
 const CashFlow = () => {
   const { cumulativeCostBenefit } = useYearOverYear();

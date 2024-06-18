@@ -23,7 +23,7 @@ function ResetButton({tableName}) {
     console.log("Resetting to default");
     try {
       const response = await fetch(
-        `http://localhost:3002/api/update-default?userId=${user.id}&tableName=${tableName}`,
+        `${process.env.REACT_APP_API_ROUTE}api/update-default?userId=${user.id}&tableName=${tableName}`,
         {
           method: "GET",
         }

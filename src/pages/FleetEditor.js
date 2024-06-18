@@ -25,7 +25,7 @@ function FleetEditor() {
     console.log("Resetting to default");
     try {
       const response = await fetch(
-        `http://localhost:3002/api/reset-to-default/${user.id}`,
+        `${process.env.REACT_APP_API_ROUTE}api/reset-to-default/${user.id}`,
         {
           method: "GET",
         }
