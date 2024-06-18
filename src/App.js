@@ -41,7 +41,7 @@ const MainLayout = ({ children }) => {
 
 function App() {
   const { initializeAuth, user, controlsData,loading,data } = useAuthStore();
-  const { filterPhases, filteredPhases } = usePhases();
+  const { filterPhases, filteredPhases,phases } = usePhases();
   const { initializeYears,START_YEAR,END_YEAR } = useYears();
   const { initYearOverYear } = useYearOverYear();
   const {initYearOverYear:initAllSites } = useAllSitesYearOverYear();
@@ -51,8 +51,10 @@ function App() {
 
       
   useEffect(() => {
-    initializeYears();
-  }, [initializeYears,START_YEAR,END_YEAR]);
+    if (data.length > 0){
+      initializeYears();
+    }
+  }, [initializeYears,START_YEAR,END_YEAR,data,phases]);
 
   useEffect(() => {
     initializeAuth();

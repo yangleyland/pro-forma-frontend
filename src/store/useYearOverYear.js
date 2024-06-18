@@ -91,10 +91,12 @@ const useYearOverYear = create((set, get) => {
     setElectricVehicleChargingCost: () => {
       const { EVAnnualChargingCosts } = useProFormaCalcs.getState();
       const { controlsData } = useAuthStore.getState();
+      const { filteredPhases } = usePhases.getState();
+      const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const electricVehicleChargingCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
-          if (year >= controlsData.phase1) {
+          if (year >= min) {
             acc[year] = EVAnnualChargingCosts[year];
           } else {
             acc[year] = 0;
@@ -108,10 +110,12 @@ const useYearOverYear = create((set, get) => {
       const { existingVehicleAnnualMaintenanceCost } =
         useProFormaCalcs.getState();
       const { controlsData } = useAuthStore.getState();
+      const { filteredPhases } = usePhases.getState();
+      const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const existingVehicleMaintenanceCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
-          if (year >= controlsData.phase1) {
+          if (year >= min) {
             acc[year] = existingVehicleAnnualMaintenanceCost[year];
           } else {
             acc[year] = 0;
@@ -124,8 +128,10 @@ const useYearOverYear = create((set, get) => {
     setExistingVehicleFuelCosts: () => {
       const { existingVehicleAnnualFuelCosts } = useProFormaCalcs.getState();
       const { controlsData } = useAuthStore.getState();
+      const { filteredPhases } = usePhases.getState();
+      const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const fuelCost = useYears.getState().YEARS.reduce((acc, year) => {
-        if (year >= controlsData.phase1) {
+        if (year >= min) {
           acc[year] = existingVehicleAnnualFuelCosts[year];
         } else {
           acc[year] = 0;
@@ -138,10 +144,12 @@ const useYearOverYear = create((set, get) => {
     setEstimatedElectricVehicles: () => {
       const { vehicleCounts } = useProFormaCalcs.getState();
       const { controlsData } = useAuthStore.getState();
+      const { filteredPhases } = usePhases.getState();
+      const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const estimatedElectricVehicles = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
-          if (year >= controlsData.phase1) {
+          if (year >= min) {
             acc[year] = vehicleCounts[year];
           } else {
             acc[year] = -1;

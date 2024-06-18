@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import useYears from '../../store/useYears';
 
 export const createColumns = () => {
-  const { YEARS } = useYears.getState();
+  const { YEARS,CURRENT_YEAR } = useYears.getState();
   const columns = [];
 
   columns.push({
@@ -21,7 +21,10 @@ export const createColumns = () => {
       cell: info => {
         const value = info.getValue();
         return typeof value === 'number' ? Math.round(value) : value;
-      }
+      },
+      meta: {
+        className: year < CURRENT_YEAR ? 'bg-gray-400' : '',
+      },
     });
   });
 
