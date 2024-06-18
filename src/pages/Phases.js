@@ -5,6 +5,7 @@ import usePhases from "../store/usePhases";
 import useChargerCosts from "../store/useChargerCosts";
 import ResetButton from "../components/ResetButton";
 import { PhaseTable } from "../components/phases-table/PhaseTable.js";
+import PhaseGrid from "../components/phase-grid/PhaseGrid.js";
 
 function Phases() {
   const { user } = useAuthStore();
@@ -75,7 +76,8 @@ function Phases() {
         </h1>
         <ResetButton tableName="phases" />
       </div>
-      <PhaseTable />
+      <PhaseGrid />
+      {/* <PhaseTable /> */}
     </div>
   );
 }

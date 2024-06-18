@@ -14,6 +14,7 @@ import {
 import { Label } from "../components/ui/label";
 import useAuthStore from "../store/useAuthStore";
 import ResetButton from "../components/ResetButton";
+import FleetGrid from "../components/fleet-grid/FleetGrid";
 
 function FleetEditor() {
   const { user, fetchData } = useAuthStore();
@@ -53,8 +54,7 @@ function FleetEditor() {
         </h1>
         <ResetButton tableName="fleet data"/>
       </div>
-
-      <FleetTable />
+      <FleetGrid />
     </div>
   );
 }

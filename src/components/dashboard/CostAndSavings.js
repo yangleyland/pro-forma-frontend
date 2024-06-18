@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import useYearOverYear from "../../store/useYearOverYear";
 import useAuthStore from "../../store/useAuthStore";
 import useAllSitesYearOverYear from "../../store/useAllSitesYearOverYear";
+import useCityInfo from "../../store/useCityInfo";
 
 function formatAsCurrency(value) {
   return `$${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
@@ -25,6 +26,7 @@ const CostAndSavings = () => {
   const { controlsData } = useAuthStore();
   const { totalCosts: allSitesTotalCosts, totalSavings: allSitesTotalSavings } =
     useAllSitesYearOverYear();
+  const { cityInfo } = useCityInfo();
 
   const [totalCost, setTotalCost] = useState(0);
   const [totalSaving, setTotalSaving] = useState(0);
@@ -56,11 +58,14 @@ const CostAndSavings = () => {
     },
   ];
 
-  const maxValue = (Math.ceil(Math.max(allSitesTotalCostsSum, allSitesTotalSavingsSum)*1.1 / 100000) * 100000);
-
-
-
-
+  let maxValue =
+    Math.ceil(
+      Math.max(allSitesTotalCostsSum, allSitesTotalSavingsSum) / 100000
+    ) * 100000;
+  maxValue =
+    cityInfo && cityInfo.cost_savings_max
+      ? cityInfo.cost_savings_max
+      : maxValue;
 
   return (
     <Card>
@@ -74,33 +79,29 @@ const CostAndSavings = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart
-              data={data}
-              margin={{left: 40 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" tick={false} />
-              <YAxis domain={[0, maxValue]} tickFormatter={formatAsCurrency}/>
-              <Tooltip formatter={formatAsCurrency} />
-              <Legend />
-              <Bar dataKey="cost" fill="#88a37f" name="Cumulative Cost ($)">
-                <LabelList
-                  dataKey="cost"
-                  position="top"
-                  formatter={formatAsCurrency}
-                />
-              </Bar>
-              <Bar dataKey="savings" fill="#6a7b9e" name="Cumulative Savings ($)">
-                <LabelList
-                  dataKey="savings"
-                  position="top"
-                  formatter={formatAsCurrency}
-                />
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart data={data} margin={{ left: 40 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" tick={false} />
+            <YAxis domain={[0, maxValue]} tickFormatter={formatAsCurrency} />
+            <Tooltip formatter={formatAsCurrency} />
+            <Legend />
+            <Bar dataKey="cost" fill="#88a37f" name="Cumulative Cost ($)">
+              <LabelList
+                dataKey="cost"
+                position="top"
+                formatter={formatAsCurrency}
+              />
+            </Bar>
+            <Bar dataKey="savings" fill="#6a7b9e" name="Cumulative Savings ($)">
+              <LabelList
+                dataKey="savings"
+                position="top"
+                formatter={formatAsCurrency}
+              />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
       </CardContent>
     </Card>
   );

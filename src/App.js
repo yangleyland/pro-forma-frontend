@@ -18,6 +18,7 @@ import useAdvancedCalc from "./store/useAdvancedCalc";
 import useProFormaCalcs from "./store/useProFormaCalcs";
 import useAllSitesCalcs from "./store/useAllSitesCalcs";
 import SetDefaults from "./pages/SetDefaults";
+import useCityInfo from "./store/useCityInfo";
 
 const MainLayout = ({ children }) => {
   const { user, loading } = useAuthStore();
@@ -48,7 +49,11 @@ function App() {
   const {advancedCalcs} = useAdvancedCalc();
   const {setYearSums} = useProFormaCalcs();
   const {setYearSums:setYearSumsAllSites} = useAllSitesCalcs();
+  const {fetchCityInfo} = useCityInfo();
 
+  useEffect(() => {
+    fetchCityInfo();
+  }, [user]);
       
   useEffect(() => {
     if (data.length > 0){

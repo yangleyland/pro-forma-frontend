@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import useYearOverYear from "../../store/useYearOverYear";
 import useAuthStore from "../../store/useAuthStore";
 import useAllSitesYearOverYear from "../../store/useAllSitesYearOverYear";
+import useCityInfo from "../../store/useCityInfo";
 
 const formatAsCurrency = (value) => {
   const absValue = Math.abs(value)
@@ -42,6 +43,7 @@ const CostBenefitChart = () => {
     cumulativeCostBenefit: allSitesCumulativeCostBenefit,
   } = useAllSitesYearOverYear();
   const { controlsData } = useAuthStore();
+  const {cityInfo} = useCityInfo();
   const data = transformData(annualCostBenefit, cumulativeCostBenefit);
 
   const allSitesAnnualCostBenefitValues = Object.values(
@@ -60,13 +62,11 @@ const CostBenefitChart = () => {
   let minValue = Math.min(minAnnualValue, minCumulativeValue);
   let maxValue = Math.max(maxAnnualValue, maxCumulativeValue);
 
-  const diff = maxValue - minValue;
-  minValue -= diff * 0.1;
-  maxValue += diff * 0.1;
 
   minValue = Math.floor(minValue / 50000) * 50000;
   maxValue = (Math.ceil(maxValue / 50000) * 50000);
-
+  minValue = (cityInfo && cityInfo.cost_benefit_min) ? cityInfo.cost_benefit_min:minValue;
+  maxValue =  (cityInfo && cityInfo.cost_benefit_max)  ? cityInfo.cost_benefit_max:maxValue;
 
 
   return (
