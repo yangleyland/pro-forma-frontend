@@ -70,37 +70,136 @@ const YearGrid = () => {
 
   const data = useMemo(
     () => [
-        createDataWithTitles(estimatedElectricVehicles, "Estimated Electric Vehicles"),
-        createDataWithTitles(numberOfNewPorts, "Number of New Ports"),
-        formatElectricVehicles(createDataWithTitles(costOfElectricVehicles, "Cost of Electric Vehicles")),
-        formatElectricVehicles(createDataWithTitles(estimatedEVMaintenanceCosts, "Estimated EV Maintenance Costs")),
-        formatElectricVehicles(createDataWithTitles(electricVehicleChargingCosts, "Electric Vehicle Charging Costs")),
-        formatElectricVehicles(createDataWithTitles(defaultVehicleReplacementFundAllocation, "Default Vehicle Replacement Fund Allocation")),
-        formatElectricVehicles(createDataWithTitles(existingVehicleMaintenanceCosts, "Existing Vehicle Maintenance Costs")),
-        formatElectricVehicles(createDataWithTitles(existingVehicleAnnualFuelCost, "Existing Vehicle Annual Fuel Cost")),
-        formatElectricVehicles(createDataWithTitles(chargerPurchaseCosts, "Charger Purchase Costs")),
-        formatElectricVehicles(createDataWithTitles(chargerInstallCosts, "Charger Install Costs")),
-        formatElectricVehicles(createDataWithTitles(trenchingCosts, "Trenching Costs")),
-        formatElectricVehicles(createDataWithTitles(upgradeCostUtility, "Infrastructure Upgrade Cost (utility)")),
-        formatElectricVehicles(createDataWithTitles(upgradeCostCustomer, "Infrastructure Upgrade Cost (customer)")),
-        formatElectricVehicles(createDataWithTitles(procurementManagementCost, "Procurement Management Cost")),
-        formatElectricVehicles(createDataWithTitles(chargerMaintenanceCosts, "Charger Maintenance Costs")),
-        formatElectricVehicles(createDataWithTitles(chargerNetworkAndManagementCosts, "Charger Network and Management Costs")),
-        formatElectricVehicles(createDataWithTitles(chargeMangementSavings, "Charge Management Savings")),
-        formatElectricVehicles(createDataWithTitles(chargerIncentives, "Charger Incentives")),
-        formatElectricVehicles(createDataWithTitles(capitalPlanningFunding, "Capital Planning Funding")),
-        formatElectricVehicles(createDataWithTitles(loanAmount, "Loan Amount")),
-        formatElectricVehicles(createDataWithTitles(loanPrincipalRemaining, "Loan Principal Remaining")),
-        formatElectricVehicles(createDataWithTitles(loanAnnualInterest, "Loan Annual Interest")),
-        formatElectricVehicles(createDataWithTitles(loanAnnualPayments, "Loan Annual Payments")),
-        formatElectricVehicles(createDataWithTitles(totalVehicleCosts, "Total Vehicle Costs")),
-        formatElectricVehicles(createDataWithTitles(totalVehicleSavings, "Total Vehicle Savings")),
-        formatElectricVehicles(createDataWithTitles(totalChargingInfrastructureCosts, "Total Charging Infrastructure Costs")),
-        formatElectricVehicles(createDataWithTitles(totalChargingInfrastructureSavings, "Total Charging Infrastructure Savings")),
-        formatElectricVehicles(createDataWithTitles(totalCosts, "Total Costs")),
-        formatElectricVehicles(createDataWithTitles(totalSavings, "Total Savings")),
-        formatElectricVehicles(createDataWithTitles(annualCostBenefit, "Annual Cost Benefit")),
-        formatElectricVehicles(createDataWithTitles(cumulativeCostBenefit, "Cumulative Cost Benefit")),
+      createDataWithTitles(
+        estimatedElectricVehicles,
+        "Estimated Electric Vehicles"
+      ),
+      createDataWithTitles(numberOfNewPorts, "Number of New Ports"),
+      formatElectricVehicles(
+        createDataWithTitles(
+          costOfElectricVehicles,
+          "Cost of Electric Vehicles"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          estimatedEVMaintenanceCosts,
+          "Estimated EV Maintenance Costs"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          electricVehicleChargingCosts,
+          "Electric Vehicle Charging Costs"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          defaultVehicleReplacementFundAllocation,
+          "Default Vehicle Replacement Fund Allocation"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          existingVehicleMaintenanceCosts,
+          "Existing Vehicle Maintenance Costs"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          existingVehicleAnnualFuelCost,
+          "Existing Vehicle Annual Fuel Cost"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(chargerPurchaseCosts, "Charger Purchase Costs")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(chargerInstallCosts, "Charger Install Costs")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(trenchingCosts, "Trenching Costs")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          upgradeCostUtility,
+          "Infrastructure Upgrade Cost (utility)"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          upgradeCostCustomer,
+          "Infrastructure Upgrade Cost (customer)"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          procurementManagementCost,
+          "Procurement Management Cost"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          chargerMaintenanceCosts,
+          "Charger Maintenance Costs"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          chargerNetworkAndManagementCosts,
+          "Charger Network and Management Costs"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          chargeMangementSavings,
+          "Charge Management Savings"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(chargerIncentives, "Charger Incentives")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(capitalPlanningFunding, "Capital Planning Funding")
+      ),
+      formatElectricVehicles(createDataWithTitles(loanAmount, "Loan Amount")),
+      formatElectricVehicles(
+        createDataWithTitles(loanPrincipalRemaining, "Loan Principal Remaining")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(loanAnnualInterest, "Loan Annual Interest")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(loanAnnualPayments, "Loan Annual Payments")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(totalVehicleCosts, "Total Vehicle Costs")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(totalVehicleSavings, "Total Vehicle Savings")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          totalChargingInfrastructureCosts,
+          "Total Charging Infrastructure Costs"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
+          totalChargingInfrastructureSavings,
+          "Total Charging Infrastructure Savings"
+        )
+      ),
+      formatElectricVehicles(createDataWithTitles(totalCosts, "Total Costs")),
+      formatElectricVehicles(
+        createDataWithTitles(totalSavings, "Total Savings")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(annualCostBenefit, "Annual Cost Benefit")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(cumulativeCostBenefit, "Cumulative Cost Benefit")
+      ),
     ],
     [cumulativeCostBenefit]
   );
@@ -129,7 +228,7 @@ const YearGrid = () => {
       editable: false,
       cellStyle: { textAlign: "right" },
       valueFormatter: (params) => params.value,
-      sortable: false 
+      sortable: false,
     }));
   };
 
@@ -138,11 +237,37 @@ const YearGrid = () => {
 
   useEffect(() => {
     const combinedColumns = [
-      { field: "title", editable: false, cellStyle: { fontWeight: "bold" } , pinned: 'left', sortable: false },
+      {
+        field: "title",
+        editable: false,
+        cellStyle: { fontWeight: "bold" },
+        pinned: "left",
+        sortable: false,
+      },
       ...generateYearColumns(YEARS),
     ];
     setColDefs(combinedColumns);
   }, [YEARS]);
+
+
+  const rowStyle = { background: "black" };
+
+  const getRowStyle = (params) => {
+    const rowIndex = params.node.rowIndex;
+    if (rowIndex < 2) {
+      return { background: "#e9e9e9" };
+    } else if (rowIndex < 8) {
+      return { background: "#ffffff" };
+    } else if (rowIndex < 18) {
+      return { background: "#e9e9e9" };
+    } else if (rowIndex < 23) {
+      return { background: "#ffffff" };
+    } else if (rowIndex < 27) {
+      return { background: "#e9e9e9" };
+    } else {
+      return { background: "#ffffff" };
+    }
+  };
 
   return (
     // wrapping container with theme & size
@@ -154,6 +279,7 @@ const YearGrid = () => {
         rowData={data}
         columnDefs={colDefs}
         onGridReady={onGridReady}
+        getRowStyle={getRowStyle}
       />
     </div>
   );
