@@ -206,7 +206,11 @@ const YearGrid = () => {
 
   // Fetch data & update rowData state
   useEffect(() => {
+    if (!data || !data[0]["2025"]) {
+        return;
+    }
     setRowData(data);
+    console.log(data)
   }, [data]);
 
   // Row Data: The data to be displayed.
@@ -226,7 +230,12 @@ const YearGrid = () => {
       headerName: `${year}`,
       field: `${year}`,
       editable: false,
-      cellStyle: { textAlign: "right" },
+      cellStyle: (params) => {
+        if (params.value && params.value[0]==="-") {
+          return { color: 'red', textAlign: 'right'};
+        }
+        return { textAlign: 'right' };
+      },
       valueFormatter: (params) => params.value,
       sortable: false,
     }));
@@ -250,36 +259,39 @@ const YearGrid = () => {
   }, [YEARS]);
 
 
-  const rowStyle = { background: "black" };
 
-  const getRowStyle = (params) => {
-    const rowIndex = params.node.rowIndex;
-    if (rowIndex < 2) {
-      return { background: "#e9e9e9" };
-    } else if (rowIndex < 8) {
-      return { background: "#ffffff" };
-    } else if (rowIndex < 18) {
-      return { background: "#e9e9e9" };
-    } else if (rowIndex < 23) {
-      return { background: "#ffffff" };
-    } else if (rowIndex < 27) {
-      return { background: "#e9e9e9" };
-    } else {
-      return { background: "#ffffff" };
-    }
-  };
+//   const getRowStyle = (params) => {
+//     const rowIndex = params.node.rowIndex;
+//     if (rowIndex < 2) {
+//       return { background: "#e9e9e9" };
+//     } else if (rowIndex < 8) {
+//       return { background: "#ffffff" };
+//     } else if (rowIndex < 18) {
+//       return { background: "#e9e9e9" };
+//     } else if (rowIndex < 23) {
+//       return { background: "#ffffff" };
+//     } else if (rowIndex < 27) {
+//       return { background: "#e9e9e9" };
+//     } else {
+//       return { background: "#ffffff" };
+//     }
+//   };
+
+//   const rowStyle = { background: "yellow" };
 
   return (
     // wrapping container with theme & size
     <div
       className="ag-theme-quartz h-full" // applying the grid theme
-      style={{ height: 700 }} // the grid will fill the size of the parent container
+      style={{ height: 700 }}
     >
       <AgGridReact
-        rowData={data}
+
+        rowData={rowData}
         columnDefs={colDefs}
         onGridReady={onGridReady}
-        getRowStyle={getRowStyle}
+        // getRowStyle={getRowStyle}
+        // rowStyle={rowStyle}
       />
     </div>
   );
