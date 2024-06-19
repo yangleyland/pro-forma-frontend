@@ -129,6 +129,7 @@ const YearGrid = () => {
       editable: false,
       cellStyle: { textAlign: "right" },
       valueFormatter: (params) => params.value,
+      sortable: false 
     }));
   };
 
@@ -137,7 +138,7 @@ const YearGrid = () => {
 
   useEffect(() => {
     const combinedColumns = [
-      { field: "title", editable: false, cellStyle: { fontWeight: "bold" } , pinned: 'left' },
+      { field: "title", editable: false, cellStyle: { fontWeight: "bold" } , pinned: 'left', sortable: false },
       ...generateYearColumns(YEARS),
     ];
     setColDefs(combinedColumns);
