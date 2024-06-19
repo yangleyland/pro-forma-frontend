@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
-
+import YearGrid from "../components/year-grid/YearGrid";
 
 const YearOverYear = () => {
   const [siteOptions, setSiteOptions] = useState([]);
@@ -19,10 +19,10 @@ const YearOverYear = () => {
     useAuthStore();
 
   useEffect(() => {
-    if (user){
+    if (user) {
       fetchData(user.id);
     }
-  }, [fetchData,user]);
+  }, [fetchData, user]);
 
   useEffect(() => {
     if (controlsData) {
@@ -30,7 +30,7 @@ const YearOverYear = () => {
       setSite(controlsData["site"] || "");
       setSiteOptions(tempSites || "");
     }
-  }, [controlsData,data]);
+  }, [controlsData, data]);
 
   const updateControl = async (attribute, value) => {
     if (value === "" || value === null) return;
@@ -68,7 +68,7 @@ const YearOverYear = () => {
   }
   return (
     <div>
-      <div className="flex">
+      <div className="flex mb-5">
         <h1 className=" scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
           Year-Over-Year
         </h1>
@@ -88,8 +88,8 @@ const YearOverYear = () => {
           </Select>
         </div>
       </div>
-
-      <DemoPage />
+      <YearGrid />
+      {/* <DemoPage /> */}
     </div>
   );
 };
