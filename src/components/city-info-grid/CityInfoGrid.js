@@ -18,11 +18,11 @@ const CityInfoForm = () => {
   useEffect(() => {
     if (cityInfo) {
       setFormData({
-        city_name: cityInfo.city_name || "",
-        city_image: cityInfo.city_image || "",
-        cost_benefit_min: cityInfo.cost_benefit_min || 0,
-        cost_benefit_max: cityInfo.cost_benefit_max || 0,
-        cost_savings_max: cityInfo.cost_savings_max || 0,
+        city_name: cityInfo.city_name ?? "",
+        city_image: cityInfo.city_image ?? "",
+        cost_benefit_min: cityInfo.cost_benefit_min ?? "",
+        cost_benefit_max: cityInfo.cost_benefit_max ?? "",
+        cost_savings_max: cityInfo.cost_savings_max ?? "",
       });
     }
   }, [cityInfo]);
