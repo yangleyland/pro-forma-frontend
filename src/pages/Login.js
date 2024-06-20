@@ -43,7 +43,7 @@ function Login() {
           alt="evtruck"
         />
       </div>
-      <div className="flex-1 bg-gray-100 h-full flex justify-center items-center border">
+      <div className="flex-1 bg-gray-100 h-full flex justify-center items-center">
         <div className="w-[400px]">
           <LoginForm />
         </div>

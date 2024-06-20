@@ -50,7 +50,7 @@ const CapitalCostsGraph = () => {
         <CardTitle>Capital Costs</CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={200}>
+        <ResponsiveContainer className="" width="100%" height={200}>
           <LineChart data={data} margin={{ left: 50 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />

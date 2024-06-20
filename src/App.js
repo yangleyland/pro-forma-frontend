@@ -5,6 +5,7 @@ import Login from "./pages/Login.js";
 import Dashboard from "./pages/Dashboard.js";
 import AdvancedControls from "./pages/AdvancedControls.js";
 import Admin from "./pages/Admin.js";
+import AdminPage from "./pages/AdminPage";
 import useAuthStore from "./store/useAuthStore.js";
 import Phases from "./pages/Phases.js";
 import YearOverYear from "./pages/YearOverYear.js";
@@ -134,7 +135,7 @@ function App() {
             </MainLayout>
           }
         />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/login" element={<Login />} />
       </Routes>
     </div>
