@@ -51,15 +51,15 @@ const CapitalCostsGraph = () => {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={data} margin={{ left: 40 }}>
+          <LineChart data={data} margin={{ left: 50 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
             <YAxis tickFormatter={formatAsCurrency}>
             <Label
                 value="Total Costs ($)"
                 angle={-90}
-                position="insideRight"
-                offset={90}
+                position="insideLeft"
+                offset={-40}
                 style={{ textAnchor: 'middle' }}
               />
             </YAxis>

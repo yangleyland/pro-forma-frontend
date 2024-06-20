@@ -58,8 +58,7 @@ const GHGReductionsGraph = () => {
             <Label
                 value="GHG Reductions (MTCO2e)"
                 angle={-90}
-                position="insideRight"
-                offset={40}
+                position="insideLeft"
                 style={{ textAnchor: 'middle',fontSize: '0.8rem' }}
               />
             </YAxis>

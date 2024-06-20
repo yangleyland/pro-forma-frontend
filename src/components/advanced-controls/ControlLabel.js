@@ -7,19 +7,23 @@ import {
 import { MdInfoOutline } from "react-icons/md";
 import { Label } from "../ui/label";
 
-const ControlLabel = ({ text,info }) => {
+const ControlLabel = ({ text, info }) => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <Label>
-          <div className="flex gap-1">
+        <Label className="w-full">
+          <div className="w-full flex gap-2">
             {text}
-            <TooltipTrigger>
-              <MdInfoOutline size={15} />
+          <TooltipTrigger asChild>
+              <button>
+                <MdInfoOutline size={15} />
+              </button>
             </TooltipTrigger>
+            
+
+
           </div>
         </Label>
-
         <TooltipContent>
           <p>{info}</p>
         </TooltipContent>

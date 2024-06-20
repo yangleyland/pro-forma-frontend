@@ -37,6 +37,7 @@ const useYearOverYear = create((set, get) => {
     totalVehicleSavings: {},
     totalChargingInfrastructureCosts: {},
     totalChargingInfrastructureSavings: {},
+    totalInfrastructureCostPreLoan: {},
     totalCosts: {},
     totalSavings: {},
     annualCostBenefit: {},
@@ -383,15 +384,31 @@ const useYearOverYear = create((set, get) => {
             upgradeCostCustomer[year] +
             estimatedPublicWorksEngineeringCosts[year] +
             procurementManagementCost[year] -
-            loanAmount[year]-
+            loanAmount[year] -
             capitalPlanningFunding[year];
 
           return acc;
         }, {});
       set({ totalChargingInfrastructureCosts });
     },
+    setTotalInfrastructureCostPreLoan: () => {
+      const {
+        totalChargingInfrastructureCosts,loanAmount,capitalPlanningFunding
+      } = get();
+      const totalInfrastructureCostPreLoan = useYears
+      .getState()
+      .YEARS.reduce((acc, year) => {
+        acc[year] =
+        totalChargingInfrastructureCosts[year] +
+          loanAmount[year] +
+          capitalPlanningFunding[year];
+
+        return acc;
+      }, {});
+    set({ totalInfrastructureCostPreLoan });
+    },
     setTotalChargingInfrastructureSavings: () => {
-      const { chargeMangementSavings,chargerIncentives } = get();
+      const { chargeMangementSavings, chargerIncentives } = get();
       const totalChargingInfrastructureSavings = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
@@ -444,7 +461,7 @@ const useYearOverYear = create((set, get) => {
       const { advancedCalcs } = useAdvancedCalc.getState();
       const netPresentValue = useYears.getState().YEARS.reduce((acc, year) => {
         acc +=
-        annualCostBenefit[year] /
+          annualCostBenefit[year] /
           Math.pow(
             1 + advancedCalcs.discount_rate_npv,
             year - useYears.getState().START_YEAR
@@ -480,9 +497,7 @@ const useYearOverYear = create((set, get) => {
         "estimated_public_works_engineering_costs"
       );
       set({ estimatedPublicWorksEngineeringCosts });
-      const chargerIncentives = get().sumCostsByYear(
-        "incentives"
-      );
+      const chargerIncentives = get().sumCostsByYear("incentives");
       set({ chargerIncentives });
       const capitalPlanningFunding = get().sumCostsByYear(
         "capital_planning_funding"
@@ -495,6 +510,7 @@ const useYearOverYear = create((set, get) => {
       get().setTotalVehicleCosts();
       get().setTotalVehicleSavings();
       get().setTotalChargingInfrastructureCosts();
+      get().setTotalInfrastructureCostPreLoan();
       get().setTotalChargingInfrastructureSavings();
       get().setTotalCosts();
       get().setTotalSavings();

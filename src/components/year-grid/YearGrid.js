@@ -5,7 +5,7 @@ import { useState, useEffect, useMemo } from "react"; // React State Management
 import useAuthStore from "../../store/useAuthStore";
 import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
-import { getBackgroundColor } from "./getColor";
+import { getBackgroundColor,getTextColor } from "./getColor";
 
 // Function to format values as currency
 const formatAsCurrency = (value) => {
@@ -25,12 +25,18 @@ const formatElectricVehicles = (data) => {
         formattedData[key] = data[key]; // Do not format if the key is "title"
       } else {
         formattedData[key] = formatAsCurrency(data[key]);
+        if (data.title==="Total Costs"){
+          formattedData[key] = addHyphen(formattedData[key])
+        }
       }
     }
   }
   return formattedData;
 };
 
+const addHyphen= (value) => {
+  return "-"+value;
+}
 const YearGrid = () => {
   const { YEARS,CURRENT_YEAR } = useYears();
   const {
@@ -66,6 +72,7 @@ const YearGrid = () => {
     totalSavings,
     annualCostBenefit,
     cumulativeCostBenefit,
+    totalInfrastructureCostPreLoan,
   } = useYearOverYear();
 
   const createDataWithTitles = (data, title) => ({ ...data, title });
@@ -168,6 +175,10 @@ const YearGrid = () => {
         createDataWithTitles(chargerIncentives, "Charger Incentives")
       ),
       formatElectricVehicles(
+        createDataWithTitles(totalInfrastructureCostPreLoan, "Infrastructure Cost Pre-Loan")
+      ),
+      
+      formatElectricVehicles(
         createDataWithTitles(capitalPlanningFunding, "Capital Planning Funding")
       ),
       formatElectricVehicles(createDataWithTitles(loanAmount, "Loan Amount")),
@@ -239,10 +250,8 @@ const YearGrid = () => {
       field: `${year}`,
       editable: false,
       cellStyle: (params) => {
-        if (params.value && (params.value[0]==="-" || params.value<0)) {
-          return { color: 'red', textAlign: 'right',backgroundColor: (year<CURRENT_YEAR ? "#878787":getBackgroundColor(params.data.title))};
-        }
-        return { textAlign: 'right',backgroundColor:(year<CURRENT_YEAR ? "#878787":getBackgroundColor(params.data.title))};
+
+        return {color:getTextColor(params.data.title,params.value), textAlign: 'right',backgroundColor:(year<CURRENT_YEAR ? "#d1d1d1":getBackgroundColor(params.data.title))};
       },
       valueFormatter: (params) => params.value,
       sortable: false,

@@ -9,6 +9,7 @@ import useAdvancedCalc from "../store/useAdvancedCalc";
 import useYearOverYear from "../store/useYearOverYear";
 import useProFormaCalcs from "../store/useProFormaCalcs";
 import ResetButton from "../components/ResetButton";
+import { Card } from "../components/ui/card";
 
 function AdvancedControls() {
   const economicsRef = useRef(null);
@@ -58,12 +59,16 @@ function AdvancedControls() {
         </h1>
         <ResetButton tableName="advanced controls" />
       </div>
-      <div className="flex flex-col w-1/4 gap-5">
-        <Button className="w-full" onClick={handleSubmit}>
-          Save
-        </Button>
-        <Economics ref={economicsRef} />
-        <SoftwareCosts ref={softwareCostsRef} />
+      <div className="flex flex-col items-center pb-16">
+        <div className="flex flex-col w-1/2 gap-5">
+          <Button className="w-full" onClick={handleSubmit}>
+            Save
+          </Button>
+          <Card className="flex flex-col items-center">
+            <Economics ref={economicsRef} />
+            <SoftwareCosts ref={softwareCostsRef} />
+          </Card>
+        </div>
       </div>
     </div>
   );

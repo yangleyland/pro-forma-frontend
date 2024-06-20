@@ -47,7 +47,7 @@ function ResetButton({tableName}) {
 
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="relative top-2">Reset to default</Button>
+            <Button  variant="outline" className="relative top-2">Reset to default</Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
