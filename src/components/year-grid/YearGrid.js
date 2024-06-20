@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo } from "react"; // React State Management
 import useAuthStore from "../../store/useAuthStore";
 import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
+import { getBackgroundColor } from "./getColor";
 
 // Function to format values as currency
 const formatAsCurrency = (value) => {
@@ -206,11 +207,11 @@ const YearGrid = () => {
 
   // Fetch data & update rowData state
   useEffect(() => {
-    if (!data || !data[0]["2025"]) {
-        return;
+    if (!data || !data[0]["2025"] || data[0]["2024"] === -1) {
+      return;
     }
     setRowData(data);
-    console.log(data)
+    console.log(data);
   }, [data]);
 
   // Row Data: The data to be displayed.
@@ -225,6 +226,9 @@ const YearGrid = () => {
 
   // Column Definitions: Defines the columns to be displayed.
   // Function to generate year columns
+
+
+
   const generateYearColumns = (years) => {
     return years.map((year) => ({
       headerName: `${year}`,
@@ -232,9 +236,9 @@ const YearGrid = () => {
       editable: false,
       cellStyle: (params) => {
         if (params.value && params.value[0]==="-") {
-          return { color: 'red', textAlign: 'right'};
+          return { color: 'red', textAlign: 'right',backgroundColor: getBackgroundColor(params.data.title)};
         }
-        return { textAlign: 'right' };
+        return { textAlign: 'right',backgroundColor: getBackgroundColor(params.data.title) };
       },
       valueFormatter: (params) => params.value,
       sortable: false,
@@ -249,35 +253,37 @@ const YearGrid = () => {
       {
         field: "title",
         editable: false,
-        cellStyle: { fontWeight: "bold" },
+        cellStyle: (params) => {
+          return { fontWeight: 'bold',backgroundColor: getBackgroundColor(params.value) };
+        },
         pinned: "left",
         sortable: false,
+        
       },
       ...generateYearColumns(YEARS),
     ];
     setColDefs(combinedColumns);
   }, [YEARS]);
 
+  //   const getRowStyle = (params) => {
+  //     const rowIndex = params.node.rowIndex;
+  //     if (rowIndex < 2) {
+  //       return { background: "#e9e9e9" };
+  //     } else if (rowIndex < 8) {
+  //       return { background: "#ffffff" };
+  //     } else if (rowIndex < 18) {
+  //       return { background: "#e9e9e9" };
+  //     } else if (rowIndex < 23) {
+  //       return { background: "#ffffff" };
+  //     } else if (rowIndex < 27) {
+  //       return { background: "#e9e9e9" };
+  //     } else {
+  //       return { background: "#ffffff" };
+  //     }
+  //   };
 
+  //   const rowStyle = { background: "yellow" };
 
-//   const getRowStyle = (params) => {
-//     const rowIndex = params.node.rowIndex;
-//     if (rowIndex < 2) {
-//       return { background: "#e9e9e9" };
-//     } else if (rowIndex < 8) {
-//       return { background: "#ffffff" };
-//     } else if (rowIndex < 18) {
-//       return { background: "#e9e9e9" };
-//     } else if (rowIndex < 23) {
-//       return { background: "#ffffff" };
-//     } else if (rowIndex < 27) {
-//       return { background: "#e9e9e9" };
-//     } else {
-//       return { background: "#ffffff" };
-//     }
-//   };
-
-//   const rowStyle = { background: "yellow" };
 
   return (
     // wrapping container with theme & size
@@ -286,12 +292,10 @@ const YearGrid = () => {
       style={{ height: 700 }}
     >
       <AgGridReact
-
+        rowSelection="single"
         rowData={rowData}
         columnDefs={colDefs}
         onGridReady={onGridReady}
-        // getRowStyle={getRowStyle}
-        // rowStyle={rowStyle}
       />
     </div>
   );

@@ -137,6 +137,7 @@ const FleetGrid = () => {
       style={{ height: 650 }} // the grid will fill the size of the parent container
     >
       <AgGridReact
+        stopEditingWhenCellsLoseFocus={true}
         pagination={true}
         rowData={rowData}
         columnDefs={colDefs}

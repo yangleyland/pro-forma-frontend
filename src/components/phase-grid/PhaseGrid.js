@@ -206,6 +206,8 @@ const PhaseGrid = () => {
     setGridApi(params.api);
   };
 
+  console.log(rowData);
+
   return (
     // wrapping container with theme & size
     <div
