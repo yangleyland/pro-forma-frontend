@@ -11,19 +11,18 @@ const formatAsCurrency = (number) => {
 };
 
 const PhaseGrid = () => {
-  const { phases, addPhase, fetchPhases } = usePhases();
+  const { phases, addPhase, fetchPhases,updatePhase,calculateCosts } = usePhases();
   const { user } = useAuthStore();
   const { controlsData } = useAuthStore.getState();
 
-
-  const [siteOptions,setSiteOptions] = useState(controlsData?.domiciles.map((option) => option) || []);
-
-
+  const [siteOptions, setSiteOptions] = useState(
+    controlsData?.domiciles.map((option) => option) || []
+  );
 
   // Fetch data & update rowData state
 
   useEffect(() => {
-    setSiteOptions(controlsData?.domiciles.map((option) => option) || [])
+    setSiteOptions(controlsData?.domiciles.map((option) => option) || []);
   }, [controlsData]);
   useEffect(() => {
     setRowData(phases);
@@ -96,13 +95,27 @@ const PhaseGrid = () => {
       cellStyle: { textAlign: "right" },
       editable: true,
     },
+    {
+      field: "cost",
+      editable: false,
+      type: "currency",
+      valueFormatter: (params) => formatAsCurrency(params.value),
+      cellStyle: { textAlign: "right", fontWeight: "bold", color: "gray" },
+    },
+    {
+      field: "installCost",
+      editable: false,
+      type: "currency",
+      valueFormatter: (params) => formatAsCurrency(params.value),
+      cellStyle: { textAlign: "right", fontWeight: "bold", color: "gray" },
+    },
   ]);
 
   useEffect(() => {
     if (siteOptions.length > 0) {
       setColDefs((prevColDefs) =>
         prevColDefs.map((colDef) =>
-          colDef.field === 'site'
+          colDef.field === "site"
             ? {
                 ...colDef,
                 cellEditorParams: {
@@ -151,7 +164,6 @@ const PhaseGrid = () => {
     const updatedData = event.data;
     const field = event.colDef.field;
     const value = event.newValue;
-    console.log(field, value, event);
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_ROUTE}api/phases/patch`,
@@ -170,6 +182,8 @@ const PhaseGrid = () => {
 
       const result = await response.json();
       console.log("Update successful:", result);
+      await updatePhase(result[0]);
+
     } catch (error) {
       console.error("Error updating data:", error);
     }
@@ -205,8 +219,6 @@ const PhaseGrid = () => {
   const onGridReady = (params) => {
     setGridApi(params.api);
   };
-
-  console.log(rowData);
 
   return (
     // wrapping container with theme & size

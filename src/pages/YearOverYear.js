@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import useAuthStore from "../store/useAuthStore";
-import DemoPage from "../components/year-year-table/DemoPage";
 import useYearOverYear from "../store/useYearOverYear";
 import { Label } from "../components/ui/label";
 import {
@@ -89,7 +88,6 @@ const YearOverYear = () => {
         </div>
       </div>
       <YearGrid />
-      {/* <DemoPage /> */}
     </div>
   );
 };

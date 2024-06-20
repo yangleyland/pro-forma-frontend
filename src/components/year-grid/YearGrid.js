@@ -235,9 +235,9 @@ const YearGrid = () => {
       editable: false,
       cellStyle: (params) => {
         if (params.value && (params.value[0]==="-" || params.value<0)) {
-          return { color: 'red', textAlign: 'right',backgroundColor: (year<CURRENT_YEAR ? "#5a5a5a":getBackgroundColor(params.data.title))};
+          return { color: 'red', textAlign: 'right',backgroundColor: (year<CURRENT_YEAR ? "#878787":getBackgroundColor(params.data.title))};
         }
-        return { textAlign: 'right',backgroundColor:(year<CURRENT_YEAR ? "#5a5a5a":getBackgroundColor(params.data.title))};
+        return { textAlign: 'right',backgroundColor:(year<CURRENT_YEAR ? "#878787":getBackgroundColor(params.data.title))};
       },
       valueFormatter: (params) => params.value,
       sortable: false,

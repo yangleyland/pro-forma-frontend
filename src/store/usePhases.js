@@ -5,15 +5,26 @@ import useAuthStore from "./useAuthStore";
 const usePhases = create((set, get) => ({
   phases: [],
   filteredPhases: [],
+  updatePhase: async (updatedPhase) => {
+    set((state) => ({
+      phases: state.phases.map((phase) =>
+        phase.id === updatedPhase.id ? { ...phase, ...updatedPhase } : phase
+      ),
+    }));
+    await get().calculateCosts(get().phases);
+  },
   addPhase: async (phase) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_ROUTE}api/phases`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(phase),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_ROUTE}api/phases`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(phase),
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to add phase");
       }
@@ -118,6 +129,7 @@ const usePhases = create((set, get) => ({
       );
       set({ filteredPhases });
     }
+    console.log(phases);
     set({ phases: sortedPhases });
   },
 }));
