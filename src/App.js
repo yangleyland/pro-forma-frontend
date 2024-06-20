@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard.js";
 import AdvancedControls from "./pages/AdvancedControls.js";
 import Admin from "./pages/Admin.js";
 import AdminPage from "./pages/AdminPage";
+import AdminLogin from "./pages/AdminLogin";
 import useAuthStore from "./store/useAuthStore.js";
 import Phases from "./pages/Phases.js";
 import YearOverYear from "./pages/YearOverYear.js";
@@ -20,12 +21,14 @@ import useProFormaCalcs from "./store/useProFormaCalcs";
 import useAllSitesCalcs from "./store/useAllSitesCalcs";
 import SetDefaults from "./pages/SetDefaults";
 import useCityInfo from "./store/useCityInfo";
+import ProtectedRoute from "./components/ProtectedRoute";
+import DeleteUser from "./pages/DeleteUser";
+import AdminNav from "./components/AdminNav";
 
 const MainLayout = ({ children }) => {
   const { user, loading } = useAuthStore();
   const navigate = useNavigate();
   useEffect(() => {
-
     if (!user && !loading) {
       navigate("/login");
     }
@@ -41,48 +44,64 @@ const MainLayout = ({ children }) => {
   );
 };
 
+const AdminLayout = ({ children }) => {
+  return (
+    <div className="w-full flex flex-col">
+      <div className="w-full h-[100px] flex items-center justify-center z-50">
+        <AdminNav />
+      </div>
+      <div className=" p-10">{children}</div>
+    </div>
+  );
+};
+
 function App() {
-  const { initializeAuth, user, controlsData,loading,data } = useAuthStore();
-  const { filterPhases, filteredPhases,phases } = usePhases();
-  const { initializeYears,START_YEAR,END_YEAR } = useYears();
+  const { initializeAuth, user, controlsData, loading, data } = useAuthStore();
+  const { filterPhases, filteredPhases, phases } = usePhases();
+  const { initializeYears, START_YEAR, END_YEAR } = useYears();
   const { initYearOverYear } = useYearOverYear();
-  const {initYearOverYear:initAllSites } = useAllSitesYearOverYear();
-  const {advancedCalcs} = useAdvancedCalc();
-  const {setYearSums} = useProFormaCalcs();
-  const {setYearSums:setYearSumsAllSites} = useAllSitesCalcs();
-  const {fetchCityInfo} = useCityInfo();
+  const { initYearOverYear: initAllSites } = useAllSitesYearOverYear();
+  const { advancedCalcs } = useAdvancedCalc();
+  const { setYearSums } = useProFormaCalcs();
+  const { setYearSums: setYearSumsAllSites } = useAllSitesCalcs();
+  const { fetchCityInfo } = useCityInfo();
 
   useEffect(() => {
     fetchCityInfo();
   }, [user]);
-      
+
   useEffect(() => {
-    if (data.length > 0){
+    if (data.length > 0) {
       initializeYears();
     }
-  }, [initializeYears,START_YEAR,END_YEAR,data,phases]);
+  }, [initializeYears, START_YEAR, END_YEAR, data, phases]);
 
   useEffect(() => {
     initializeAuth();
   }, [initializeAuth]);
 
-
   useEffect(() => {
-    
-    if (!loading && controlsData){
+    if (!loading && controlsData) {
       filterPhases();
       setYearSums();
       setYearSumsAllSites();
     }
-  }, [controlsData,advancedCalcs,data,loading,setYearSums,setYearSumsAllSites,filterPhases]);
-
+  }, [
+    controlsData,
+    advancedCalcs,
+    data,
+    loading,
+    setYearSums,
+    setYearSumsAllSites,
+    filterPhases,
+  ]);
 
   useEffect(() => {
     if (user && controlsData) {
       initYearOverYear();
       initAllSites();
     }
-  }, [filteredPhases, user, controlsData,initYearOverYear,initAllSites]);
+  }, [filteredPhases, user, controlsData, initYearOverYear, initAllSites]);
 
   return (
     <div className="flex h-screen">
@@ -135,8 +154,30 @@ function App() {
             </MainLayout>
           }
         />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route
+          path="/delete-user"
+          element={
+            <ProtectedRoute route="/delete-user">
+              <AdminLayout>
+                <DeleteUser />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute route="/admin">
+              <AdminLayout>
+                <Admin />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* <Route path="/admin" element={<AdminPage />} /> */}
         <Route path="/login" element={<Login />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
       </Routes>
     </div>
   );

@@ -135,7 +135,7 @@ const Admin = () => {
   };
 
   return (
-    <div className="w-full h-full border flex justify-center items-center">
+    <div className="w-full h-full flex justify-center items-center">
       <Card className="h-[500px] w-[500px] p-4">
         <CardHeader className="pb-5">
           <CardTitle>Pro Forma Account Addition</CardTitle>
