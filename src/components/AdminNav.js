@@ -17,6 +17,13 @@ const AdminNav = () => {
     <div className=" flex justify-center">
       <NavigationMenu>
         <NavigationMenuList>
+        <NavigationMenuItem>
+            <Link to="/" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Home
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
           <NavigationMenuItem>
             <Link to="/admin" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
