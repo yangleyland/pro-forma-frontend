@@ -32,7 +32,7 @@ const formatElectricVehicles = (data) => {
 };
 
 const YearGrid = () => {
-  const { YEARS } = useYears();
+  const { YEARS,CURRENT_YEAR } = useYears();
   const {
     estimatedElectricVehicles,
     costOfElectricVehicles,
@@ -211,7 +211,6 @@ const YearGrid = () => {
       return;
     }
     setRowData(data);
-    console.log(data);
   }, [data]);
 
   // Row Data: The data to be displayed.
@@ -235,10 +234,10 @@ const YearGrid = () => {
       field: `${year}`,
       editable: false,
       cellStyle: (params) => {
-        if (params.value && params.value[0]==="-") {
-          return { color: 'red', textAlign: 'right',backgroundColor: getBackgroundColor(params.data.title)};
+        if (params.value && (params.value[0]==="-" || params.value<0)) {
+          return { color: 'red', textAlign: 'right',backgroundColor: (year<CURRENT_YEAR ? "#5a5a5a":getBackgroundColor(params.data.title))};
         }
-        return { textAlign: 'right',backgroundColor: getBackgroundColor(params.data.title) };
+        return { textAlign: 'right',backgroundColor:(year<CURRENT_YEAR ? "#5a5a5a":getBackgroundColor(params.data.title))};
       },
       valueFormatter: (params) => params.value,
       sortable: false,
@@ -296,6 +295,7 @@ const YearGrid = () => {
         rowData={rowData}
         columnDefs={colDefs}
         onGridReady={onGridReady}
+        suppressRowHoverHighlight={true}
       />
     </div>
   );
