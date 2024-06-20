@@ -11,6 +11,7 @@ import {
   NavigationMenuViewport,
 } from "./ui/navigation-menu";
 import { Link } from "react-router-dom";
+import { ExitIcon } from "@radix-ui/react-icons";
 
 const AdminNav = () => {
   return (
@@ -20,7 +21,7 @@ const AdminNav = () => {
         <NavigationMenuItem>
             <Link to="/" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Home
+                <ExitIcon/>
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

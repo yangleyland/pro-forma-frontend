@@ -24,6 +24,7 @@ import useCityInfo from "./store/useCityInfo";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DeleteUser from "./pages/DeleteUser";
 import AdminNav from "./components/AdminNav";
+import SetInfo from "./pages/SetInfo";
 
 const MainLayout = ({ children }) => {
   const { user, loading } = useAuthStore();
@@ -151,6 +152,14 @@ function App() {
           element={
             <MainLayout>
               <SetDefaults />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/set-info"
+          element={
+            <MainLayout>
+              <SetInfo />
             </MainLayout>
           }
         />
