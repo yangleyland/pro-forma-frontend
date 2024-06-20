@@ -30,6 +30,8 @@ export const getBackgroundColor = (title) => {
         return '#F2F2F2';
       case 'Procurement Management Cost':
         return '#F2F2F2';
+      case 'Public Works Engineering Costs':
+        return '#F2F2F2';
       case 'Charger Maintenance Costs':
         return '#F2F2F2';
       case 'Charger Network and Management Costs':

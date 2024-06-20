@@ -34,14 +34,12 @@ const Admin = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     const newEmail = email+"@optonyusa.com";
-    console.log(newEmail)
     const { data, error } = await supabase.auth.signUp({
       email:newEmail,
       password,
     });
     
     if (error) {
-      console.log("called")
       setMessage(`${error.message}`);
     } else {
       if (csvFile) {

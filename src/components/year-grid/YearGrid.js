@@ -52,6 +52,7 @@ const YearGrid = () => {
     upgradeCostUtility,
     upgradeCostCustomer,
     procurementManagementCost,
+    estimatedPublicWorksEngineeringCosts,
     chargerIncentives,
     chargerPurchaseCosts,
     chargerMaintenanceCosts,
@@ -141,6 +142,12 @@ const YearGrid = () => {
       ),
       formatElectricVehicles(
         createDataWithTitles(
+          estimatedPublicWorksEngineeringCosts,
+          "Public Works Engineering Costs"
+        )
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(
           chargerMaintenanceCosts,
           "Charger Maintenance Costs"
         )
@@ -207,7 +214,7 @@ const YearGrid = () => {
 
   // Fetch data & update rowData state
   useEffect(() => {
-    if (!data || !data[0]["2025"] || data[0]["2024"] === -1) {
+    if (!data || !data[0].hasOwnProperty("2027")) {
       return;
     }
     setRowData(data);
@@ -225,8 +232,6 @@ const YearGrid = () => {
 
   // Column Definitions: Defines the columns to be displayed.
   // Function to generate year columns
-
-
 
   const generateYearColumns = (years) => {
     return years.map((year) => ({
@@ -264,26 +269,6 @@ const YearGrid = () => {
     setColDefs(combinedColumns);
   }, [YEARS]);
 
-  //   const getRowStyle = (params) => {
-  //     const rowIndex = params.node.rowIndex;
-  //     if (rowIndex < 2) {
-  //       return { background: "#e9e9e9" };
-  //     } else if (rowIndex < 8) {
-  //       return { background: "#ffffff" };
-  //     } else if (rowIndex < 18) {
-  //       return { background: "#e9e9e9" };
-  //     } else if (rowIndex < 23) {
-  //       return { background: "#ffffff" };
-  //     } else if (rowIndex < 27) {
-  //       return { background: "#e9e9e9" };
-  //     } else {
-  //       return { background: "#ffffff" };
-  //     }
-  //   };
-
-  //   const rowStyle = { background: "yellow" };
-
-
   return (
     // wrapping container with theme & size
     <div
@@ -291,7 +276,6 @@ const YearGrid = () => {
       style={{ height: 700 }}
     >
       <AgGridReact
-        rowSelection="single"
         rowData={rowData}
         columnDefs={colDefs}
         onGridReady={onGridReady}

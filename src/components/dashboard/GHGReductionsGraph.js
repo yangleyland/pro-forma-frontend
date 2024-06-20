@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Label,
 } from "recharts";
 import {
   Card,
@@ -53,9 +54,17 @@ const GHGReductionsGraph = () => {
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
-            <YAxis domain={[0, yAxisMax]} tickFormatter={(value) => Math.round(value)} />
+            <YAxis domain={[0, yAxisMax]} tickFormatter={(value) => Math.round(value)} >
+            <Label
+                value="GHG Reductions (MTCO2e)"
+                angle={-90}
+                position="insideRight"
+                offset={40}
+                style={{ textAnchor: 'middle',fontSize: '0.8rem' }}
+              />
+            </YAxis>
             <Tooltip formatter={(value) => Math.round(value)} />
-            <Legend />
+
             <Line
               type="monotone"
               dataKey="ghgReductions"

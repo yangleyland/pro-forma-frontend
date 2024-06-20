@@ -22,7 +22,6 @@ function Dashboard() {
   const { user, fetchData } = useAuthStore();
   const [renderKey, setRenderKey] = useState(0);
   const { cityInfo } = useCityInfo();
-  console.log(cityInfo);
 
   useEffect(() => {
     if (user) {

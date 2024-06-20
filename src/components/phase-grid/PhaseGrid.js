@@ -11,7 +11,8 @@ const formatAsCurrency = (number) => {
 };
 
 const PhaseGrid = () => {
-  const { phases, addPhase, fetchPhases,updatePhase,calculateCosts } = usePhases();
+  const { phases, addPhase, fetchPhases, updatePhase, calculateCosts } =
+    usePhases();
   const { user } = useAuthStore();
   const { controlsData } = useAuthStore.getState();
 
@@ -43,6 +44,7 @@ const PhaseGrid = () => {
       },
     },
     {
+      headerName: "Loan Amount",
       field: "loan_amount",
       type: "currency",
       valueFormatter: (params) => formatAsCurrency(params.value),
@@ -50,6 +52,7 @@ const PhaseGrid = () => {
       editable: true,
     },
     {
+      headerName: "Capital Planning Funding",
       field: "capital_planning_funding",
       type: "currency",
       valueFormatter: (params) => formatAsCurrency(params.value),
@@ -57,6 +60,7 @@ const PhaseGrid = () => {
       editable: true,
     },
     {
+      headerName: "Trenching Costs",
       field: "trenching_costs",
       editable: true,
       type: "currency",
@@ -64,6 +68,7 @@ const PhaseGrid = () => {
       cellStyle: { textAlign: "right" },
     },
     {
+      headerName: "Upgrade Cost Utility",
       field: "upgrade_cost_utility",
       editable: true,
       type: "currency",
@@ -71,6 +76,7 @@ const PhaseGrid = () => {
       cellStyle: { textAlign: "right" },
     },
     {
+      headerName: "Upgrade Cost (customer)",
       field: "upgrade_cost_customer",
       type: "currency",
       editable: true,
@@ -78,17 +84,39 @@ const PhaseGrid = () => {
       cellStyle: { textAlign: "right" },
     },
     {
+      headerName: "Procurement Management Cost",
       field: "procurement_management_cost",
       editable: true,
       type: "currency",
       valueFormatter: (params) => formatAsCurrency(params.value),
       cellStyle: { textAlign: "right" },
     },
-    { field: "port_less_than_10_kw", editable: true, type: "number" },
-    { field: "port_10_20_kw", editable: true, type: "number" },
-    { field: "port_25_kw", editable: true, type: "number" },
-    { field: "port_180_200_kw", editable: true, type: "number" },
     {
+      headerName: "Ports <10 kW",
+      field: "port_less_than_10_kw",
+      editable: true,
+      type: "number",
+    },
+    {
+      headerName: "Ports 10-20 kW",
+      field: "port_10_20_kw",
+      editable: true,
+      type: "number",
+    },
+    {
+      headerName: "Ports 25 kW",
+      field: "port_25_kw",
+      editable: true,
+      type: "number",
+    },
+    {
+      headerName: "Ports 180-200 kW",
+      field: "port_180_200_kw",
+      editable: true,
+      type: "number",
+    },
+    {
+      
       field: "incentives",
       type: "currency",
       valueFormatter: (params) => formatAsCurrency(params.value),
@@ -96,6 +124,15 @@ const PhaseGrid = () => {
       editable: true,
     },
     {
+      headerName: "Public Works Engineering Costs",
+      field: "estimated_public_works_engineering_costs",
+      editable: true,
+      type: "currency",
+      valueFormatter: (params) => formatAsCurrency(params.value),
+      cellStyle: { textAlign: "right" },
+    },
+    {
+      headerName: "Charger Cost",
       field: "cost",
       editable: false,
       type: "currency",
@@ -103,6 +140,7 @@ const PhaseGrid = () => {
       cellStyle: { textAlign: "right", fontWeight: "bold", color: "gray" },
     },
     {
+      headerName: "Installation Cost",
       field: "installCost",
       editable: false,
       type: "currency",
@@ -183,7 +221,6 @@ const PhaseGrid = () => {
       const result = await response.json();
       console.log("Update successful:", result);
       await updatePhase(result[0]);
-
     } catch (error) {
       console.error("Error updating data:", error);
     }

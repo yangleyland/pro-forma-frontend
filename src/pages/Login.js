@@ -28,7 +28,7 @@ function Login() {
 
   return (
     <div className="flex h-screen w-full">
-      <div className="relative bg-black flex-1 h-full">
+      <div className="relative bg-gray-100 flex-1 h-full">
         <img
           src="/logo2.png"
           alt="Logo"
@@ -39,6 +39,7 @@ function Login() {
         <img
           className="h-full object-cover filter grayscale"
           src="charging.JPG"
+          rel="preload" 
           alt="evtruck"
         />
       </div>

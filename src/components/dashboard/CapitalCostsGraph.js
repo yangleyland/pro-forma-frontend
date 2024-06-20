@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Label,
 } from "recharts";
 import {
   Card,
@@ -53,9 +54,16 @@ const CapitalCostsGraph = () => {
           <LineChart data={data} margin={{ left: 40 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
-            <YAxis tickFormatter={formatAsCurrency}/>
+            <YAxis tickFormatter={formatAsCurrency}>
+            <Label
+                value="Total Costs ($)"
+                angle={-90}
+                position="insideRight"
+                offset={90}
+                style={{ textAnchor: 'middle' }}
+              />
+            </YAxis>
             <Tooltip  formatter={formatAsCurrency}/>
-            <Legend />
             <Line
               type="monotone"
               dataKey="totalCosts"

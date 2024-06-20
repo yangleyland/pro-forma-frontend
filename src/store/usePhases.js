@@ -129,7 +129,6 @@ const usePhases = create((set, get) => ({
       );
       set({ filteredPhases });
     }
-    console.log(phases);
     set({ phases: sortedPhases });
   },
 }));

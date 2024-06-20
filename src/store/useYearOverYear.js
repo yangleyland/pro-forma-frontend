@@ -27,6 +27,7 @@ const useYearOverYear = create((set, get) => {
     upgradeCostUtility: {},
     upgradeCostCustomer: {},
     procurementManagementCost: {},
+    estimatedPublicWorksEngineeringCosts: {},
     chargerMaintenanceCosts: {},
     chargerNetworkAndManagementCosts: {},
     chargeMangementSavings: {},
@@ -365,6 +366,7 @@ const useYearOverYear = create((set, get) => {
         upgradeCostUtility,
         upgradeCostCustomer,
         procurementManagementCost,
+        estimatedPublicWorksEngineeringCosts,
         capitalPlanningFunding,
       } = get();
       const totalChargingInfrastructureCosts = useYears
@@ -379,6 +381,7 @@ const useYearOverYear = create((set, get) => {
             trenchingCosts[year] +
             upgradeCostUtility[year] +
             upgradeCostCustomer[year] +
+            estimatedPublicWorksEngineeringCosts[year] +
             procurementManagementCost[year] -
             loanAmount[year]-
             capitalPlanningFunding[year];
@@ -473,6 +476,10 @@ const useYearOverYear = create((set, get) => {
         "procurement_management_cost"
       );
       set({ procurementManagementCost });
+      const estimatedPublicWorksEngineeringCosts = get().sumCostsByYear(
+        "estimated_public_works_engineering_costs"
+      );
+      set({ estimatedPublicWorksEngineeringCosts });
       const chargerIncentives = get().sumCostsByYear(
         "incentives"
       );

@@ -20,6 +20,7 @@ const CashFlow = () => {
   };
 
   const val = annualCostBenefit[year] ?? annualCostBenefit[2040];
+  console.log(val);
 
   return (
     <Card className="h-full">
@@ -36,7 +37,7 @@ const CashFlow = () => {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className={val<=0?"text-red-500":"text-green-500"}>{val && formatCurrency(val)}</CardContent>
+      <CardContent className={val<0?"text-red-500":"text-green-500"}>{val && formatCurrency(val)}</CardContent>
     </Card>
   );
 };

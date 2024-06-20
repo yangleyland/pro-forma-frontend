@@ -103,7 +103,6 @@ const FleetGrid = () => {
     const updatedData = event.data;
     const field = event.colDef.field;
     const value = event.newValue;
-    console.log(field, value, event);
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_ROUTE}api/fleet/patch`,
@@ -142,7 +141,6 @@ const FleetGrid = () => {
         rowData={rowData}
         columnDefs={colDefs}
         onCellValueChanged={handleCellValueChanged}
-        rowSelection="single" // Allow single row selection
         onGridReady={onGridReady}
       />
     </div>
