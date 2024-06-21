@@ -150,17 +150,21 @@ function App() {
         <Route
           path="/set-defaults"
           element={
-            <MainLayout>
-              <SetDefaults />
-            </MainLayout>
+            <div className="w-full">
+              <AdminLayout>
+                <SetDefaults />
+              </AdminLayout>
+            </div>
           }
         />
         <Route
           path="/set-info"
           element={
-            <MainLayout>
-              <SetInfo />
-            </MainLayout>
+            <div className="w-full">
+              <AdminLayout>
+                <SetInfo />
+              </AdminLayout>
+            </div>
           }
         />
         <Route

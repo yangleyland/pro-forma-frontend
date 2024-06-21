@@ -4,6 +4,9 @@ import useAuthStore from "../store/useAuthStore";
 
 function SetDefaults() {
   const { user } = useAuthStore();
+  if (!user) {
+    return <div>Log in with a user!</div>;
+  }
 
   const saveDefault = async (tableName) => {
     if (!user) {return;}

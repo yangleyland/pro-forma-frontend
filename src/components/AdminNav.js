@@ -15,7 +15,7 @@ import { ExitIcon } from "@radix-ui/react-icons";
 
 const AdminNav = () => {
   return (
-    <div className=" flex justify-center">
+    <div className="w-full flex justify-center">
       <NavigationMenu>
         <NavigationMenuList>
         <NavigationMenuItem>
@@ -36,6 +36,20 @@ const AdminNav = () => {
             <Link to="/delete-user" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 Delete User
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link to="/set-info" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Set User Info
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link to="/set-defaults" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Set Defaults
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

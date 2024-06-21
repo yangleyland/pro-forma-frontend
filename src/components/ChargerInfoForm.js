@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import useChargerCosts from "../store/useChargerCosts"; // Assuming this hook provides charger data
-import useAuthStore from "../store/useAuthStore";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -8,37 +7,42 @@ import { Input } from "./ui/input";
 
 const ChargerInfoForm = () => {
   const { chargerCosts } = useChargerCosts(); // Assuming this fetches the charger data for the current user
-    const {user}=useAuthStore
   const [formData, setFormData] = useState({
-    cost_less_than_10_kw: 0,
-    cost_10_20_kw: 0,
-    cost_25_kw: 0,
-    cost_180_200_kw: 0,
-    install_less_than_10_kw:0,
-    install_10_20_kw:0,
-    install_25_kw:0,
-    install_180_200_kw:0,
+    cost_less_than_10_kw: null,
+    cost_10_20_kw: null,
+    cost_25_kw: null,
+    cost_180_200_kw: null,
+    install_less_than_10_kw:null,
+    install_10_20_kw:null,
+    install_25_kw:null,
+    install_180_200_kw:null,
   });
 
   useEffect(() => {
     if (chargerCosts) {
       setFormData({
-        cost_less_than_10_kw: chargerCosts.cost_less_than_10_kw ?? "",
-        cost_10_20_kw: chargerCosts.cost_10_20_kw ?? "",
-        cost_25_kw: chargerCosts.cost_25_kw ?? "",
-        cost_180_200_kw: chargerCosts.cost_180_200_kw ?? "",
-        install_less_than_10_kw: chargerCosts.install_less_than_10_kw ?? "",
-        install_10_20_kw: chargerCosts.install_10_20_kw ?? "",
-        install_25_kw: chargerCosts.install_25_kw ?? "",
-        install_180_200_kw: chargerCosts.install_180_200_kw ?? "",
+        cost_less_than_10_kw: chargerCosts.cost_less_than_10_kw ?? null,
+        cost_10_20_kw: chargerCosts.cost_10_20_kw ?? null,
+        cost_25_kw: chargerCosts.cost_25_kw ?? null,
+        cost_180_200_kw: chargerCosts.cost_180_200_kw ?? null,
+        install_less_than_10_kw: chargerCosts.install_less_than_10_kw ?? null,
+        install_10_20_kw: chargerCosts.install_10_20_kw ?? null,
+        install_25_kw: chargerCosts.install_25_kw ?? null,
+        install_180_200_kw: chargerCosts.install_180_200_kw ?? null,
       });
     }
   }, [chargerCosts]);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value === '' ? null : value,
+    }));
   };
+
 
 
   

@@ -10,9 +10,9 @@ const CityInfoForm = () => {
   const [formData, setFormData] = useState({
     city_name: "",
     city_image: "",
-    cost_benefit_min: 0,
-    cost_benefit_max: 0,
-    cost_savings_max: 0,
+    cost_benefit_min: null,
+    cost_benefit_max: null,
+    cost_savings_max: null,
   });
 
   useEffect(() => {
@@ -20,9 +20,9 @@ const CityInfoForm = () => {
       setFormData({
         city_name: cityInfo.city_name ?? "",
         city_image: cityInfo.city_image ?? "",
-        cost_benefit_min: cityInfo.cost_benefit_min ?? "",
-        cost_benefit_max: cityInfo.cost_benefit_max ?? "",
-        cost_savings_max: cityInfo.cost_savings_max ?? "",
+        cost_benefit_min: cityInfo.cost_benefit_min ?? null,
+        cost_benefit_max: cityInfo.cost_benefit_max ?? null,
+        cost_savings_max: cityInfo.cost_savings_max ?? null,
       });
     }
   }, [cityInfo]);
@@ -32,10 +32,19 @@ const CityInfoForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleNumChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value === '' ? null : value,
+    }));
+  };
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const userId = cityInfo.id; // Assuming userId is available in cityInfo
-
+    console.log(formData)
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_ROUTE}api/city-info/patch/${userId}`,
@@ -85,7 +94,7 @@ const CityInfoForm = () => {
           type="number"
           name="cost_benefit_min"
           value={formData.cost_benefit_min}
-          onChange={handleInputChange}
+          onChange={handleNumChange}
         />
       </div>
       <div>
@@ -94,7 +103,7 @@ const CityInfoForm = () => {
           type="number"
           name="cost_benefit_max"
           value={formData.cost_benefit_max}
-          onChange={handleInputChange}
+          onChange={handleNumChange}
         />
       </div>
       <div>
@@ -103,7 +112,7 @@ const CityInfoForm = () => {
           type="number"
           name="cost_savings_max"
           value={formData.cost_savings_max}
-          onChange={handleInputChange}
+          onChange={handleNumChange}
         />
       </div>
       <Button className="mt-4"  type="submit">Update</Button>
