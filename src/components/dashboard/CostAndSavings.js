@@ -71,7 +71,7 @@ const CostAndSavings = () => {
     <Card>
       <CardHeader>
         <CardTitle>
-          Cost And Savings
+          Costs And Savings
           <span className="text-xl text-gray-600">
             {" "}
             - {controlsData && controlsData.site}
@@ -86,14 +86,14 @@ const CostAndSavings = () => {
             <YAxis domain={[0, maxValue]} tickFormatter={formatAsCurrency} />
             <Tooltip formatter={formatAsCurrency} />
             <Legend />
-            <Bar dataKey="cost" fill="#88a37f" name="Cumulative Cost ($)">
+            <Bar dataKey="cost" fill="#6a7b9e" name="Cumulative Cost ($)">
               <LabelList
                 dataKey="cost"
                 position="top"
                 formatter={formatAsCurrency}
               />
             </Bar>
-            <Bar dataKey="savings" fill="#6a7b9e" name="Cumulative Savings ($)">
+            <Bar dataKey="savings" fill="#88a37f" name="Cumulative Savings ($)">
               <LabelList
                 dataKey="savings"
                 position="top"

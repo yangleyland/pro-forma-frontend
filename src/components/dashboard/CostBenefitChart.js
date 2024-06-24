@@ -110,7 +110,7 @@ const CostBenefitChart = () => {
             <Tooltip formatter={formatAsCurrency} />
             <Legend />
 
-            <Bar dataKey="annualCostBenefit" fill="#6a9e66">
+            <Bar name="Annual Cost Benefit ($)" dataKey="annualCostBenefit" fill="#6a9e66">
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}

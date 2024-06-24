@@ -22,14 +22,13 @@ const GHGReductions = () => {
         <CardDescription>{controlsData && controlsData.site}</CardDescription>
       </CardHeader>
 
-      <CardContent>
-        {ghgReductions[END_YEAR - 1] && Math.floor(ghgReductions[END_YEAR - 1])}
-        {" "}
-        {controlsData && (
+      <CardContent className ="flex">
+        <p><span className="text-lg font-semibold">{ghgReductions[END_YEAR - 1] && Math.floor(ghgReductions[END_YEAR - 1])}</span> {controlsData && (
           <span>
             MTCO<sub>2</sub>e
           </span>
-        )}
+        )}</p>
+        
       </CardContent>
     </Card>
   );

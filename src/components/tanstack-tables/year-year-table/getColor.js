@@ -2,7 +2,7 @@
 
 export const getBackgroundColor = (title) => {
     switch (title) {
-      case 'Estimated Electric Vehicles':
+      case 'Total Electric Vehicles in Fleet':
         return '#F2F2F2';
       case 'Number of New Ports':
         return '#F2F2F2';

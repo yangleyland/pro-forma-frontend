@@ -96,7 +96,7 @@ const YearGrid = () => {
     () => [
       createDataWithTitles(
         estimatedElectricVehicles,
-        "Estimated Electric Vehicles"
+        "Total Electric Vehicles in Fleet"
       ),
       createDataWithTitles(numberOfNewPorts, "Number of New Ports"),
       createEmptyRow("Vehicles"),
