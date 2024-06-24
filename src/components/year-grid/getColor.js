@@ -66,6 +66,14 @@ export const getBackgroundColor = (title) => {
       return "";
     case "Cumulative Cost Benefit":
       return "";
+    case "Vehicles":
+        return "#9fbf95";
+    case "Charging Infrastructure":
+      return "#9fbf95";
+    case "Totals":
+      return "#9fbf95";
+    case "Loan Information":
+      return "#9fbf95";
     default:
       return "";
   }
