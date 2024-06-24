@@ -1,12 +1,11 @@
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
-import { useState, useEffect, useMemo } from "react"; // React State Management
+import { useState, useEffect, useMemo,useRef } from "react"; // React State Management
 import useAuthStore from "../../store/useAuthStore";
 import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
 import { getBackgroundColor,getTextColor } from "./getColor";
-import "./yearcss.css"
 
 // Function to format values as currency
 const formatAsCurrency = (value) => {
@@ -26,8 +25,8 @@ const formatElectricVehicles = (data) => {
         formattedData[key] = data[key]; // Do not format if the key is "title"
       } else {
         formattedData[key] = formatAsCurrency(data[key]);
-        if (data.title==="Total Costs"){
-          formattedData[key] = addHyphen(formattedData[key])
+        if (data.title === "Total Costs") {
+          formattedData[key] = addHyphen(formattedData[key]);
         }
       }
     }
@@ -35,11 +34,11 @@ const formatElectricVehicles = (data) => {
   return formattedData;
 };
 
-const addHyphen= (value) => {
-  return "-"+value;
-}
+const addHyphen = (value) => {
+  return "-" + value;
+};
 const YearGrid = () => {
-  const { YEARS,CURRENT_YEAR } = useYears();
+  const { YEARS, CURRENT_YEAR } = useYears();
   const {
     estimatedElectricVehicles,
     costOfElectricVehicles,
@@ -78,6 +77,14 @@ const YearGrid = () => {
 
   const createDataWithTitles = (data, title) => ({ ...data, title });
 
+  const createEmptyRow = (label) => {
+    const emptyRow = { title: label };
+    YEARS.forEach(year => {
+      emptyRow[year] = '';
+    });
+    emptyRow["empty"] = true;
+    return emptyRow;
+  };
   const data = useMemo(
     () => [
       createDataWithTitles(
@@ -85,6 +92,7 @@ const YearGrid = () => {
         "Estimated Electric Vehicles"
       ),
       createDataWithTitles(numberOfNewPorts, "Number of New Ports"),
+      createEmptyRow("Vehicles"),
       formatElectricVehicles(
         createDataWithTitles(
           costOfElectricVehicles,
@@ -121,6 +129,7 @@ const YearGrid = () => {
           "Existing Vehicle Annual Fuel Cost"
         )
       ),
+      createEmptyRow("Charging Infrastructure"),
       formatElectricVehicles(
         createDataWithTitles(chargerPurchaseCosts, "Charger Purchase Costs")
       ),
@@ -176,9 +185,12 @@ const YearGrid = () => {
         createDataWithTitles(chargerIncentives, "Charger Incentives")
       ),
       formatElectricVehicles(
-        createDataWithTitles(totalInfrastructureCostPreLoan, "Infrastructure Cost Pre-Loan")
+        createDataWithTitles(
+          totalInfrastructureCostPreLoan,
+          "Infrastructure Cost Pre-Loan"
+        )
       ),
-      
+      createEmptyRow("Loan Information"),
       formatElectricVehicles(
         createDataWithTitles(capitalPlanningFunding, "Capital Planning Funding")
       ),
@@ -192,6 +204,7 @@ const YearGrid = () => {
       formatElectricVehicles(
         createDataWithTitles(loanAnnualPayments, "Loan Annual Payments")
       ),
+      createEmptyRow("Totals"),
       formatElectricVehicles(
         createDataWithTitles(totalVehicleCosts, "Total Vehicle Costs")
       ),
@@ -210,7 +223,7 @@ const YearGrid = () => {
           "Total Charging Infrastructure Savings"
         )
       ),
-      formatElectricVehicles(createDataWithTitles(totalCosts, "Total Costs")),
+            formatElectricVehicles(createDataWithTitles(totalCosts, "Total Costs")),
       formatElectricVehicles(
         createDataWithTitles(totalSavings, "Total Savings")
       ),
@@ -226,7 +239,7 @@ const YearGrid = () => {
 
   // Fetch data & update rowData state
   useEffect(() => {
-    if (!data || !data[0].hasOwnProperty("2027")) {
+    if (!data || !data[0].hasOwnProperty("2030")) {
       return;
     }
     setRowData(data);
@@ -251,8 +264,14 @@ const YearGrid = () => {
       field: `${year}`,
       editable: false,
       cellStyle: (params) => {
-
-        return {color:getTextColor(params.data.title,params.value), textAlign: 'right',backgroundColor:(year<CURRENT_YEAR ? "#d1d1d1":getBackgroundColor(params.data.title))};
+        return {
+          color: getTextColor(params.data.title, params.value),
+          textAlign: "right",
+          backgroundColor:
+            (year < CURRENT_YEAR && getBackgroundColor(params.data.title)!=="#9fbf95")
+              ? "#d1d1d1"
+              : getBackgroundColor(params.data.title),
+        };
       },
       valueFormatter: (params) => params.value,
       sortable: false,
@@ -268,16 +287,20 @@ const YearGrid = () => {
         field: "title",
         editable: false,
         cellStyle: (params) => {
-          return { fontWeight: 'bold',backgroundColor: getBackgroundColor(params.value) };
+          return {
+            fontWeight: "bold",
+            backgroundColor: getBackgroundColor(params.value),
+          };
         },
         pinned: "left",
         sortable: false,
-        
       },
       ...generateYearColumns(YEARS),
     ];
     setColDefs(combinedColumns);
   }, [YEARS]);
+  const [showGradient, setShowGradient] = useState(true);
+  const gridRef = useRef(null);
 
   return (
     // wrapping container with theme & size
@@ -285,18 +308,12 @@ const YearGrid = () => {
       className="ag-theme-quartz h-full" // applying the grid theme
       style={{ height: 700 }}
     >
-      <div
-        className={`show-shadow`}
-        style={{ height: '100%' }}
-      >
-        <AgGridReact
-
-          rowData={rowData}
-          columnDefs={colDefs}
-          onGridReady={onGridReady}
-          suppressRowHoverHighlight={true}
-        />
-      </div>
+      <AgGridReact
+        rowData={rowData}
+        columnDefs={colDefs}
+        onGridReady={onGridReady}
+        suppressRowHoverHighlight={true}
+      />
     </div>
   );
 };

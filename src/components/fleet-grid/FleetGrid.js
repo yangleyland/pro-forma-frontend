@@ -61,10 +61,10 @@ const FleetGrid = () => {
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs, setColDefs] = useState([
     { field: "Equipment ID", editable: true },
-    { field: "Electrification Category", cellStyle: { color: "gray" } },
+    { field: "Electrification Category", cellStyle: { color: "gray",border:"none"  } },
     {
       headerName: "Domicile",
-      cellStyle: { color: "gray" },
+      cellStyle: { color: "gray",border:"none"  },
       field: "Simplified Domicile",
     },
     { field: "Replacement Year", editable: true, type: "number" },

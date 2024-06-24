@@ -137,7 +137,7 @@ const PhaseGrid = () => {
       editable: false,
       type: "currency",
       valueFormatter: (params) => formatAsCurrency(params.value),
-      cellStyle: { textAlign: "right", fontWeight: "bold", color: "gray" },
+      cellStyle: { textAlign: "right", fontWeight: "bold", color: "gray",border:"none"  },
     },
     {
       headerName: "Installation Cost",
@@ -145,7 +145,7 @@ const PhaseGrid = () => {
       editable: false,
       type: "currency",
       valueFormatter: (params) => formatAsCurrency(params.value),
-      cellStyle: { textAlign: "right", fontWeight: "bold", color: "gray" },
+      cellStyle: { textAlign: "right", fontWeight: "bold", color: "gray",border:"none" },
     },
   ]);
 
