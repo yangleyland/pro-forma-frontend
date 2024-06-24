@@ -21,6 +21,7 @@ import {
 } from "../ui/card";
 import useProFormaCalcs from "../../store/useProFormaCalcs";
 import useAllSitesCalcs from "../../store/useAllSitesCalcs";
+import useAuthStore from "../../store/useAuthStore";
 
 const transformData = (ghgReductions) => {
   const data = [];
@@ -36,6 +37,7 @@ const transformData = (ghgReductions) => {
 };
 
 const GHGReductionsGraph = () => {
+  const { controlsData } = useAuthStore();
   const { ghgReductions } = useProFormaCalcs();
   const { ghgReductions: allSitesGHGReductions } = useAllSitesCalcs();
   const maxGHGReductions = Math.max(...Object.values(allSitesGHGReductions));
@@ -44,6 +46,9 @@ const GHGReductionsGraph = () => {
   // Rest of the code...
 
   const data = transformData(ghgReductions);
+  const allSitesData =transformData(allSitesGHGReductions);
+  
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -54,22 +59,34 @@ const GHGReductionsGraph = () => {
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
-            <YAxis domain={[0, yAxisMax]} tickFormatter={(value) => Math.round(value)} >
-            <Label
+            <YAxis
+              domain={[0, yAxisMax]}
+              tickFormatter={(value) => Math.round(value)}
+            >
+              <Label
                 value="GHG Reductions (MTCO2e)"
                 angle={-90}
                 position="insideLeft"
-                style={{ textAnchor: 'middle',fontSize: '0.8rem' }}
+                style={{ textAnchor: "middle", fontSize: "0.8rem" }}
               />
             </YAxis>
             <Tooltip formatter={(value) => Math.round(value)} />
-
+            <Legend />
             <Line
               type="monotone"
               dataKey="ghgReductions"
               stroke="#88a37f"
               name="GHG Reductions (MTCO2e)"
             />
+            {allSitesData && (
+              <Line
+                type="monotone"
+                data={allSitesData}
+                dataKey="ghgReductions"
+                stroke="#82ca9d"
+                name="All Sites GHG Reductions (MTCO2e)"
+              />
+            )}
           </LineChart>
         </ResponsiveContainer>
       </CardContent>

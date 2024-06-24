@@ -6,6 +6,7 @@ import useAuthStore from "../../store/useAuthStore";
 import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
 import { getBackgroundColor,getTextColor } from "./getColor";
+import "./yearcss.css"
 
 // Function to format values as currency
 const formatAsCurrency = (value) => {
@@ -284,12 +285,18 @@ const YearGrid = () => {
       className="ag-theme-quartz h-full" // applying the grid theme
       style={{ height: 700 }}
     >
-      <AgGridReact
-        rowData={rowData}
-        columnDefs={colDefs}
-        onGridReady={onGridReady}
-        suppressRowHoverHighlight={true}
-      />
+      <div
+        className={`show-shadow`}
+        style={{ height: '100%' }}
+      >
+        <AgGridReact
+
+          rowData={rowData}
+          columnDefs={colDefs}
+          onGridReady={onGridReady}
+          suppressRowHoverHighlight={true}
+        />
+      </div>
     </div>
   );
 };

@@ -2,10 +2,10 @@ import { create } from "zustand";
 import useYears from "./useYears";
 import useAuthStore from "./useAuthStore";
 import useAdvancedCalc from "./useAdvancedCalc";
-import useAllSitesYearOverYear from "./useAllSitesYearOverYear";
+import useYearOverYear from "./useYearOverYear";
 
 // Create Zustand store
-const useAllSitesCalcs = create((set) => ({
+const useProFormaCalcs = create((set) => ({
   evPurchaseCostSums: {},
   defaultReplacementAllocationSums: {},
   EVAnnualMaintenanceCost: {},
@@ -20,25 +20,25 @@ const useAllSitesCalcs = create((set) => ({
   ghgReductions: {},
 
   setYearSums: () => {
-    const { data,controlsData } = useAuthStore.getState();
-    const controls = controlsData;
+    const { data, controlsData } = useAuthStore.getState();
     const { advancedCalcs } = useAdvancedCalc.getState();
-    const { START_YEAR } = useYears.getState();
+    const { START_YEAR, CURRENT_YEAR } = useYears.getState();
 
     const inflationRate = advancedCalcs.inflation
       ? 1 + advancedCalcs.inflation_escalation_rate
       : 1;
     const electricityInflation = 1 + advancedCalcs.electricity_escalation_rate;
     const gasolineInflation = 1 + advancedCalcs.gasoline_escalation_rate;
+    const controls = controlsData;
     const calculateYearSums = (field) => {
       return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
           .filter((item) => item["Replacement Year"] === year)
-          // .filter((item) => {
-          //   return item.electrification_scenario[
-          //     "Whole Fleet Electrification Excluding Exemptions"
-          //   ];
-          // })
+          .filter((item) => {
+            return item.electrification_scenario[
+              controls["electrification_scenario"]
+            ];
+          })
           .reduce((sum, item) => {
             const value = item[field];
             return sum + value;
@@ -48,7 +48,7 @@ const useAllSitesCalcs = create((set) => ({
           field === "EV Purchase Cost pre-incentive" ||
           field === "Default Replacement Allocation"
         ) {
-          res *= Math.pow(inflationRate, year - START_YEAR);
+          res *= Math.pow(inflationRate, year - CURRENT_YEAR);
         }
         acc[year] = res;
         return acc;
@@ -60,11 +60,11 @@ const useAllSitesCalcs = create((set) => ({
       return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
           .filter((item) => item["Replacement Year"] === year)
-          // .filter((item) => {
-          //   return item.electrification_scenario[
-          //     "Whole Fleet Electrification Excluding Exemptions"
-          //   ];
-          // })
+          .filter((item) => {
+            return item.electrification_scenario[
+              controls["electrification_scenario"]
+            ];
+          })
           .reduce((sum, item) => sum + 1, 0);
         yearCount += yearTotal;
         acc[year] = yearCount;
@@ -74,7 +74,7 @@ const useAllSitesCalcs = create((set) => ({
     const countVehiclesBySite = () => {
       let siteCounts = 0;
       data.forEach((item) => {
-          siteCounts++;
+        siteCounts++;
       });
       return siteCounts;
     };
@@ -86,11 +86,11 @@ const useAllSitesCalcs = create((set) => ({
             (item) =>
               item["Replacement Year"] <= year && item["End of life"] > year
           )
-          // .filter((item) => {
-          //   return item.electrification_scenario[
-          //     "Whole Fleet Electrification Excluding Exemptions"
-          //   ];
-          // })
+          .filter((item) => {
+            return item.electrification_scenario[
+              controls["electrification_scenario"]
+            ];
+          })
           .reduce((sum, item) => {
             const value = item[field];
 
@@ -101,13 +101,13 @@ const useAllSitesCalcs = create((set) => ({
           field === "EV Annual Maintenance Costs" ||
           field === "Existing Vehicle Annual Maintenance"
         ) {
-          res *= Math.pow(inflationRate, year - START_YEAR);
+          res *= Math.pow(inflationRate, year - CURRENT_YEAR);
         }
         if (field === "EV Annual Charging Costs") {
-          res *= Math.pow(electricityInflation, year - START_YEAR);
+          res *= Math.pow(electricityInflation, year - CURRENT_YEAR);
         }
         if (field === "Existing Vehicle Annual Fuel Costs") {
-          res *= Math.pow(gasolineInflation, year - START_YEAR);
+          res *= Math.pow(gasolineInflation, year - CURRENT_YEAR);
         }
         acc[year] = res;
         return acc;
@@ -117,11 +117,11 @@ const useAllSitesCalcs = create((set) => ({
       return useYears.getState().YEARS.reduce((acc, year) => {
         const yearTotal = data
           .filter((item) => item["Replacement Year"] <= year)
-          // .filter((item) => {
-          //   return item.electrification_scenario[
-          //     "Whole Fleet Electrification Excluding Exemptions"
-          //   ];
-          // })
+          .filter((item) => {
+            return item.electrification_scenario[
+              controls["electrification_scenario"]
+            ];
+          })
           .reduce((sum, item) => {
             const value = parseFloat(item[field] || 0);
             return sum + value;
@@ -176,11 +176,9 @@ const useAllSitesCalcs = create((set) => ({
       ghgReductions,
     });
 
-    const {initYearOverYear: initYearOverYearAllSites} = useAllSitesYearOverYear.getState();
-    initYearOverYearAllSites();
-
-
+    const { initYearOverYear } = useYearOverYear.getState();
+    initYearOverYear();
   },
 }));
 
-export default useAllSitesCalcs;
+export default useProFormaCalcs;

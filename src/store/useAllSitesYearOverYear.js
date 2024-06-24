@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import useAllSitesCalcs from "./useAllSitesCalcs";
+import useProFormaCalcs from "./useProFormaCalcs";
 import useAuthStore from "./useAuthStore";
 import usePhases from "./usePhases";
 import useAdvancedCalc from "./useAdvancedCalc";
@@ -17,6 +17,7 @@ const useYearOverYear = create((set, get) => {
     numberOfNewPorts: {},
 
     loanAmount: {},
+    capitalPlanningFunding: {},
     loanPrincipalRemaining: {},
     loanAnnualInterest: {},
     loanAnnualPayments: {},
@@ -26,6 +27,7 @@ const useYearOverYear = create((set, get) => {
     upgradeCostUtility: {},
     upgradeCostCustomer: {},
     procurementManagementCost: {},
+    estimatedPublicWorksEngineeringCosts: {},
     chargerMaintenanceCosts: {},
     chargerNetworkAndManagementCosts: {},
     chargeMangementSavings: {},
@@ -35,6 +37,7 @@ const useYearOverYear = create((set, get) => {
     totalVehicleSavings: {},
     totalChargingInfrastructureCosts: {},
     totalChargingInfrastructureSavings: {},
+    totalInfrastructureCostPreLoan: {},
     totalCosts: {},
     totalSavings: {},
     annualCostBenefit: {},
@@ -42,27 +45,26 @@ const useYearOverYear = create((set, get) => {
     netPresentValue: 0,
 
     setCostOfElectricVehicles: () => {
-      const { evPurchaseCostSums, HVIP, IRA } = useAllSitesCalcs.getState();
-    //   const { controlsData } = useAuthStore.getState();
+      const { evPurchaseCostSums, HVIP, IRA } = useProFormaCalcs.getState();
+      const { controlsData } = useAuthStore.getState();
 
       const costOfElectricVehicles = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
           acc[year] = evPurchaseCostSums[year];
-
-        //   if (controlsData.incentives) {
-        //     acc[year] -= HVIP[year];
-        //   }
-        //   if (controlsData.ira_incentives) {
-        //     acc[year] -= IRA[year];
-        //   }
+          if (controlsData.incentives) {
+            acc[year] -= HVIP[year];
+          }
+          if (controlsData.ira_incentives) {
+            acc[year] -= IRA[year];
+          }
 
           return acc;
         }, {});
       set({ costOfElectricVehicles });
     },
     setDefaultVehicleReplacementFundAllocation: () => {
-      const { defaultReplacementAllocationSums } = useAllSitesCalcs.getState();
+      const { defaultReplacementAllocationSums } = useProFormaCalcs.getState();
       const defaultVehicleReplacementFundAllocation = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
@@ -72,93 +74,96 @@ const useYearOverYear = create((set, get) => {
       set({ defaultVehicleReplacementFundAllocation });
     },
     setEstimatedEVMaintenanceCosts: () => {
-      const { EVAnnualMaintenanceCost } = useAllSitesCalcs.getState();
-    //   const { controlsData } = useAuthStore.getState();
+      const { EVAnnualMaintenanceCost } = useProFormaCalcs.getState();
+      const { filteredPhases } = usePhases.getState();
+      const min = Math.min(...filteredPhases.map((phase) => phase.year));
 
       const estimatedEVMaintenanceCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
-        //   if (year >= controlsData.phase1) {
-        //     acc[year] = EVAnnualMaintenanceCost[year];
-        //   } else {
-        //     acc[year] = 0;
-        //   }
-        acc[year] = EVAnnualMaintenanceCost[year];
+          if (year >= min) {
+            acc[year] = EVAnnualMaintenanceCost[year];
+          } else {
+            acc[year] = 0;
+          }
+
           return acc;
         }, {});
       set({ estimatedEVMaintenanceCosts });
     },
     setElectricVehicleChargingCost: () => {
-      const { EVAnnualChargingCosts } = useAllSitesCalcs.getState();
-    //   const { controlsData } = useAuthStore.getState();
+      const { EVAnnualChargingCosts } = useProFormaCalcs.getState();
+
+      const { filteredPhases } = usePhases.getState();
+      const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const electricVehicleChargingCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
-        //   if (year >= controlsData.phase1) {
-        //     acc[year] = EVAnnualChargingCosts[year];
-        //   } else {
-        //     acc[year] = 0;
-        //   }
-        acc[year] = EVAnnualChargingCosts[year];
+          if (year >= min) {
+            acc[year] = EVAnnualChargingCosts[year];
+          } else {
+            acc[year] = 0;
+          }
+
           return acc;
         }, {});
       set({ electricVehicleChargingCosts });
     },
     setExistingVehicleMaintenanceCosts: () => {
       const { existingVehicleAnnualMaintenanceCost } =
-      useAllSitesCalcs.getState();
-    //   const { controlsData } = useAuthStore.getState();
+        useProFormaCalcs.getState();
+      const { filteredPhases } = usePhases.getState();
+      const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const existingVehicleMaintenanceCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
-        //   if (year >= controlsData.phase1) {
-        //     acc[year] = existingVehicleAnnualMaintenanceCost[year];
-        //   } else {
-        //     acc[year] = 0;
-        //   }
-        acc[year] = existingVehicleAnnualMaintenanceCost[year];
+          if (year >= min) {
+            acc[year] = existingVehicleAnnualMaintenanceCost[year];
+          } else {
+            acc[year] = 0;
+          }
 
           return acc;
         }, {});
       set({ existingVehicleMaintenanceCosts });
     },
     setExistingVehicleFuelCosts: () => {
-      const { existingVehicleAnnualFuelCosts } = useAllSitesCalcs.getState();
-    //   const { controlsData } = useAuthStore.getState();
+      const { existingVehicleAnnualFuelCosts } = useProFormaCalcs.getState();
+      const { filteredPhases } = usePhases.getState();
+      const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const fuelCost = useYears.getState().YEARS.reduce((acc, year) => {
-        // if (year >= controlsData.phase1) {
-        //   acc[year] = existingVehicleAnnualFuelCosts[year];
-        // } else {
-        //   acc[year] = 0;
-        // }
-        acc[year] = existingVehicleAnnualFuelCosts[year];
+        if (year >= min) {
+          acc[year] = existingVehicleAnnualFuelCosts[year];
+        } else {
+          acc[year] = 0;
+        }
 
         return acc;
       }, {});
       set({ existingVehicleAnnualFuelCost: fuelCost });
     },
     setEstimatedElectricVehicles: () => {
-      const { vehicleCounts } = useAllSitesCalcs.getState();
-    //   const { controlsData } = useAuthStore.getState();
+      const { vehicleCounts } = useProFormaCalcs.getState();
+      const { filteredPhases } = usePhases.getState();
+      const min = Math.min(...filteredPhases.map((phase) => phase.year));
       const estimatedElectricVehicles = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
-        //   if (year >= controlsData.phase1) {
-        //     acc[year] = vehicleCounts[year];
-        //   } else {
-        //     acc[year] = -1;
-        //   }
-        acc[year] = vehicleCounts[year];
+          if (year >= min) {
+            acc[year] = vehicleCounts[year];
+          } else {
+            acc[year] = -1;
+          }
 
           return acc;
         }, {});
       set({ estimatedElectricVehicles });
     },
     setNumberOfNewPorts: () => {
-      const { phases } = usePhases.getState();
+      const { filteredPhases } = usePhases.getState();
       const numberOfNewPorts = useYears.getState().YEARS.reduce((acc, year) => {
         acc[year] = 0;
-        phases
+        filteredPhases
           .filter((phase) => phase.year === year)
           .forEach((phase) => {
             acc[year] +=
@@ -173,10 +178,10 @@ const useYearOverYear = create((set, get) => {
       set({ numberOfNewPorts });
     },
     setLoanAmount: () => {
-      const { phases } = usePhases.getState();
+      const { filteredPhases } = usePhases.getState();
       const loanAmount = useYears.getState().YEARS.reduce((acc, year) => {
         acc[year] = 0;
-        phases
+        filteredPhases
           .filter((phase) => phase.year === year)
           .forEach((phase) => {
             acc[year] += phase.loan_amount;
@@ -187,12 +192,12 @@ const useYearOverYear = create((set, get) => {
       set({ loanAmount });
     },
     setChargerPurchaseAmount: () => {
-      const { phases } = usePhases.getState();
+      const { filteredPhases } = usePhases.getState();
       const chargerPurchaseCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
           acc[year] = 0;
-          phases
+          filteredPhases
             .filter((phase) => phase.year === year)
             .forEach((phase) => {
               acc[year] += phase.cost;
@@ -203,12 +208,12 @@ const useYearOverYear = create((set, get) => {
       set({ chargerPurchaseCosts });
     },
     setChargerInstallCosts: () => {
-      const { phases } = usePhases.getState();
+      const { filteredPhases } = usePhases.getState();
       const chargerInstallCosts = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
           acc[year] = 0;
-          phases
+          filteredPhases
             .filter((phase) => phase.year === year)
             .forEach((phase) => {
               acc[year] += phase.installCost;
@@ -219,10 +224,11 @@ const useYearOverYear = create((set, get) => {
       set({ chargerInstallCosts });
     },
     sumCostsByYear: (accessor) => {
-      const { phases } = usePhases.getState();
+      const { filteredPhases } = usePhases.getState();
+      const { controlsData } = useAuthStore.getState();
       const costs = useYears.getState().YEARS.reduce((acc, year) => {
         acc[year] = 0;
-        phases
+        filteredPhases
           .filter((phase) => phase.year === year)
           .forEach((phase) => {
             acc[year] += phase[accessor];
@@ -297,7 +303,7 @@ const useYearOverYear = create((set, get) => {
     },
     setChargeMangementSavings: () => {
       const { advancedCalcs } = useAdvancedCalc.getState();
-      const { vehicleCounts } = useAllSitesCalcs.getState();
+      const { vehicleCounts } = useProFormaCalcs.getState();
 
       const chargeMangementSavings = useYears
         .getState()
@@ -361,6 +367,8 @@ const useYearOverYear = create((set, get) => {
         upgradeCostUtility,
         upgradeCostCustomer,
         procurementManagementCost,
+        estimatedPublicWorksEngineeringCosts,
+        capitalPlanningFunding,
       } = get();
       const totalChargingInfrastructureCosts = useYears
         .getState()
@@ -374,15 +382,33 @@ const useYearOverYear = create((set, get) => {
             trenchingCosts[year] +
             upgradeCostUtility[year] +
             upgradeCostCustomer[year] +
+            estimatedPublicWorksEngineeringCosts[year] +
             procurementManagementCost[year] -
-            loanAmount[year];
+            loanAmount[year] -
+            capitalPlanningFunding[year];
 
           return acc;
         }, {});
       set({ totalChargingInfrastructureCosts });
     },
+    setTotalInfrastructureCostPreLoan: () => {
+      const {
+        totalChargingInfrastructureCosts,loanAmount,capitalPlanningFunding
+      } = get();
+      const totalInfrastructureCostPreLoan = useYears
+      .getState()
+      .YEARS.reduce((acc, year) => {
+        acc[year] =
+        totalChargingInfrastructureCosts[year] +
+          loanAmount[year] +
+          capitalPlanningFunding[year];
+
+        return acc;
+      }, {});
+    set({ totalInfrastructureCostPreLoan });
+    },
     setTotalChargingInfrastructureSavings: () => {
-      const { chargeMangementSavings,chargerIncentives } = get();
+      const { chargeMangementSavings, chargerIncentives } = get();
       const totalChargingInfrastructureSavings = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
@@ -435,7 +461,7 @@ const useYearOverYear = create((set, get) => {
       const { advancedCalcs } = useAdvancedCalc.getState();
       const netPresentValue = useYears.getState().YEARS.reduce((acc, year) => {
         acc +=
-        annualCostBenefit[year] /
+          annualCostBenefit[year] /
           Math.pow(
             1 + advancedCalcs.discount_rate_npv,
             year - useYears.getState().START_YEAR
@@ -467,10 +493,16 @@ const useYearOverYear = create((set, get) => {
         "procurement_management_cost"
       );
       set({ procurementManagementCost });
-      const chargerIncentives = get().sumCostsByYear(
-        "incentives"
+      const estimatedPublicWorksEngineeringCosts = get().sumCostsByYear(
+        "estimated_public_works_engineering_costs"
       );
+      set({ estimatedPublicWorksEngineeringCosts });
+      const chargerIncentives = get().sumCostsByYear("incentives");
       set({ chargerIncentives });
+      const capitalPlanningFunding = get().sumCostsByYear(
+        "capital_planning_funding"
+      );
+      set({ capitalPlanningFunding });
 
       get().setChargerMaintenanceCosts();
       get().setChargerNetworkAndManagementCosts();
@@ -478,6 +510,7 @@ const useYearOverYear = create((set, get) => {
       get().setTotalVehicleCosts();
       get().setTotalVehicleSavings();
       get().setTotalChargingInfrastructureCosts();
+      get().setTotalInfrastructureCostPreLoan();
       get().setTotalChargingInfrastructureSavings();
       get().setTotalCosts();
       get().setTotalSavings();
