@@ -1,7 +1,7 @@
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
-import { useState, useEffect } from "react"; // React State Management
+import { useState, useEffect,useMemo } from "react"; // React State Management
 import usePhases from "../../store/usePhases";
 import { Button } from "../ui/button";
 import useAuthStore from "../../store/useAuthStore";
@@ -42,6 +42,30 @@ const PhaseGrid = () => {
       cellEditorParams: {
         values: siteOptions,
       },
+    },
+    {
+      headerName: "Ports <10 kW",
+      field: "port_less_than_10_kw",
+      editable: true,
+      type: "number",
+    },
+    {
+      headerName: "Ports 10-20 kW",
+      field: "port_10_20_kw",
+      editable: true,
+      type: "number",
+    },
+    {
+      headerName: "Ports 25 kW",
+      field: "port_25_kw",
+      editable: true,
+      type: "number",
+    },
+    {
+      headerName: "Ports 180-200 kW",
+      field: "port_180_200_kw",
+      editable: true,
+      type: "number",
     },
     {
       headerName: "Loan Amount",
@@ -92,38 +116,6 @@ const PhaseGrid = () => {
       cellStyle: { textAlign: "right" },
     },
     {
-      headerName: "Ports <10 kW",
-      field: "port_less_than_10_kw",
-      editable: true,
-      type: "number",
-    },
-    {
-      headerName: "Ports 10-20 kW",
-      field: "port_10_20_kw",
-      editable: true,
-      type: "number",
-    },
-    {
-      headerName: "Ports 25 kW",
-      field: "port_25_kw",
-      editable: true,
-      type: "number",
-    },
-    {
-      headerName: "Ports 180-200 kW",
-      field: "port_180_200_kw",
-      editable: true,
-      type: "number",
-    },
-    {
-      
-      field: "incentives",
-      type: "currency",
-      valueFormatter: (params) => formatAsCurrency(params.value),
-      cellStyle: { textAlign: "right" },
-      editable: true,
-    },
-    {
       headerName: "Public Works Engineering Costs",
       field: "estimated_public_works_engineering_costs",
       editable: true,
@@ -132,12 +124,21 @@ const PhaseGrid = () => {
       cellStyle: { textAlign: "right" },
     },
     {
-      headerName: "Charger Cost",
+      headerName: "Total Estimated EVSE Incentives",
+      field: "incentives",
+      type: "currency",
+      valueFormatter: (params) => formatAsCurrency(params.value),
+      cellStyle: { textAlign: "right" },
+      editable: true,
+    },
+
+    {
+      headerName: "Charger Equipment Cost",
       field: "cost",
       editable: false,
       type: "currency",
       valueFormatter: (params) => formatAsCurrency(params.value),
-      cellStyle: { textAlign: "right", fontWeight: "bold", color: "gray",border:"none"  },
+      cellStyle: { textAlign: "right", fontWeight: "bold", color: "black",border:"none" ,background:"#F2F2F2" },
     },
     {
       headerName: "Installation Cost",
@@ -145,7 +146,7 @@ const PhaseGrid = () => {
       editable: false,
       type: "currency",
       valueFormatter: (params) => formatAsCurrency(params.value),
-      cellStyle: { textAlign: "right", fontWeight: "bold", color: "gray",border:"none" },
+      cellStyle: { textAlign: "right", fontWeight: "bold", color: "black",border:"none",background:"#F2F2F2"  },
     },
   ]);
 
@@ -257,6 +258,12 @@ const PhaseGrid = () => {
     setGridApi(params.api);
   };
 
+  const autoSizeStrategy = useMemo(() => {
+    return {
+      type: "fitCellContents",
+      skipHeader: false,
+    };
+  }, []);
   return (
     // wrapping container with theme & size
     <div
@@ -270,13 +277,14 @@ const PhaseGrid = () => {
         rowSelection="single"
         onCellValueChanged={handleCellValueChanged}
         onGridReady={onGridReady}
+        autoSizeStrategy={autoSizeStrategy}
       />
       <div className="flex gap-2 mt-2">
         <Button variant="secondary" onClick={handleAddRow}>
-          Add Row
+          Add Infrastructure Project
         </Button>
         <Button variant="secondary" onClick={handleDeleteRow}>
-          Delete Selected Row
+          Delete Selected Infrastructure Project
         </Button>
       </div>
     </div>

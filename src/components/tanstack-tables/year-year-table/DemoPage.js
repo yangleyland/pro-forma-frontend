@@ -89,8 +89,8 @@ export default function DemoPage() {
     formatElectricVehicles(createDataWithTitles(totalVehicleSavings, "Total Vehicle Savings")),
     formatElectricVehicles(createDataWithTitles(totalChargingInfrastructureCosts, "Total Charging Infrastructure Costs")),
     formatElectricVehicles(createDataWithTitles(totalChargingInfrastructureSavings, "Total Charging Infrastructure Savings")),
-    formatElectricVehicles(createDataWithTitles(totalCosts, "Total Costs")),
-    formatElectricVehicles(createDataWithTitles(totalSavings, "Total Savings")),
+    formatElectricVehicles(createDataWithTitles(totalCosts, "Tota Annual Costs")),
+    formatElectricVehicles(createDataWithTitles(totalSavings, "Total Annual Savings")),
     formatElectricVehicles(createDataWithTitles(annualCostBenefit, "Annual Cost Benefit")),
     formatElectricVehicles(createDataWithTitles(cumulativeCostBenefit, "Cumulative Cost Benefit")),
   ];

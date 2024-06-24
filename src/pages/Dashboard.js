@@ -16,7 +16,7 @@ import PrioritySite from "../components/PrioritySite";
 import CashFlow from "../components/dashboard/CashFlow";
 import CapitalCostsGraph from "../components/dashboard/CapitalCostsGraph";
 import useCityInfo from "../store/useCityInfo";
-import {Card, CardContent} from "../components/ui/card";
+import { Card, CardContent } from "../components/ui/card";
 
 function Dashboard() {
   const { user, fetchData } = useAuthStore();
@@ -35,12 +35,14 @@ function Dashboard() {
         <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-2">
           Dashboard
         </h1>
-        {(cityInfo && cityInfo.city_image) && <img src={cityInfo.city_image} alt="city" className="h-12 rounded-sm" />}
       </div>
-
       <p className="text-gray-400 text-lg">
         Welcome, {cityInfo && cityInfo.city_name}
       </p>
+
+      {cityInfo && cityInfo.city_image && (
+        <img src={cityInfo.city_image} alt="city" className="border absolute right-14 top-6 h-24 rounded-sm shadow-md" />
+      )}
 
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4 p-4">
         <div className="col-span-3 h-fill">

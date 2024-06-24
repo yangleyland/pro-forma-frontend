@@ -63,13 +63,14 @@ const FleetGrid = () => {
     { field: "Equipment ID", editable: true },
     { field: "Electrification Category", cellStyle: { color: "gray",border:"none"  } },
     {
-      headerName: "Domicile",
+      headerName: "Site",
       cellStyle: { color: "gray",border:"none"  },
       field: "Simplified Domicile",
     },
     { field: "Replacement Year", editable: true, type: "number" },
     { field: "Expected Lifetime", editable: true, type: "number" },
     {
+      headerName:"EV MSRP",
       field: "EV Purchase Cost pre-incentive",
       editable: true,
       type: "currency",
@@ -77,6 +78,7 @@ const FleetGrid = () => {
       cellStyle: { textAlign: "right" },
     },
     {
+      headerName: "ICEV MSRP",
       field: "Default Replacement Allocation",
       editable: true,
       type: "currency",
@@ -84,6 +86,7 @@ const FleetGrid = () => {
       cellStyle: { textAlign: "right" },
     },
     {
+      headerName: "State and Local Incentives",
       field: "HVIP, PG&E EV Fleet Program, and Other Incentives",
       type: "currency",
       editable: true,
@@ -91,6 +94,7 @@ const FleetGrid = () => {
       cellStyle: { textAlign: "right" },
     },
     {
+      headerName: "Federal Incentives",
       field: "IRA Incentives",
       editable: true,
       type: "currency",

@@ -54,9 +54,9 @@ export const getBackgroundColor = (title) => {
         return '#F2F2F2';
       case 'Total Charging Infrastructure Savings':
         return '#F2F2F2';
-      case 'Total Costs':
+      case 'Total Annual Costs':
         return '';
-      case 'Total Savings':
+      case 'Total Annual Savings':
         return '';
       case 'Annual Cost Benefit':
         return '';

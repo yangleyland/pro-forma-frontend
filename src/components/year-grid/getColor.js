@@ -58,16 +58,16 @@ export const getBackgroundColor = (title) => {
       return "#F2F2F2";
     case "Total Charging Infrastructure Savings":
       return "#F2F2F2";
-    case "Total Costs":
+    case "Total Annual Costs":
       return "";
-    case "Total Savings":
+    case "Total Anuual Savings":
       return "";
     case "Annual Cost Benefit":
       return "";
     case "Cumulative Cost Benefit":
       return "";
     case "Vehicles":
-        return "#9fbf95";
+      return "#9fbf95";
     case "Charging Infrastructure":
       return "#9fbf95";
     case "Totals":
@@ -79,17 +79,23 @@ export const getBackgroundColor = (title) => {
   }
 };
 
-export const getTextColor = (title,value)=>{
-  let textColor = "black"
-
-
-
-  if (title==="Total Savings" || title==="Annual Cost Benefit" || title==="Cumulative Cost Benefit" || title==="Total Costs") {
-    if (value && (value[0]==="-" || value<0)) {
-      textColor="red"
-    }else{
-      textColor="green"
+export const getTextColor = (title, value) => {
+  let textColor = "black";
+  if (value === "-") {
+    return "black";
+  }
+  if (
+    title === "Total Annual Savings" ||
+    title === "Annual Cost Benefit" ||
+    title === "Cumulative Cost Benefit" ||
+    title === "Total Annual Costs"
+  ) {
+   
+    if (value && (value[0] === "-" || value < 0)) {
+      textColor = "red";
+    } else {
+      textColor = "green";
     }
   }
   return textColor;
-}
+};

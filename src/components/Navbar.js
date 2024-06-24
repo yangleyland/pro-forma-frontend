@@ -53,13 +53,6 @@ const Navbar = () => {
               Fleet Editor
             </li>
           </Link>
-
-          <Link to="/login" className="text-black">
-            <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <PersonIcon className="mr-2"  width="18" height="18"  />
-              Login
-            </li>
-          </Link>
         </ul>
         <Button variant="outline" onClick={handleLogout}>Logout</Button>
       </nav>

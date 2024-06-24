@@ -15,18 +15,24 @@ const GHGReductions = () => {
   const { END_YEAR } = useYears();
   const { ghgReductions } = useProFormaCalcs();
   const { controlsData } = useAuthStore();
-return (
+  return (
     <Card className="h-full">
-        <CardHeader>
-            <CardTitle>🌳 GHG Reductions</CardTitle>
-            <CardDescription>{controlsData && controlsData.site}</CardDescription>
-        </CardHeader>
+      <CardHeader>
+        <CardTitle>🌳 GHG Reductions</CardTitle>
+        <CardDescription>{controlsData && controlsData.site}</CardDescription>
+      </CardHeader>
 
-        <CardContent>
-            {ghgReductions[END_YEAR-1]&&ghgReductions[END_YEAR-1].toFixed(2)} {controlsData && "MTCO2e"}
-        </CardContent>
+      <CardContent>
+        {ghgReductions[END_YEAR - 1] && Math.floor(ghgReductions[END_YEAR - 1])}
+        {" "}
+        {controlsData && (
+          <span>
+            MTCO<sub>2</sub>e
+          </span>
+        )}
+      </CardContent>
     </Card>
-);
+  );
 };
 
 export default GHGReductions;

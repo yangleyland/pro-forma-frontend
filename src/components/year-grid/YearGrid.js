@@ -1,14 +1,17 @@
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
-import { useState, useEffect, useMemo,useRef } from "react"; // React State Management
+import { useState, useEffect, useMemo, useRef, useCallback } from "react"; // React State Management
 import useAuthStore from "../../store/useAuthStore";
 import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
-import { getBackgroundColor,getTextColor } from "./getColor";
+import { getBackgroundColor, getTextColor } from "./getColor";
 
 // Function to format values as currency
 const formatAsCurrency = (value) => {
+  if (value === 0) {
+    return "-";
+  }
   const absValue = Math.abs(value)
     .toFixed(0)
     .toString()
@@ -25,7 +28,7 @@ const formatElectricVehicles = (data) => {
         formattedData[key] = data[key]; // Do not format if the key is "title"
       } else {
         formattedData[key] = formatAsCurrency(data[key]);
-        if (data.title === "Total Costs") {
+        if (data.title === "Total Annual Costs") {
           formattedData[key] = addHyphen(formattedData[key]);
         }
       }
@@ -35,7 +38,11 @@ const formatElectricVehicles = (data) => {
 };
 
 const addHyphen = (value) => {
-  return "-" + value;
+  if (value[0] === "-") {
+    return value;
+  }else{
+    return "-" + value;
+  }
 };
 const YearGrid = () => {
   const { YEARS, CURRENT_YEAR } = useYears();
@@ -79,8 +86,8 @@ const YearGrid = () => {
 
   const createEmptyRow = (label) => {
     const emptyRow = { title: label };
-    YEARS.forEach(year => {
-      emptyRow[year] = '';
+    YEARS.forEach((year) => {
+      emptyRow[year] = "";
     });
     emptyRow["empty"] = true;
     return emptyRow;
@@ -223,9 +230,11 @@ const YearGrid = () => {
           "Total Charging Infrastructure Savings"
         )
       ),
-            formatElectricVehicles(createDataWithTitles(totalCosts, "Total Costs")),
       formatElectricVehicles(
-        createDataWithTitles(totalSavings, "Total Savings")
+        createDataWithTitles(totalCosts, "Total Annual Costs")
+      ),
+      formatElectricVehicles(
+        createDataWithTitles(totalSavings, "Total Annual Savings")
       ),
       formatElectricVehicles(
         createDataWithTitles(annualCostBenefit, "Annual Cost Benefit")
@@ -242,6 +251,7 @@ const YearGrid = () => {
     if (!data || !data[0].hasOwnProperty("2030")) {
       return;
     }
+    console.log(data);
     setRowData(data);
   }, [data]);
 
@@ -263,12 +273,14 @@ const YearGrid = () => {
       headerName: `${year}`,
       field: `${year}`,
       editable: false,
+      width: 120,
       cellStyle: (params) => {
         return {
           color: getTextColor(params.data.title, params.value),
           textAlign: "right",
           backgroundColor:
-            (year < CURRENT_YEAR && getBackgroundColor(params.data.title)!=="#9fbf95")
+            year < CURRENT_YEAR &&
+            getBackgroundColor(params.data.title) !== "#9fbf95"
               ? "#d1d1d1"
               : getBackgroundColor(params.data.title),
         };
@@ -301,7 +313,24 @@ const YearGrid = () => {
   }, [YEARS]);
   const [showGradient, setShowGradient] = useState(true);
   const gridRef = useRef(null);
+  const autoSizeStrategy = useMemo(() => {
+    return {
+      type: "fitCellContents",
+      skipHeader: false,
+    };
+  }, []);
+  const onFirstDataRendered = useCallback((params) => {
+    // This ensures columns are sized after data is loaded
+    params.api.autoSizeAllColumns();
+  }, []);
 
+  const autoSizeAll = useCallback((skipHeader) => {
+    const allColumnIds = [];
+    gridRef.current.api.getColumns().forEach((column) => {
+      allColumnIds.push(column.getId());
+    });
+    gridRef.current.api.autoSizeColumns(allColumnIds, skipHeader);
+  }, []);
   return (
     // wrapping container with theme & size
     <div
@@ -309,11 +338,15 @@ const YearGrid = () => {
       style={{ height: 700 }}
     >
       <AgGridReact
+        ref={gridRef}
         rowData={rowData}
         columnDefs={colDefs}
         onGridReady={onGridReady}
         suppressRowHoverHighlight={true}
+        suppressCellFocus={true}
+        autoSizeStrategy={autoSizeStrategy}
       />
+      <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20"></div>
     </div>
   );
 };
