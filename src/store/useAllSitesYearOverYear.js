@@ -264,7 +264,7 @@ const useYearOverYear = create((set, get) => {
           loanAnnualPayments[curYear - 1];
         loanAnnualInterest[curYear] =
           loanPrincipalRemaining[curYear] *
-          advancedCalcs.infrastructure_loan_interest_rate;
+          (advancedCalcs.infrastructure_loan_interest_rate/100);
         loanAnnualPayments[curYear] =
           curLoanAmount / advancedCalcs.infrastructure_loan_term +
           loanAnnualInterest[curYear];
@@ -463,7 +463,7 @@ const useYearOverYear = create((set, get) => {
         acc +=
           annualCostBenefit[year] /
           Math.pow(
-            1 + advancedCalcs.discount_rate_npv,
+            1 + (advancedCalcs.discount_rate_npv/100),
             year - useYears.getState().START_YEAR
           );
         return acc;

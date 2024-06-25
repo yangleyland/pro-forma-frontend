@@ -50,16 +50,20 @@ const SoftwareCosts = forwardRef((props, ref) => {
     }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
-      <CardHeader>
+      <CardHeader  className="flex flex-col items-center">
         <CardTitle>Software Controls</CardTitle>
         <CardDescription>
-          Modify software costs of your fleet
+        Modify software financial parameters for your charging stations
         </CardDescription>{" "}
       </CardHeader>
       <CardContent className="w-2/3">
-        <form ref={ref}>
+        <form ref={ref}  onSubmit={handleSubmit}>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
@@ -80,7 +84,7 @@ const SoftwareCosts = forwardRef((props, ref) => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
-                text="Charging Optimization Savings"
+                text="Charging Optimization Savings ($/vehicle)"
                 info="Savings from charging optimization software"
               />
               <Input
@@ -95,7 +99,7 @@ const SoftwareCosts = forwardRef((props, ref) => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
-                text="Charging Management Subscription Costs"
+                text="Charging Management Subscription Costs ($/yr)"
                 info="Subscription cost"
               />
 
@@ -109,7 +113,7 @@ const SoftwareCosts = forwardRef((props, ref) => {
               />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <ControlLabel text="Charging Network Costs" info="Network cost" />
+              <ControlLabel text="Charging Network Costs ($/yr)" info="Network cost" />
               <Input
                 variant="blank"
                 name="charger_network_costs"

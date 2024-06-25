@@ -14,12 +14,12 @@ const PrioritySite = () => {
   const {controlsData} = useAuthStore();
 
   return (
-    <Card className="h-full">
+    <Card className="h-full relative">
       <CardHeader>
         <CardTitle>📍 Selected Site</CardTitle>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="h-3/4 absolute bottom-0 w-full text-xl font-semibold flex items-center justify-center">
       {controlsData && controlsData.site}
       </CardContent>
     </Card>

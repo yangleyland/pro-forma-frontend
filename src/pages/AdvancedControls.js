@@ -21,6 +21,7 @@ function AdvancedControls() {
     const economicsData = new FormData(economicsRef.current);
     const softwareCostsData = new FormData(softwareCostsRef.current);
     const data = {};
+    
     economicsData.forEach((value, key) => {
       data[key] = value;
     });
@@ -28,6 +29,7 @@ function AdvancedControls() {
       data[key] = value;
     });
     data["id"] = user.id;
+    console.log(data)
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_ROUTE}api/advancedcontrols`,

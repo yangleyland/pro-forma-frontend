@@ -18,6 +18,7 @@ import {
 } from "../ui/tooltip";
 import useAdvancedCalc from "../../store/useAdvancedCalc";
 import ControlLabel from "./ControlLabel";
+import { NumericFormat } from "react-number-format";
 
 const Economics = forwardRef((props, ref) => {
   const { advancedCalcs } = useAdvancedCalc();
@@ -53,6 +54,7 @@ const Economics = forwardRef((props, ref) => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    console.log(e.target);
     setFormState((prevState) => ({
       ...prevState,
       [name]: type === "checkbox" ? checked : value,
@@ -69,11 +71,44 @@ const Economics = forwardRef((props, ref) => {
     e.preventDefault();
   };
 
+  const handlePercentChange = (e) => {
+    const { name, value } = e.target;
+    const numericValue = value.replace("%", "");
+    if (
+      numericValue === "" ||
+      (!isNaN(parseFloat(numericValue)) && isFinite(numericValue))
+    ) {
+      handleChange({
+        target: {
+          name,
+          value: numericValue,
+          type: "text",
+        },
+      });
+    }
+  };
+
+  const handlePercentBlur = (e) => {
+    const { name, value } = e.target;
+    if (value !== "") {
+      const percentValue = parseFloat(value).toFixed(2) + "%";
+      handleChange({
+        target: {
+          name,
+          value: percentValue,
+          type: "text",
+        },
+      });
+    }
+  };
+
   return (
     <>
-      <CardHeader>
+      <CardHeader className="flex flex-col items-center">
         <CardTitle>Economic Controls</CardTitle>
-        <CardDescription>Modify economics of your fleet</CardDescription>{" "}
+        <CardDescription>
+          Adjust economic and financial assumptions
+        </CardDescription>{" "}
       </CardHeader>
       <CardContent className="w-2/3">
         <form ref={ref} onSubmit={handleSubmit}>
@@ -100,12 +135,40 @@ const Economics = forwardRef((props, ref) => {
                   info="inflation"
                 />
               </div>
+              <NumericFormat
+                customInput={Input}
+                variant="blank"
+                name="inflation_escalation_rate"
+                value={formState.inflation_escalation_rate}
+                onValueChange={(values) => {
+                  const { value } = values;
+                  handleChange({
+                    target: {
+                      name: "inflation_escalation_rate",
+                      value,
+                      type: "text",
+                    },
+                  });
+                }}
+                thousandSeparator={true}
+                decimalScale={2}
+                allowNegative={false}
+                suffix="%"
+                isAllowed={(values) => {
+                  const { floatValue } = values;
+                  return (
+                    floatValue === undefined ||
+                    (floatValue >= 0 && floatValue <= 100)
+                  );
+                }}
+                placeholder="%"
+              />
               <Input
+                type="hidden"
                 variant="blank"
                 name="inflation_escalation_rate"
                 value={formState.inflation_escalation_rate}
                 onChange={handleChange}
-                type="text"
                 placeholder=""
               />
             </div>
@@ -114,12 +177,40 @@ const Economics = forwardRef((props, ref) => {
                 text="Electricity Escalation Rate"
                 info="Controls the escalation rate of electricity"
               />
+              <NumericFormat
+                customInput={Input}
+                variant="blank"
+                name="electricity_escalation_rate"
+                value={formState.electricity_escalation_rate}
+                onValueChange={(values) => {
+                  const { value } = values;
+                  handleChange({
+                    target: {
+                      name: "electricity_escalation_rate",
+                      value,
+                      type: "text",
+                    },
+                  });
+                }}
+                thousandSeparator={true}
+                decimalScale={2}
+                allowNegative={false}
+                suffix="%"
+                isAllowed={(values) => {
+                  const { floatValue } = values;
+                  return (
+                    floatValue === undefined ||
+                    (floatValue >= 0 && floatValue <= 100)
+                  );
+                }}
+                placeholder="%"
+              />
               <Input
                 variant="blank"
                 name="electricity_escalation_rate"
                 value={formState.electricity_escalation_rate}
                 onChange={handleChange}
-                type="text"
+                type="hidden"
                 placeholder=""
               />
             </div>
@@ -128,18 +219,46 @@ const Economics = forwardRef((props, ref) => {
                 text="Gasoline Escalation Rate"
                 info="Controls the escalation rate of gasoline"
               />
+              <NumericFormat
+                customInput={Input}
+                variant="blank"
+                name="gasoline_escalation_rate"
+                value={formState.gasoline_escalation_rate}
+                onValueChange={(values) => {
+                  const { value } = values;
+                  handleChange({
+                    target: {
+                      name: "gasoline_escalation_rate",
+                      value,
+                      type: "text",
+                    },
+                  });
+                }}
+                thousandSeparator={true}
+                decimalScale={2}
+                allowNegative={false}
+                suffix="%"
+                isAllowed={(values) => {
+                  const { floatValue } = values;
+                  return (
+                    floatValue === undefined ||
+                    (floatValue >= 0 && floatValue <= 100)
+                  );
+                }}
+                placeholder="%"
+              />
               <Input
                 variant="blank"
                 name="gasoline_escalation_rate"
                 value={formState.gasoline_escalation_rate}
                 onChange={handleChange}
-                type="text"
+                type="hidden"
                 placeholder=""
               />
             </div>
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
-                text="Infrastructure Loan Term"
+                text="Infrastructure Loan Term (yrs)"
                 info="Controls the length of time in which the loan will be paid off"
               />
               <Input
@@ -156,12 +275,40 @@ const Economics = forwardRef((props, ref) => {
                 text="Infrastructure Loan Interest Rate"
                 info="Controls the interest rate of the loan"
               />
+              <NumericFormat
+                customInput={Input}
+                variant="blank"
+                name="infrastructure_loan_interest_rate"
+                value={formState.infrastructure_loan_interest_rate}
+                onValueChange={(values) => {
+                  const { value } = values;
+                  handleChange({
+                    target: {
+                      name: "infrastructure_loan_interest_rate",
+                      value,
+                      type: "text",
+                    },
+                  });
+                }}
+                thousandSeparator={true}
+                decimalScale={2}
+                allowNegative={false}
+                suffix="%"
+                isAllowed={(values) => {
+                  const { floatValue } = values;
+                  return (
+                    floatValue === undefined ||
+                    (floatValue >= 0 && floatValue <= 100)
+                  );
+                }}
+                placeholder="%"
+              />
               <Input
                 variant="blank"
                 name="infrastructure_loan_interest_rate"
                 value={formState.infrastructure_loan_interest_rate}
                 onChange={handleChange}
-                type="text"
+                type="hidden"
                 placeholder=""
               />
             </div>
@@ -170,18 +317,46 @@ const Economics = forwardRef((props, ref) => {
                 text="Discount Rate  (NPV)"
                 info="Controls discount rate for calculating the Net Present Value (NPV)"
               />
+              <NumericFormat
+                customInput={Input}
+                variant="blank"
+                name="discount_rate_npv"
+                value={formState.discount_rate_npv}
+                onValueChange={(values) => {
+                  const { value } = values;
+                  handleChange({
+                    target: {
+                      name: "discount_rate_npv",
+                      value,
+                      type: "text",
+                    },
+                  });
+                }}
+                thousandSeparator={true}
+                decimalScale={2}
+                allowNegative={false}
+                suffix="%"
+                isAllowed={(values) => {
+                  const { floatValue } = values;
+                  return (
+                    floatValue === undefined ||
+                    (floatValue >= 0 && floatValue <= 100)
+                  );
+                }}
+                placeholder="%"
+              />
               <Input
                 variant="blank"
                 name="discount_rate_npv"
                 value={formState.discount_rate_npv}
                 onChange={handleChange}
-                type="text"
+                type="hidden"
                 placeholder=""
               />
             </div>
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
-                text="Charger Maintenance Costs (annual)"
+                text="Charger Maintenance Costs  ($/yr)"
                 info="Cost of maintenance, annual per station"
               />
               <Input

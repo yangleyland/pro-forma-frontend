@@ -25,10 +25,10 @@ const useProFormaCalcs = create((set) => ({
     const { START_YEAR,CURRENT_YEAR } = useYears.getState();
 
     const inflationRate = advancedCalcs.inflation
-      ? 1 + advancedCalcs.inflation_escalation_rate
+      ? 1 + (advancedCalcs.inflation_escalation_rate/100)
       : 1;
-    const electricityInflation = 1 + advancedCalcs.electricity_escalation_rate;
-    const gasolineInflation = 1 + advancedCalcs.gasoline_escalation_rate;
+    const electricityInflation = 1 + (advancedCalcs.electricity_escalation_rate/100);
+    const gasolineInflation = 1 + (advancedCalcs.gasoline_escalation_rate/100);
     const controls = controlsData;
     const calculateYearSums = (field) => {
       return useYears.getState().YEARS.reduce((acc, year) => {

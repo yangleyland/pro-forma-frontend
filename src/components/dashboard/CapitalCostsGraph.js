@@ -20,6 +20,9 @@ import {
   CardTitle,
 } from "../ui/card";
 import useYearOverYear from "../../store/useYearOverYear";
+import useAuthStore from "../../store/useAuthStore";
+
+
 const transformData = (totalCosts) => {
   const data = [];
 
@@ -43,11 +46,15 @@ const formatAsCurrency = (value) => {
 
 const CapitalCostsGraph = () => {
   const { totalCosts } = useYearOverYear();
+    const { controlsData } = useAuthStore();
+
   const data = transformData(totalCosts);
   return (
     <Card>
       <CardHeader>
         <CardTitle>Capital Costs</CardTitle>
+        <CardDescription>{controlsData && controlsData.site}</CardDescription>
+
       </CardHeader>
       <CardContent>
         <ResponsiveContainer className="" width="100%" height={200}>

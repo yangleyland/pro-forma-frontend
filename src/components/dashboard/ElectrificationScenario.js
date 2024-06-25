@@ -18,12 +18,12 @@ const ElectrificationScenario = () => {
     }
     
   return (
-    <Card className="h-full">
+    <Card className="relative h-full">
       <CardHeader>
         <CardTitle>🔋 Electrification Scenario</CardTitle>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="h-3/4 absolute bottom-0 w-full flex items-center justify-center font-semibold">
       {controlsData && controlsData.electrification_scenario}
       </CardContent>
     </Card>

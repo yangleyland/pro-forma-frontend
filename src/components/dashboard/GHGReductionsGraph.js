@@ -53,6 +53,7 @@ const GHGReductionsGraph = () => {
     <Card className="h-full">
       <CardHeader>
         <CardTitle>GHG Reductions</CardTitle>
+        <CardDescription>{controlsData && controlsData.site}</CardDescription>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={200}>
