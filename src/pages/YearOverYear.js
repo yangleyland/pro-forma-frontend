@@ -66,7 +66,7 @@ const YearOverYear = () => {
     return <div>Please log in</div>;
   }
   return (
-    <div>
+    <div className="h-full">
       <div className="flex mb-5">
         <h1 className=" scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
           Year Over Year

@@ -13,16 +13,20 @@ import useYearOverYear from "../../store/useYearOverYear";
 // }
 
 const formatCurrency = (value) => {
-  if (value === 0) {
-    return "-";
+  // Check if the value is exactly 0 or rounds to 0
+  if (value === 0 || Math.round(value) === 0) {
+    return "$-";
   }
-  const absValue = Math.abs(value)
-    .toFixed(0)
+  
+  // Round the value to the nearest integer
+  const roundedValue = Math.round(value);
+  
+  const absValue = Math.abs(roundedValue)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return value < 0 ? `-$${absValue}` : `$${absValue}`;
+  
+  return roundedValue < 0 ? `-$${absValue}` : `$${absValue}`;
 };
-
 const CashFlow = () => {
   const { annualCostBenefit } = useYearOverYear();
   const [year, setYear] = useState(2040); // Default year is 2040
@@ -54,7 +58,9 @@ const CashFlow = () => {
 
         <p
           className={
-            val < 0
+            Math.round(val) === 0
+              ? "text-black font-semibold"
+              : Math.round(val) < 0
               ? "text-red-500 font-semibold"
               : "text-green-500 font-semibold"
           }

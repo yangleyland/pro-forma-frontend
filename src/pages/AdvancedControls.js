@@ -10,6 +10,8 @@ import useYearOverYear from "../store/useYearOverYear";
 import useProFormaCalcs from "../store/useProFormaCalcs";
 import ResetButton from "../components/ResetButton";
 import { Card } from "../components/ui/card";
+import CostBenefitChart from "../components/dashboard/CostBenefitChart";
+import CostAndSavings from "../components/dashboard/CostAndSavings";
 
 function AdvancedControls() {
   const economicsRef = useRef(null);
@@ -21,7 +23,7 @@ function AdvancedControls() {
     const economicsData = new FormData(economicsRef.current);
     const softwareCostsData = new FormData(softwareCostsRef.current);
     const data = {};
-    
+
     economicsData.forEach((value, key) => {
       data[key] = value;
     });
@@ -29,7 +31,6 @@ function AdvancedControls() {
       data[key] = value;
     });
     data["id"] = user.id;
-    console.log(data)
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_ROUTE}api/advancedcontrols`,
@@ -61,15 +62,21 @@ function AdvancedControls() {
         </h1>
         <ResetButton tableName="advanced controls" />
       </div>
-      <div className="flex flex-col items-center pb-16">
-        <div className="flex flex-col w-1/2 gap-5">
-          <Button className="w-full" onClick={handleSubmit}>
-            Save
-          </Button>
-          <Card className="flex flex-col items-center">
-            <Economics ref={economicsRef} />
-            <SoftwareCosts ref={softwareCostsRef} />
-          </Card>
+      <div className="w-full flex">
+        <div className="w-1/2 flex flex-col items-center pb-16">
+          <div className="flex flex-col gap-5">
+            <Button className="w-full" onClick={handleSubmit}>
+              Save
+            </Button>
+            <Card className="flex flex-col items-center">
+              <Economics update={handleSubmit} ref={economicsRef} />
+              <SoftwareCosts update={handleSubmit} ref={softwareCostsRef} />
+            </Card>
+          </div>
+        </div>
+        <div className="w-1/2 flex flex-col gap-10">
+          <CostBenefitChart />
+          <CostAndSavings />
         </div>
       </div>
     </div>

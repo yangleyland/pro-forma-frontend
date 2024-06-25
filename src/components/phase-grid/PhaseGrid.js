@@ -5,6 +5,17 @@ import { useState, useEffect,useMemo } from "react"; // React State Management
 import usePhases from "../../store/usePhases";
 import { Button } from "../ui/button";
 import useAuthStore from "../../store/useAuthStore";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { Label } from "../ui/label";
 const formatAsCurrency = (number) => {
   if (number === null || number === undefined) return "";
   return `$${Math.floor(number).toLocaleString()}`;
@@ -278,14 +289,39 @@ const PhaseGrid = () => {
         onCellValueChanged={handleCellValueChanged}
         onGridReady={onGridReady}
         autoSizeStrategy={autoSizeStrategy}
+        undoRedoCellEditing={true}
       />
       <div className="flex gap-2 mt-2">
         <Button variant="secondary" onClick={handleAddRow}>
           Add Infrastructure Project
         </Button>
-        <Button variant="secondary" onClick={handleDeleteRow}>
-          Delete Selected Infrastructure Project
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button  variant="secondary" className="relative">Delete Selected Infrastructure Project</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Are you sure you want to do this?</DialogTitle>
+              <DialogDescription>
+                Deleting a phase is irreversible and will remove all data associated with it.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex items-center space-x-2">
+              <div className="grid flex-1 gap-2">
+                <Label htmlFor="link" className="sr-only">
+                  Link
+                </Label>
+              </div>
+            </div>
+            <DialogFooter className="">
+              <DialogClose asChild>
+                <Button onClick={handleDeleteRow} type="submit">
+                  Delete
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

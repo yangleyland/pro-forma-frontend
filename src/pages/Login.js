@@ -38,7 +38,7 @@ function Login() {
 
         <img
           className="h-full object-cover filter grayscale"
-          src="charging.JPG"
+          src="ProFormaPage.png"
           rel="preload" 
           alt="evtruck"
         />

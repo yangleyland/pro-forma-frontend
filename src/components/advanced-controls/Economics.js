@@ -33,6 +33,7 @@ const Economics = forwardRef((props, ref) => {
     maintenance_costs_annual_per_station: "",
   });
 
+
   useEffect(() => {
     if (advancedCalcs) {
       setFormState({
@@ -71,36 +72,6 @@ const Economics = forwardRef((props, ref) => {
     e.preventDefault();
   };
 
-  const handlePercentChange = (e) => {
-    const { name, value } = e.target;
-    const numericValue = value.replace("%", "");
-    if (
-      numericValue === "" ||
-      (!isNaN(parseFloat(numericValue)) && isFinite(numericValue))
-    ) {
-      handleChange({
-        target: {
-          name,
-          value: numericValue,
-          type: "text",
-        },
-      });
-    }
-  };
-
-  const handlePercentBlur = (e) => {
-    const { name, value } = e.target;
-    if (value !== "") {
-      const percentValue = parseFloat(value).toFixed(2) + "%";
-      handleChange({
-        target: {
-          name,
-          value: percentValue,
-          type: "text",
-        },
-      });
-    }
-  };
 
   return (
     <>
@@ -132,7 +103,7 @@ const Economics = forwardRef((props, ref) => {
               <div className="flex">
                 <ControlLabel
                   text="Inflation Escalation Rate"
-                  info="inflation"
+                  info="Controls the escalation rate of inflation for EV purchase cost, Default Replacement Allocation, and Annual Maintenance Costs "
                 />
               </div>
               <NumericFormat

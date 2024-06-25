@@ -46,8 +46,7 @@ const GHGReductionsGraph = () => {
   // Rest of the code...
 
   const data = transformData(ghgReductions);
-  const allSitesData =transformData(allSitesGHGReductions);
-  
+  const allSitesData = transformData(allSitesGHGReductions);
 
   return (
     <Card className="h-full">
@@ -55,21 +54,19 @@ const GHGReductionsGraph = () => {
         <CardTitle>GHG Reductions</CardTitle>
         <CardDescription>{controlsData && controlsData.site}</CardDescription>
       </CardHeader>
-      <CardContent>
+
+      <CardContent className="relative">
+        <div class="absolute bottom-16 left-4 -rotate-90 origin-top-left translate-y-full pb-2 text-sm text-gray-600">
+          GHG Reductions (MTCO<sub>2</sub>e)
+        </div>
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={data}>
+          <LineChart className="" data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
             <YAxis
               domain={[0, yAxisMax]}
               tickFormatter={(value) => Math.round(value)}
             >
-              <Label
-                value="GHG Reductions (MTCO2e)"
-                angle={-90}
-                position="insideLeft"
-                style={{ textAnchor: "middle", fontSize: "0.8rem" }}
-              />
             </YAxis>
             <Tooltip formatter={(value) => Math.round(value)} />
             <Legend />
@@ -77,7 +74,7 @@ const GHGReductionsGraph = () => {
               type="monotone"
               dataKey="ghgReductions"
               stroke="#88a37f"
-              name="GHG Reductions (MTCO2e)"
+              name="Selected Site"
             />
             {allSitesData && (
               <Line
@@ -85,7 +82,7 @@ const GHGReductionsGraph = () => {
                 data={allSitesData}
                 dataKey="ghgReductions"
                 stroke="#82ca9d"
-                name="All Sites GHG Reductions (MTCO2e)"
+                name="All Sites"
               />
             )}
           </LineChart>

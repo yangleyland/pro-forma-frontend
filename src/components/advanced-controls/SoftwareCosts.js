@@ -23,7 +23,7 @@ const SoftwareCosts = forwardRef((props, ref) => {
   });
 
   useEffect(() => {
-    if (advancedCalcs) {
+    if (advancedCalcs && advancedCalcs.charging_optimization_savings!=null) {
       setFormState({
         charging_optimization: advancedCalcs.charging_optimization ?? false,
         charging_optimization_savings:

@@ -9,14 +9,19 @@ import { getBackgroundColor, getTextColor } from "./getColor";
 
 // Function to format values as currency
 const formatAsCurrency = (value) => {
-  if (value === 0) {
+  // Check if the value is exactly 0 or rounds to 0
+  if (value === 0 || Math.round(value) === 0) {
     return "-";
   }
-  const absValue = Math.abs(value)
-    .toFixed(0)
+  
+  // Round the value to the nearest integer
+  const roundedValue = Math.round(value);
+  
+  const absValue = Math.abs(roundedValue)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return value < 0 ? `-$${absValue}` : `$${absValue}`;
+  
+  return roundedValue < 0 ? `-$${absValue}` : `$${absValue}`;
 };
 
 // Function to format the entire object
@@ -81,6 +86,7 @@ const YearGrid = () => {
     cumulativeCostBenefit,
     totalInfrastructureCostPreLoan,
   } = useYearOverYear();
+
 
   const createDataWithTitles = (data, title) => ({ ...data, title });
 
@@ -251,10 +257,39 @@ const YearGrid = () => {
     if (!data || !data[0].hasOwnProperty("2030")) {
       return;
     }
-    console.log(data);
-    setRowData(data);
+    console.log(loanAnnualInterest,totalCosts)
+    let loanAmountSum = 0;
+    let capitalPlanningFundingSum = 0;
+  
+    const filteredData = data.filter(item => {
+      if (item.title === "Loan Amount" || item.title === "Capital Planning Funding") {
+        const sum = Object.entries(item).reduce((acc, [key, value]) => {
+          if (key !== 'title' && value !== '-') {
+            return 1;
+          }
+          return acc;
+        }, 0);
+  
+        if (item.title === "Loan Amount") {
+          loanAmountSum = sum;
+        } else {
+          capitalPlanningFundingSum = sum;
+        }
+      }
+  
+      // Check if any value other than 'title' is non-zero and not '-'
+      return Object.entries(item).some(([key, value]) => {
+        return key !== 'title' && value !== '-' && value !== 0;
+      });
+    });
+  
+    // Remove "Loan Information" if both sums are 0
+    const finalFilteredData = filteredData.filter(item => 
+      item.title !== "Loan Information" || (loanAmountSum !== 0 || capitalPlanningFundingSum !== 0)
+    );
+  
+    setRowData(finalFilteredData);
   }, [data]);
-
   // Row Data: The data to be displayed.
   const [rowData, setRowData] = useState([]);
 
@@ -335,9 +370,9 @@ const YearGrid = () => {
     // wrapping container with theme & size
     <div
       className="ag-theme-quartz h-full" // applying the grid theme
-      style={{ height: 700 }}
     >
       <AgGridReact
+       style={{ width: '100%', height: '100%' }}
         ref={gridRef}
         rowData={rowData}
         columnDefs={colDefs}
