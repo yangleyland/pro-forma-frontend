@@ -69,7 +69,7 @@ function AdvancedControls() {
           <CostAndSavings />
         </div>
         <div className="w-1/2 flex flex-col items-center pb-16 lg:w-full">
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 lg:w-full">
             <Button className="w-full" onClick={handleSubmit}>
               Apply Changes
             </Button>

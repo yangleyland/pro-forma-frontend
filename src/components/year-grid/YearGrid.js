@@ -7,6 +7,7 @@ import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
 import { getBackgroundColor, getTextColor } from "./getColor";
 
+
 // Function to format values as currency
 const formatAsCurrency = (value) => {
   // Check if the value is exactly 0 or rounds to 0
@@ -256,7 +257,7 @@ const YearGrid = () => {
     if (!data || !data[0].hasOwnProperty("2030")) {
       return;
     }
-    console.log(loanAnnualInterest, totalCosts);
+    console.log(estimatedElectricVehicles);
     let loanAmountSum = 0;
     let capitalPlanningFundingSum = 0;
 

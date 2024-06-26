@@ -5,6 +5,7 @@ import usePhases from "./usePhases";
 import useAdvancedCalc from "./useAdvancedCalc";
 import useYears from "./useYears";
 
+
 const useYearOverYear = create((set, get) => {
   return {
     estimatedElectricVehicles: {},
@@ -149,12 +150,12 @@ const useYearOverYear = create((set, get) => {
       const estimatedElectricVehicles = useYears
         .getState()
         .YEARS.reduce((acc, year) => {
-          if (year >= min) {
-            acc[year] = vehicleCounts[year];
-          } else {
-            acc[year] = -1;
-          }
-
+          // if (year >= min) {
+          //   acc[year] = vehicleCounts[year];
+          // } else {
+          //   acc[year] = -1;
+          // }
+          acc[year] = vehicleCounts[year];
           return acc;
         }, {});
       set({ estimatedElectricVehicles });

@@ -10,12 +10,28 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import YearGrid from "../components/year-grid/YearGrid";
+import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import usePhases from "../store/usePhases"
 
 const YearOverYear = () => {
   const [siteOptions, setSiteOptions] = useState([]);
   const [site, setSite] = useState("");
   const { controlsData, setControlsData, user, data, fetchData } =
     useAuthStore();
+  const {filteredPhases} = usePhases();
+  const {estimatedElectricVehicles} = useYearOverYear();
+  const [error,setError]=useState(false);
+
+  useEffect(() => {
+    
+    const min = Math.min(...filteredPhases.map((phase) => phase.year));
+    console.log(estimatedElectricVehicles,min)
+    const hasError = Object.keys(estimatedElectricVehicles).some((year) => {
+      return year < min && estimatedElectricVehicles[year] > 0;
+    });
+    setError(hasError);
+  }, [filteredPhases, estimatedElectricVehicles]);
 
   useEffect(() => {
     if (user) {
@@ -65,6 +81,8 @@ const YearOverYear = () => {
   if (!user) {
     return <div>Please log in</div>;
   }
+
+
   return (
     <div className="h-full">
       <div className="flex mb-5">
@@ -86,6 +104,13 @@ const YearOverYear = () => {
             </SelectContent>
           </Select>
         </div>
+        {error&&<Alert className="ml-4 w-200" variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Warning</AlertTitle>
+          <AlertDescription>
+            There are vehicles electrified before charging stations
+          </AlertDescription>
+        </Alert>}
       </div>
       <YearGrid />
     </div>
