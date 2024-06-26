@@ -71,10 +71,10 @@ function Dashboard() {
         <div className="col-span-3  lg:col-span-12 row-span-1 h-fill">
           <CashFlow />
         </div>
-        <div className="col-span-4 lg:col-span-12 row-span-1 h-full">
+        <div className="col-span-6 lg:col-span-12 row-span-1 h-full">
           <GHGReductionsGraph />
         </div>
-        <div className="col-span-4 lg:col-span-12 row-span-1 h-full">
+        <div className="col-span-6 lg:col-span-12 row-span-1 h-full">
           <CapitalCostsGraph />
         </div>
         <div className="col-span-4 lg:col-span-12 row-span-1 h-full">

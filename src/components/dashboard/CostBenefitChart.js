@@ -79,6 +79,12 @@ const CostBenefitChart = () => {
 
   const getBarColor = (value) => (value >= 0 ? "#6a9e66" : "#e57373");
 
+  const customLegendPayload = [
+    { value: "Annual Cost Benefit ($)", type: "rect", color: "#6a9e66" },
+    { value: "Annual Cost Benefit (-$)", type: "rect", color: "#e57373" },
+    { value: "Cumulative Cost Benefit ($)", type: "line", color: "#88a37f" },
+  ];
+
   return (
     <Card>
       <CardHeader>
@@ -92,7 +98,7 @@ const CostBenefitChart = () => {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={400}>
-          <ComposedChart data={data} margin={{ left: 50 }}>
+          <ComposedChart data={data} margin={{ left: 60 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
             <YAxis
@@ -102,15 +108,18 @@ const CostBenefitChart = () => {
               <Label
                 value="Cost Benefit ($)"
                 angle={-90}
-                offset={-40}
+                offset={-50}
                 position="insideLeft"
                 style={{ textAnchor: "middle" }}
               />
             </YAxis>
             <Tooltip formatter={formatAsCurrency} />
-            <Legend />
-
-            <Bar name="Annual Cost Benefit ($)" dataKey="annualCostBenefit" fill="#6a9e66">
+            <Legend payload={customLegendPayload} />
+            <Bar
+              name="Annual Cost Benefit ($)"
+              dataKey="annualCostBenefit"
+              fill="#6a9e66"
+            >
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}

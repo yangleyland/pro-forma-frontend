@@ -62,7 +62,7 @@ function AdvancedControls() {
         </h1>
         <ResetButton tableName="advanced controls" />
       </div>
-      <div className="w-full flex lg:flex-col-reverse">
+      <div className="w-full flex flex-row-reverse lg:flex-col-reverse">
         
         <div className="w-1/2 flex flex-col gap-10 lg:w-full">
           <CostBenefitChart />

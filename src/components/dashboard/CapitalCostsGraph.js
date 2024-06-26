@@ -21,7 +21,7 @@ import {
 } from "../ui/card";
 import useYearOverYear from "../../store/useYearOverYear";
 import useAuthStore from "../../store/useAuthStore";
-
+import useAllSitesYearOverYear from "../../store/useAllSitesYearOverYear";
 
 const transformData = (totalCosts) => {
   const data = [];
@@ -45,16 +45,17 @@ const formatAsCurrency = (value) => {
 };
 
 const CapitalCostsGraph = () => {
-  const { totalCosts } = useYearOverYear();
-    const { controlsData } = useAuthStore();
-
-  const data = transformData(totalCosts);
+  const { costOfElectricVehicles } = useYearOverYear();
+  const { costOfElectricVehicles:yearOverYearTotalCapitalCosts } = useAllSitesYearOverYear();
+  const { controlsData } = useAuthStore();
+  const data = transformData(costOfElectricVehicles);
+  const data2 = transformData(yearOverYearTotalCapitalCosts);
+  
   return (
     <Card>
       <CardHeader>
         <CardTitle>Capital Costs</CardTitle>
         <CardDescription>{controlsData && controlsData.site}</CardDescription>
-
       </CardHeader>
       <CardContent>
         <ResponsiveContainer className="" width="100%" height={200}>
@@ -62,20 +63,28 @@ const CapitalCostsGraph = () => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
             <YAxis tickFormatter={formatAsCurrency}>
-            <Label
+              <Label
                 value="Total Costs ($)"
                 angle={-90}
                 position="insideLeft"
                 offset={-40}
-                style={{ textAnchor: 'middle' }}
+                style={{ textAnchor: "middle" }}
               />
             </YAxis>
-            <Tooltip  formatter={formatAsCurrency}/>
+            <Tooltip formatter={formatAsCurrency} />
+            <Legend />
             <Line
               type="monotone"
               dataKey="totalCosts"
               stroke="#6a7b9e"
-              name="Total Costs ($)"
+              name="Selected Site Total Costs ($)"
+            />
+            <Line
+              type="monotone"
+              dataKey="totalCosts"
+              stroke="#82ca9d"
+              name="All Sites Total Costs ($)"
+              data={data2}
             />
           </LineChart>
         </ResponsiveContainer>

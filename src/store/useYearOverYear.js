@@ -44,6 +44,7 @@ const useYearOverYear = create((set, get) => {
     annualCostBenefit: {},
     cumulativeCostBenefit: {},
     netPresentValue: 0,
+    totalCapitalCosts: {},
 
     setCostOfElectricVehicles: () => {
       const { evPurchaseCostSums, HVIP, IRA } = useProFormaCalcs.getState();
@@ -471,6 +472,33 @@ const useYearOverYear = create((set, get) => {
       }, 0);
       set({ netPresentValue });
     },
+    setTotalCapitalCosts: () => {
+      const {
+      costOfElectricVehicles,
+      chargerPurchaseCosts,
+      chargerInstallCosts,
+      trenchingCosts,
+      upgradeCostUtility,
+      upgradeCostCustomer,
+      procurementManagementCost,
+      estimatedPublicWorksEngineeringCosts
+      } = get();
+      const totalCapitalCosts = useYears
+      .getState()
+      .YEARS.reduce((acc, year) => {
+        acc[year] =
+        costOfElectricVehicles[year] +
+        chargerPurchaseCosts[year] +
+        chargerInstallCosts[year] +
+        trenchingCosts[year] +
+        upgradeCostUtility[year] +
+        upgradeCostCustomer[year] +
+        procurementManagementCost[year] +
+        estimatedPublicWorksEngineeringCosts[year];
+        return acc;
+      }, {});
+      set({ totalCapitalCosts });
+    },
     initYearOverYear: () => {
       get().setCostOfElectricVehicles();
       get().setDefaultVehicleReplacementFundAllocation();
@@ -518,6 +546,7 @@ const useYearOverYear = create((set, get) => {
       get().setAnnualCostBenefit();
       get().setCumulativeCostBenefit();
       get().setNetPresentValue();
+      get().setTotalCapitalCosts();
     },
   };
 });
