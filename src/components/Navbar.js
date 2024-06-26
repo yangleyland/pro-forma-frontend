@@ -9,6 +9,7 @@ import {
   BarChartIcon,
   GearIcon,
   DesktopIcon,
+  ExitIcon,
 } from "@radix-ui/react-icons";
 import useAuthStore from "../store/useAuthStore";
 import { Label } from "./ui/label";
@@ -33,7 +34,7 @@ const Navbar = () => {
     navigate("/login");
   };
   return (
-    <div className="h-screen w-[250px] fixed border-r bg-gray-100 rounded-r-xl">
+    <div className="h-screen w-[250px] fixed border-r bg-[#ecf7e6] rounded-r-xl">
       
       <div className="flex items-center justify-left h-8 pl-4 mt-4">
         <img src="/optony.png" alt="Logo" className="h-8" />
@@ -47,7 +48,7 @@ const Navbar = () => {
                 className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 ${
                   isActive
                     ? "bg-[#83a679] text-white"
-                    : "hover:bg-gray-200"
+                    : "hover:bg-[#bacfb4]"
                 }`}
               >
                 <DesktopIcon className="mr-2" width="20" height="20" />
@@ -61,7 +62,7 @@ const Navbar = () => {
                 className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 ${
                   isActive
                     ? "bg-[#83a679] text-white"
-                    : "hover:bg-gray-200"
+                    : "hover:bg-[#bacfb4]"
                 }`}
               >
                 <GearIcon className="mr-2" width="18" height="18" />
@@ -75,7 +76,7 @@ const Navbar = () => {
                 className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 ${
                   isActive
                     ? "bg-[#83a679] text-white"
-                    : "hover:bg-gray-200"
+                    : "hover:bg-[#bacfb4]"
                 }`}
               >
                  <BarChartIcon className="mr-2" width="18" height="18" />
@@ -89,7 +90,7 @@ const Navbar = () => {
                 className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 ${
                   isActive
                     ? "bg-[#83a679] text-white"
-                    : "hover:bg-gray-200"
+                    : "hover:bg-[#bacfb4]"
                 }`}
               >
                  <CalendarIcon className="mr-2" width="18" height="18" />
@@ -103,7 +104,7 @@ const Navbar = () => {
                 className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 ${
                   isActive
                     ? "bg-[#83a679] text-white"
-                    : "hover:bg-gray-200"
+                    : "hover:bg-[#bacfb4]"
                 }`}
               >
                 <Pencil2Icon className="mr-2" width="18" height="18" />
@@ -114,9 +115,15 @@ const Navbar = () => {
         </ul>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" className="relative top-2">
-              Logout
-            </Button>
+          <NavLink>
+
+              <li
+                className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 hover:bg-[#bacfb4]`}
+              >
+                <ExitIcon className="mr-2" width="18" height="18" />
+                Log Out
+              </li>
+          </NavLink>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
@@ -129,7 +136,7 @@ const Navbar = () => {
                 </Label>
               </div>
             </div>
-            <DialogFooter className="">
+            <DialogFooter>
               <DialogClose asChild>
                 <Button onClick={handleLogout} type="submit">
                   Log Out
