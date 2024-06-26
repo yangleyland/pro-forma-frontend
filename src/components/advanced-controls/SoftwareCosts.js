@@ -70,7 +70,6 @@ const SoftwareCosts = forwardRef((props, ref) => {
                 text="Charging Optimization"
                 info="Toggles charging optimization"
               />
-
               <Switch
                 checked={formState.charging_optimization}
                 onCheckedChange={handleSwitchChange}

@@ -87,7 +87,7 @@ const Economics = forwardRef((props, ref) => {
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
                 text="Inflation"
-                info="Toggles inflation on and off"
+                info="Toggles inflation"
               />
               <Switch
                 checked={formState.inflation}
@@ -146,7 +146,7 @@ const Economics = forwardRef((props, ref) => {
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
                 text="Electricity Escalation Rate"
-                info="Controls the escalation rate of electricity"
+                info="Controls the escalation rate of inflation for EV Annual Charging Costs"
               />
               <NumericFormat
                 customInput={Input}
@@ -188,7 +188,7 @@ const Economics = forwardRef((props, ref) => {
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
                 text="Gasoline Escalation Rate"
-                info="Controls the escalation rate of gasoline"
+                info="Controls the escalation rate of inflation for Existing Vehicle Annual Fuel Costs"
               />
               <NumericFormat
                 customInput={Input}
@@ -230,7 +230,7 @@ const Economics = forwardRef((props, ref) => {
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
                 text="Infrastructure Loan Term (yrs)"
-                info="Controls the length of time in which the loan will be paid off"
+                info="Controls the length of of the loan term"
               />
               <Input
                 variant="blank"

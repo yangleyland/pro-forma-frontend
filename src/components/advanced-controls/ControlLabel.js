@@ -12,16 +12,16 @@ const ControlLabel = ({ text, info }) => {
     <TooltipProvider>
       <Tooltip>
         <Label className="w-full">
-          <div className="w-full flex gap-2">
-            {text}
-          <TooltipTrigger asChild>
+          <div className="w-full flex gap-2 relative">
+          <TooltipTrigger className="absolute -left-6" asChild>
               <button>
                 <MdInfoOutline size={15} />
               </button>
             </TooltipTrigger>
+            <p className="inline-block p-0 m-0 text-left whitespace-pre-wrap break-words max-w-[75%]">
+              {text}
+            </p>
             
-
-
           </div>
         </Label>
         <TooltipContent>
