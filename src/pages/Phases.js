@@ -69,8 +69,8 @@ function Phases() {
 
   return (
     <div>
-      <div className="flex gap-9">
-        <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
+      <div className="flex lg:flex-col lg:mb-4">
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4 mr-9 lg:mr-0">
           Infrastructure Phases
         </h1>
         <ResetButton tableName="phases" />

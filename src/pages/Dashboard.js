@@ -44,40 +44,40 @@ function Dashboard() {
         <img
           src={cityInfo.city_image}
           alt="city"
-          className="border absolute right-14 top-6 h-24 rounded-sm shadow-md"
+          className="md:hidden border absolute right-14 top-6 h-24 rounded-sm shadow-md"
         />
       )}
 
-      <div className="grid grid-cols-6 md:grid-cols-12 gap-4 p-4">
-        <div className="col-span-3 h-fill">
+      <div className="grid grid-cols-12 gap-4 p-4">
+        <div className="col-span-3 xl:col-span-12 h-fill">
           <Controls />
         </div>
-        <div className="col-span-5 row-span-1 h-fill">
+        <div className="col-span-5 lg:col-span-12 row-span-1 h-fill">
           <CostBenefitChart />
         </div>
-        <div className="col-span-4  row-span-1 h-fill">
+        <div className="col-span-4 lg:col-span-12 row-span-1 h-fill">
           <CostAndSavings key={renderKey} />
         </div>
 
-        <div className="col-span-3 row-span-1 h-fill">
+        <div className="col-span-3 lg:col-span-12 lg:h-[150px] row-span-1 h-fill">
           <PrioritySite />
         </div>
-        <div className="col-span-3  row-span-1 h-fill">
+        <div className="col-span-3 lg:col-span-12 lg:h-[150px] lg:row-span-2  row-span-1 h-fill">
           <ElectrificationScenario />
         </div>
-        <div className="col-span-3  row-span-1 h-fill">
+        <div className="col-span-3  lg:col-span-12 lg:h-[150px] row-span-1 h-fill">
           <GHGReductions />
         </div>
-        <div className="col-span-3  row-span-1 h-fill">
+        <div className="col-span-3  lg:col-span-12 row-span-1 h-fill">
           <CashFlow />
         </div>
-        <div className="col-span-4 row-span-1 h-full">
+        <div className="col-span-4 lg:col-span-12 row-span-1 h-full">
           <GHGReductionsGraph />
         </div>
-        <div className="col-span-4 row-span-1 h-full">
+        <div className="col-span-4 lg:col-span-12 row-span-1 h-full">
           <CapitalCostsGraph />
         </div>
-        <div className="col-span-4 row-span-1 h-full">
+        <div className="col-span-4 lg:col-span-12 row-span-1 h-full">
           <Timeline />
         </div>
       </div>

@@ -56,19 +56,19 @@ function AdvancedControls() {
 
   return (
     <div>
-      <div className="flex gap-9">
-        <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4">
+      <div className="flex lg:flex-col lg:mb-4">
+      <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-4 mr-9 lg:mr-0">
           Advanced Controls
         </h1>
         <ResetButton tableName="advanced controls" />
       </div>
-      <div className="w-full flex">
+      <div className="w-full flex lg:flex-col-reverse">
         
-        <div className="w-1/2 flex flex-col gap-10">
+        <div className="w-1/2 flex flex-col gap-10 lg:w-full">
           <CostBenefitChart />
           <CostAndSavings />
         </div>
-        <div className="w-1/2 flex flex-col items-center pb-16">
+        <div className="w-1/2 flex flex-col items-center pb-16 lg:w-full">
           <div className="flex flex-col gap-5">
             <Button className="w-full" onClick={handleSubmit}>
               Apply Changes

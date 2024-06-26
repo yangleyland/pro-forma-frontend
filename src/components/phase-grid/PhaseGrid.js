@@ -308,7 +308,7 @@ const PhaseGrid = () => {
       </div>
       
 
-      <div className="flex gap-2 mt-2">
+      <div className="flex lg:flex-col gap-2 mt-2">
         <Button variant="secondary" onClick={handleAddRow}>
           Add Infrastructure Project
         </Button>

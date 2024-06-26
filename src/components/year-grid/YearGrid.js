@@ -359,18 +359,6 @@ const YearGrid = () => {
       skipHeader: false,
     };
   }, []);
-  const onFirstDataRendered = useCallback((params) => {
-    // This ensures columns are sized after data is loaded
-    params.api.autoSizeAllColumns();
-  }, []);
-
-  const autoSizeAll = useCallback((skipHeader) => {
-    const allColumnIds = [];
-    gridRef.current.api.getColumns().forEach((column) => {
-      allColumnIds.push(column.getId());
-    });
-    gridRef.current.api.autoSizeColumns(allColumnIds, skipHeader);
-  }, []);
   return (
     // wrapping container with theme & size
     <div
@@ -384,7 +372,6 @@ const YearGrid = () => {
         onGridReady={onGridReady}
         suppressRowHoverHighlight={true}
         suppressCellFocus={true}
-        autoSizeStrategy={autoSizeStrategy}
       />
       <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
     </div>
