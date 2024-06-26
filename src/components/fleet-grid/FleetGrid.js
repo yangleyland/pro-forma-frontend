@@ -139,8 +139,7 @@ const FleetGrid = () => {
   return (
     // wrapping container with theme & size
     <div
-      className="ag-theme-quartz relative" // applying the grid theme
-      style={{ height: 650 }} // the grid will fill the size of the parent container
+      className="ag-theme-quartz relative h-[95%]" // applying the grid theme
     >
       <AgGridReact
         stopEditingWhenCellsLoseFocus={true}
