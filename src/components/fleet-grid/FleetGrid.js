@@ -61,16 +61,19 @@ const FleetGrid = () => {
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs, setColDefs] = useState([
     { field: "Equipment ID", editable: true },
-    { field: "Electrification Category", cellStyle: { color: "gray",border:"none"  } },
+    {
+      field: "Electrification Category",
+      cellStyle: { color: "gray", border: "none" },
+    },
     {
       headerName: "Site",
-      cellStyle: { color: "gray",border:"none"  },
+      cellStyle: { color: "gray", border: "none" },
       field: "Simplified Domicile",
     },
     { field: "Replacement Year", editable: true, type: "number" },
     { field: "Expected Lifetime", editable: true, type: "number" },
     {
-      headerName:"EV MSRP",
+      headerName: "EV MSRP",
       field: "EV Purchase Cost pre-incentive",
       editable: true,
       type: "currency",
@@ -136,7 +139,7 @@ const FleetGrid = () => {
   return (
     // wrapping container with theme & size
     <div
-      className="ag-theme-quartz" // applying the grid theme
+      className="ag-theme-quartz relative" // applying the grid theme
       style={{ height: 650 }} // the grid will fill the size of the parent container
     >
       <AgGridReact
@@ -147,6 +150,7 @@ const FleetGrid = () => {
         onCellValueChanged={handleCellValueChanged}
         onGridReady={onGridReady}
       />
+      <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
     </div>
   );
 };

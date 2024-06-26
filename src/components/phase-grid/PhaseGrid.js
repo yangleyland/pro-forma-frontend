@@ -1,7 +1,7 @@
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
-import { useState, useEffect,useMemo } from "react"; // React State Management
+import { useState, useEffect, useMemo } from "react"; // React State Management
 import usePhases from "../../store/usePhases";
 import { Button } from "../ui/button";
 import useAuthStore from "../../store/useAuthStore";
@@ -149,7 +149,13 @@ const PhaseGrid = () => {
       editable: false,
       type: "currency",
       valueFormatter: (params) => formatAsCurrency(params.value),
-      cellStyle: { textAlign: "right", fontWeight: "bold", color: "black",border:"none" ,background:"#F2F2F2" },
+      cellStyle: {
+        textAlign: "right",
+        fontWeight: "bold",
+        color: "black",
+        border: "none",
+        background: "#F2F2F2",
+      },
     },
     {
       headerName: "Installation Cost",
@@ -157,7 +163,13 @@ const PhaseGrid = () => {
       editable: false,
       type: "currency",
       valueFormatter: (params) => formatAsCurrency(params.value),
-      cellStyle: { textAlign: "right", fontWeight: "bold", color: "black",border:"none",background:"#F2F2F2"  },
+      cellStyle: {
+        textAlign: "right",
+        fontWeight: "bold",
+        color: "black",
+        border: "none",
+        background: "#F2F2F2",
+      },
     },
   ]);
 
@@ -280,7 +292,8 @@ const PhaseGrid = () => {
     <div
       className="ag-theme-quartz" // applying the grid theme
     >
-      <AgGridReact
+      <div className="relative">
+        <AgGridReact
         domLayout="autoHeight"
         stopEditingWhenCellsLoseFocus={true}
         rowData={rowData}
@@ -291,19 +304,26 @@ const PhaseGrid = () => {
         autoSizeStrategy={autoSizeStrategy}
         undoRedoCellEditing={true}
       />
+      <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
+      </div>
+      
+
       <div className="flex gap-2 mt-2">
         <Button variant="secondary" onClick={handleAddRow}>
           Add Infrastructure Project
         </Button>
         <Dialog>
           <DialogTrigger asChild>
-            <Button  variant="secondary" className="relative">Delete Selected Infrastructure Project</Button>
+            <Button variant="secondary" className="relative">
+              Delete Selected Infrastructure Project
+            </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>Are you sure you want to do this?</DialogTitle>
               <DialogDescription>
-                Deleting a phase is irreversible and will remove all data associated with it.
+                Deleting a phase is irreversible and will remove all data
+                associated with it.
               </DialogDescription>
             </DialogHeader>
             <div className="flex items-center space-x-2">

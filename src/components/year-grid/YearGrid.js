@@ -6,6 +6,7 @@ import useAuthStore from "../../store/useAuthStore";
 import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
 import { getBackgroundColor, getTextColor } from "./getColor";
+import GradientScroll from "react-gradient-scroll-indicator";
 
 // Function to format values as currency
 const formatAsCurrency = (value) => {
@@ -13,14 +14,14 @@ const formatAsCurrency = (value) => {
   if (value === 0 || Math.round(value) === 0) {
     return "-";
   }
-  
+
   // Round the value to the nearest integer
   const roundedValue = Math.round(value);
-  
+
   const absValue = Math.abs(roundedValue)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  
+
   return roundedValue < 0 ? `-$${absValue}` : `$${absValue}`;
 };
 
@@ -45,7 +46,7 @@ const formatElectricVehicles = (data) => {
 const addHyphen = (value) => {
   if (value[0] === "-") {
     return value;
-  }else{
+  } else {
     return "-" + value;
   }
 };
@@ -86,7 +87,6 @@ const YearGrid = () => {
     cumulativeCostBenefit,
     totalInfrastructureCostPreLoan,
   } = useYearOverYear();
-
 
   const createDataWithTitles = (data, title) => ({ ...data, title });
 
@@ -257,37 +257,43 @@ const YearGrid = () => {
     if (!data || !data[0].hasOwnProperty("2030")) {
       return;
     }
-    console.log(loanAnnualInterest,totalCosts)
+    console.log(loanAnnualInterest, totalCosts);
     let loanAmountSum = 0;
     let capitalPlanningFundingSum = 0;
-  
-    const filteredData = data.filter(item => {
-      if (item.title === "Loan Amount" || item.title === "Capital Planning Funding") {
+
+    const filteredData = data.filter((item) => {
+      if (
+        item.title === "Loan Amount" ||
+        item.title === "Capital Planning Funding"
+      ) {
         const sum = Object.entries(item).reduce((acc, [key, value]) => {
-          if (key !== 'title' && value !== '-') {
+          if (key !== "title" && value !== "-") {
             return 1;
           }
           return acc;
         }, 0);
-  
+
         if (item.title === "Loan Amount") {
           loanAmountSum = sum;
         } else {
           capitalPlanningFundingSum = sum;
         }
       }
-  
+
       // Check if any value other than 'title' is non-zero and not '-'
       return Object.entries(item).some(([key, value]) => {
-        return key !== 'title' && value !== '-' && value !== 0;
+        return key !== "title" && value !== "-" && value !== 0;
       });
     });
-  
+
     // Remove "Loan Information" if both sums are 0
-    const finalFilteredData = filteredData.filter(item => 
-      item.title !== "Loan Information" || (loanAmountSum !== 0 || capitalPlanningFundingSum !== 0)
+    const finalFilteredData = filteredData.filter(
+      (item) =>
+        item.title !== "Loan Information" ||
+        loanAmountSum !== 0 ||
+        capitalPlanningFundingSum !== 0
     );
-  
+
     setRowData(finalFilteredData);
   }, [data]);
   // Row Data: The data to be displayed.
@@ -369,10 +375,10 @@ const YearGrid = () => {
   return (
     // wrapping container with theme & size
     <div
-      className="ag-theme-quartz h-full" // applying the grid theme
+      className="ag-theme-quartz h-full relative" // applying the grid theme
     >
       <AgGridReact
-       style={{ width: '100%', height: '100%' }}
+        style={{ width: "100%", height: "100%" }}
         ref={gridRef}
         rowData={rowData}
         columnDefs={colDefs}
@@ -381,7 +387,7 @@ const YearGrid = () => {
         suppressCellFocus={true}
         autoSizeStrategy={autoSizeStrategy}
       />
-      <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20"></div>
+      <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import {
@@ -33,43 +33,82 @@ const Navbar = () => {
     navigate("/login");
   };
   return (
-    <div className="h-screen w-1/6 bg-white border-r fixed">
+    <div className="h-screen w-1/6 border-r fixed bg-gray-100 rounded-r-xl">
       <div className="flex items-center justify-left h-16 pl-4">
         <img src="/optony.png" alt="Logo" className="h-8" />
       </div>
       <nav className=" p-5">
         <ul className="">
-          <Link to="/" className="text-black">
-            <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <DesktopIcon className="mr-2" width="18" height="18" />
-              Dashboard
-            </li>
-          </Link>
-          <Link to="/advanced-controls" className="text-black">
-            <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <GearIcon className="mr-2" width="18" height="18" />
-              Advanced Controls
-            </li>
-          </Link>
-          <Link to="/yearoveryear" className="">
-            <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <BarChartIcon className="mr-2" width="18" height="18" />
-              Year Over Year
-            </li>
-          </Link>
-
-          <Link to="/phases" className="">
-            <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <CalendarIcon className="mr-2" width="18" height="18" />
-              Infrastructure Phases
-            </li>
-          </Link>
-          <Link to="/fleet-editor" className="">
-            <li className="flex items-center rounded-md py-2 text-sm font-medium mb-2 hover:bg-gray-200 py-1 px-4">
-              <Pencil2Icon className="mr-2" width="18" height="18" />
-              Fleet Editor
-            </li>
-          </Link>
+          <NavLink to="/">
+            {({ isActive }) => (
+              <li
+                className={`flex items-center rounded-md py-2 text-sm font-medium mb-2 px-4 ${
+                  isActive
+                    ? "bg-[#83a679] text-white"
+                    : "hover:bg-gray-200"
+                }`}
+              >
+                <DesktopIcon className="mr-2" width="18" height="18" />
+                Dashboard
+              </li>
+            )}
+          </NavLink>
+          <NavLink to="/advanced-controls">
+            {({ isActive }) => (
+              <li
+                className={`flex items-center rounded-md py-2 text-sm font-medium mb-2 px-4 ${
+                  isActive
+                    ? "bg-[#83a679] text-white"
+                    : "hover:bg-gray-200"
+                }`}
+              >
+                <GearIcon className="mr-2" width="18" height="18" />
+                Advanced Controls
+              </li>
+            )}
+          </NavLink>
+          <NavLink to="/yearoveryear">
+            {({ isActive }) => (
+              <li
+                className={`flex items-center rounded-md py-2 text-sm font-medium mb-2 px-4 ${
+                  isActive
+                    ? "bg-[#83a679] text-white"
+                    : "hover:bg-gray-200"
+                }`}
+              >
+                 <BarChartIcon className="mr-2" width="18" height="18" />
+                 Year Over Year
+              </li>
+            )}
+          </NavLink>
+          <NavLink to="/phases">
+            {({ isActive }) => (
+              <li
+                className={`flex items-center rounded-md py-2 text-sm font-medium mb-2 px-4 ${
+                  isActive
+                    ? "bg-[#83a679] text-white"
+                    : "hover:bg-gray-200"
+                }`}
+              >
+                 <CalendarIcon className="mr-2" width="18" height="18" />
+                 Infrastructure Phases
+              </li>
+            )}
+          </NavLink>
+          <NavLink to="/fleet-editor">
+            {({ isActive }) => (
+              <li
+                className={`flex items-center rounded-md py-2 text-sm font-medium mb-2 px-4 ${
+                  isActive
+                    ? "bg-[#83a679] text-white"
+                    : "hover:bg-gray-200"
+                }`}
+              >
+                <Pencil2Icon className="mr-2" width="18" height="18" />
+                Fleet Editor
+              </li>
+            )}
+          </NavLink>
         </ul>
         <Dialog>
           <DialogTrigger asChild>
