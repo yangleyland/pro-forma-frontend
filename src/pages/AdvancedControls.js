@@ -63,20 +63,21 @@ function AdvancedControls() {
         <ResetButton tableName="advanced controls" />
       </div>
       <div className="w-full flex">
+        
+        <div className="w-1/2 flex flex-col gap-10">
+          <CostBenefitChart />
+          <CostAndSavings />
+        </div>
         <div className="w-1/2 flex flex-col items-center pb-16">
           <div className="flex flex-col gap-5">
             <Button className="w-full" onClick={handleSubmit}>
-              Save
+              Apply Changes
             </Button>
             <Card className="flex flex-col items-center">
               <Economics update={handleSubmit} ref={economicsRef} />
               <SoftwareCosts update={handleSubmit} ref={softwareCostsRef} />
             </Card>
           </div>
-        </div>
-        <div className="w-1/2 flex flex-col gap-10">
-          <CostBenefitChart />
-          <CostAndSavings />
         </div>
       </div>
     </div>

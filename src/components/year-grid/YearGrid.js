@@ -6,7 +6,6 @@ import useAuthStore from "../../store/useAuthStore";
 import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
 import { getBackgroundColor, getTextColor } from "./getColor";
-import GradientScroll from "react-gradient-scroll-indicator";
 
 // Function to format values as currency
 const formatAsCurrency = (value) => {

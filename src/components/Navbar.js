@@ -33,22 +33,24 @@ const Navbar = () => {
     navigate("/login");
   };
   return (
-    <div className="h-screen w-1/6 border-r fixed bg-gray-100 rounded-r-xl">
-      <div className="flex items-center justify-left h-16 pl-4">
+    <div className="h-screen w-[250px] fixed border-r bg-gray-100 rounded-r-xl">
+      
+      <div className="flex items-center justify-left h-8 pl-4 mt-4">
         <img src="/optony.png" alt="Logo" className="h-8" />
       </div>
+      <p className="font-mono text-[#505c54] pl-4 text-xl font-bold">Pro Forma</p>
       <nav className=" p-5">
         <ul className="">
           <NavLink to="/">
             {({ isActive }) => (
               <li
-                className={`flex items-center rounded-md py-2 text-sm font-medium mb-2 px-4 ${
+                className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 ${
                   isActive
                     ? "bg-[#83a679] text-white"
                     : "hover:bg-gray-200"
                 }`}
               >
-                <DesktopIcon className="mr-2" width="18" height="18" />
+                <DesktopIcon className="mr-2" width="20" height="20" />
                 Dashboard
               </li>
             )}
@@ -56,7 +58,7 @@ const Navbar = () => {
           <NavLink to="/advanced-controls">
             {({ isActive }) => (
               <li
-                className={`flex items-center rounded-md py-2 text-sm font-medium mb-2 px-4 ${
+                className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 ${
                   isActive
                     ? "bg-[#83a679] text-white"
                     : "hover:bg-gray-200"
@@ -70,7 +72,7 @@ const Navbar = () => {
           <NavLink to="/yearoveryear">
             {({ isActive }) => (
               <li
-                className={`flex items-center rounded-md py-2 text-sm font-medium mb-2 px-4 ${
+                className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 ${
                   isActive
                     ? "bg-[#83a679] text-white"
                     : "hover:bg-gray-200"
@@ -84,7 +86,7 @@ const Navbar = () => {
           <NavLink to="/phases">
             {({ isActive }) => (
               <li
-                className={`flex items-center rounded-md py-2 text-sm font-medium mb-2 px-4 ${
+                className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 ${
                   isActive
                     ? "bg-[#83a679] text-white"
                     : "hover:bg-gray-200"
@@ -98,7 +100,7 @@ const Navbar = () => {
           <NavLink to="/fleet-editor">
             {({ isActive }) => (
               <li
-                className={`flex items-center rounded-md py-2 text-sm font-medium mb-2 px-4 ${
+                className={`flex items-center rounded-md py-4 text-sm font-medium mb-2 px-4 ${
                   isActive
                     ? "bg-[#83a679] text-white"
                     : "hover:bg-gray-200"

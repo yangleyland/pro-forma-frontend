@@ -30,7 +30,7 @@ function Dashboard() {
   }, [fetchData, user]);
 
   return (
-    <div>
+    <>
       <div className="flex justify-between pr-4">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-2">
           Dashboard
@@ -41,7 +41,11 @@ function Dashboard() {
       </p>
 
       {cityInfo && cityInfo.city_image && (
-        <img src={cityInfo.city_image} alt="city" className="border absolute right-14 top-6 h-24 rounded-sm shadow-md" />
+        <img
+          src={cityInfo.city_image}
+          alt="city"
+          className="border absolute right-14 top-6 h-24 rounded-sm shadow-md"
+        />
       )}
 
       <div className="grid grid-cols-6 md:grid-cols-12 gap-4 p-4">
@@ -76,19 +80,8 @@ function Dashboard() {
         <div className="col-span-4 row-span-1 h-full">
           <Timeline />
         </div>
-        {/* <div className="col-span-3 row-span-1 flex gap-4 flex-col h-full justify-between">
-          <GHGReductions />
-          <PrioritySite />
-        </div>
-
-        <div className="col-span-3 row-span-1 flex gap-4 flex-col h-full justify-between">
-          <ElectrificationScenario />
-          <CashFlow />
-        </div> */}
       </div>
-
-      {/* <Calculations /> */}
-    </div>
+    </>
   );
 }
 

@@ -37,10 +37,10 @@ const MainLayout = ({ children }) => {
 
   return (
     <div className="flex w-full">
-      <div className="w-1/6 z-50">
-        <Navbar />
+      <div className="w-[250px] z-50">
+        <Navbar className=""/>
       </div>
-      <div className="w-5/6 p-10">{children}</div>
+      <div className=" w-1/2 flex-grow p-10">{children}</div>
     </div>
   );
 };
