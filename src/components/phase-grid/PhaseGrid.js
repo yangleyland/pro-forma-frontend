@@ -294,6 +294,7 @@ const PhaseGrid = () => {
     if (phaseColumns && params.api) {
       const res = params.api.applyColumnState({
         state: phaseColumns,
+        applyOrder: true,
       });
       if(!res){
         params.api.autoSizeAllColumns()

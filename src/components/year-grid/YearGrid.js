@@ -296,7 +296,6 @@ const YearGrid = () => {
         loanAmountSum !== 0 ||
         capitalPlanningFundingSum !== 0
     );
-
     setRowData(finalFilteredData);
   }, [data]);
   // Row Data: The data to be displayed.
@@ -312,7 +311,9 @@ const YearGrid = () => {
       console.log(yearColumns)
       const res = params.api.applyColumnState({
         state: yearColumns,
+        applyOrder: true,
       });
+      console.log(res)
     }
   };
 
@@ -327,7 +328,7 @@ const YearGrid = () => {
       headerName: `${year}`,
       field: `${year}`,
       editable: false,
-      width: isEmpty(yearColumns)? 150 : undefined,
+      width: 150,
       cellStyle: (params) => {
         return {
           color: getTextColor(params.data.title, params.value),
@@ -345,7 +346,6 @@ const YearGrid = () => {
   };
   const onGridPreDestroyed = (event) => {
     const gridState = event.api.getColumnState();
-    console.log(gridState)
     setYearColumns(gridState)
   };
 
@@ -386,7 +386,7 @@ const YearGrid = () => {
       <AgGridReact
         style={{ width: "100%", height: "100%" }}
         ref={gridRef}
-        suppressColumnVirtualisation={true}
+        // suppressColumnVirtualisation={true}
         rowData={rowData}
         columnDefs={colDefs}
         onGridReady={onGridReady}

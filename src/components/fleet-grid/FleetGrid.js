@@ -12,7 +12,7 @@ const formatAsCurrency = (number) => {
 
 const FleetGrid = () => {
   const {fleet, setFleetState} = useColumnState();
-  const { data } = useAuthStore();
+  const { data,updateData } = useAuthStore();
   const gridRef = useRef(null);
   // Fetch data & update rowData state
   useEffect(() => {
@@ -28,12 +28,12 @@ const FleetGrid = () => {
   const onGridReady = (params) => {
     setGridApi(params.api);
     params.api.addEventListener("bodyScroll", onBodyScroll);
-    // Restore column state, sort state, and filter state
 
     if (fleet && params.api) {
       console.log(fleet);
       const res = params.api.applyColumnState({
         state: fleet,
+        applyOrder: true,
       });
       console.log(res);
       if(!res){
@@ -137,6 +137,8 @@ const FleetGrid = () => {
 
       const result = await response.json();
       console.log("Update successful:", result);
+      updateData(result[0])
+
     } catch (error) {
       console.error("Error updating data:", error);
     }

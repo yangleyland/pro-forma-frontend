@@ -18,6 +18,16 @@ const useAuthStore = create((set, get) => ({
 
   //setting controls
   setData: (newData) => set({ data: newData }),
+  updateData: (newData) => {
+    const currentData = get().data;
+    const updatedData = currentData.map(item => {
+      if (item.equipment_id === newData.equipment_id) {
+        return newData;
+      }
+      return item;
+    });
+    set({ data: updatedData });
+  },
   setControlsData: (controls) => {
 
     const uniqueDomiciles = [...new Set(get().data.map(item => item["Simplified Domicile"]))];

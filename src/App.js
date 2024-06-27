@@ -82,7 +82,8 @@ function App() {
   }, [initializeAuth]);
 
   useEffect(() => {
-    if (!loading && controlsData) {
+    if (!loading && controlsData && advancedCalcs && data) {
+      console.log("called")
       filterPhases();
       setYearSums();
       setYearSumsAllSites();
@@ -98,7 +99,7 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (user && controlsData) {
+    if (user && controlsData && filteredPhases) {
       initYearOverYear();
       initAllSites();
     }
