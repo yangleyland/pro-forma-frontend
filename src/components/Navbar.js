@@ -39,7 +39,7 @@ const Navbar = () => {
       <div className="flex items-center justify-left h-8 pl-4 mt-4">
         <img src="/optony.png" alt="Logo" className="h-8" />
       </div>
-      <p className="font-mono text-[#505c54] pl-4 text-xl font-bold">Pro Forma</p>
+      <p className="font-mono text-[#505c54] pl-4 text-2xl font-franklin tracking-wide">Pro Forma</p>
       <nav className=" p-5">
         <ul className="">
           <NavLink to="/">

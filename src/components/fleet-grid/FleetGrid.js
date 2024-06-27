@@ -22,9 +22,9 @@ const FleetGrid = () => {
   // Store gridApi to access selected rows
   const [gridApi, setGridApi] = useState(null);
 
-  // const onGridReady = (params) => {
-  //   setGridApi(params.api);
-  // };
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  };
 
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs, setColDefs] = useState([
@@ -120,23 +120,6 @@ const FleetGrid = () => {
     }
   }, []);
 
-  const saveColumnState = () => {
-    const columnState = gridRef.current.columnApi.getColumnState();
-    localStorage.setItem('agGridColumnState', JSON.stringify(columnState));
-  };
-
-  const onGridReady = params => {
-    gridRef.current = params.api;
-    params.columnApi.applyColumnState({
-      state: JSON.parse(localStorage.getItem('agGridColumnState')) || [],
-      applyOrder: true,
-    });
-
-    params.api.addEventListener('columnMoved', saveColumnState);
-    params.api.addEventListener('columnResized', saveColumnState);
-    params.api.addEventListener('columnPinned', saveColumnState);
-    params.api.addEventListener('columnVisible', saveColumnState);
-  };
 
   return (
     // wrapping container with theme & size

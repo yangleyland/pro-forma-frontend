@@ -9,7 +9,6 @@ export function useScrollWithShadow() {
     setScrollTop(event.target.scrollTop);
     setScrollHeight(event.target.scrollHeight);
     setClientHeight(event.target.clientHeight);
-    console.log(scrollTop, scrollHeight, clientHeight)
   };
 
   function getBoxShadow() {

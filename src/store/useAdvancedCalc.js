@@ -2,6 +2,9 @@ import { create } from "zustand";
 
 const useAdvancedCalc = create((set, get) => ({
   advancedCalcs: [],
+  setAdvancedCalcs: (advancedCalcs) => {
+    set({ advancedCalcs });
+  },
   fetchAdvancedCalcs: async (userId) => {
     try {
       const response = await fetch(

@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        'franklin': ['"Franklin Gothic"', 'sans-serif'], // Add custom font family
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

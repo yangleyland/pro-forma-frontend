@@ -257,7 +257,6 @@ const YearGrid = () => {
     if (!data || !data[0].hasOwnProperty("2030")) {
       return;
     }
-    console.log(estimatedElectricVehicles);
     let loanAmountSum = 0;
     let capitalPlanningFundingSum = 0;
 

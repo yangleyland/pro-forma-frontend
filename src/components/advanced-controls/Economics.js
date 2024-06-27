@@ -8,20 +8,17 @@ import {
 } from "../ui/card";
 import { useEffect } from "react";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
 import useAdvancedCalc from "../../store/useAdvancedCalc";
 import ControlLabel from "./ControlLabel";
 import { NumericFormat } from "react-number-format";
+import useAuthStore from "../../store/useAuthStore";
+import { updateAdvancedControl } from "./advUtils";
 
 const Economics = forwardRef((props, ref) => {
-  const { advancedCalcs } = useAdvancedCalc();
+  const { advancedCalcs, setAdvancedCalcs } = useAdvancedCalc();
+  const { user } = useAuthStore();
+  const [loaded, setLoaded] = useState(false);
   const [formState, setFormState] = useState({
     inflation: false,
     inflation_escalation_rate: "",
@@ -33,45 +30,83 @@ const Economics = forwardRef((props, ref) => {
     maintenance_costs_annual_per_station: "",
   });
 
-
   useEffect(() => {
-    if (advancedCalcs) {
-      setFormState({
-        inflation: advancedCalcs.inflation ?? false,
-        inflation_escalation_rate:
-          advancedCalcs.inflation_escalation_rate ?? "",
-        electricity_escalation_rate:
-          advancedCalcs.electricity_escalation_rate ?? "",
-        gasoline_escalation_rate: advancedCalcs.gasoline_escalation_rate ?? "",
-        infrastructure_loan_term: advancedCalcs.infrastructure_loan_term ?? "",
-        infrastructure_loan_interest_rate:
-          advancedCalcs.infrastructure_loan_interest_rate ?? "",
-        discount_rate_npv: advancedCalcs.discount_rate_npv ?? "",
-        maintenance_costs_annual_per_station:
-          advancedCalcs.maintenance_costs_annual_per_station ?? "",
+    if (advancedCalcs && !loaded) {
+      if (advancedCalcs.length > 0) {
+        setLoaded(true);
+      }
+
+      setFormState((prevState) => {
+        const newState = {
+          inflation: advancedCalcs.inflation ?? false,
+          inflation_escalation_rate:
+            advancedCalcs.inflation_escalation_rate ?? "",
+          electricity_escalation_rate:
+            advancedCalcs.electricity_escalation_rate ?? "",
+          gasoline_escalation_rate:
+            advancedCalcs.gasoline_escalation_rate ?? "",
+          infrastructure_loan_term:
+            advancedCalcs.infrastructure_loan_term ?? "",
+          infrastructure_loan_interest_rate:
+            advancedCalcs.infrastructure_loan_interest_rate ?? "",
+          discount_rate_npv: advancedCalcs.discount_rate_npv ?? "",
+          maintenance_costs_annual_per_station:
+            advancedCalcs.maintenance_costs_annual_per_station ?? "",
+        };
+
+        // Only update state if there's a difference
+        if (JSON.stringify(newState) !== JSON.stringify(prevState)) {
+          return newState;
+        } else {
+          return prevState;
+        }
       });
     }
   }, [advancedCalcs]);
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value, type, checked } = e.target;
     console.log(e.target);
     setFormState((prevState) => ({
       ...prevState,
       [name]: type === "checkbox" ? checked : value,
     }));
+    try {
+      let val = value;
+      if (val.endsWith("%")) {
+        val = val.slice(0, -1);
+      }
+      await updateAdvancedControl(user.id, { [name]: val },setAdvancedCalcs);
+    } catch (error) {
+      // Handle the error if needed
+    }
   };
 
-  const handleSwitchChange = () => {
+  const handleChange1 = async (e) => {
+    const { name, value, type, checked } = e.target;
+    console.log(name, value, type, checked );
     setFormState((prevState) => ({
       ...prevState,
-      inflation: !prevState.inflation,
+      [name]: type === "checkbox" ? checked : value,
     }));
+  }
+
+  const handleSwitchChange = async (checked) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      inflation: checked,
+    }));
+
+    try {
+      await updateAdvancedControl(user.id, { inflation: checked },setAdvancedCalcs);
+    } catch (error) {
+      // Handle the error if needed
+      console.error("Error updating advanced control:", error);
+    }
   };
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-
 
   return (
     <>
@@ -85,10 +120,7 @@ const Economics = forwardRef((props, ref) => {
         <form ref={ref} onSubmit={handleSubmit}>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <ControlLabel
-                text="Inflation"
-                info="Toggles inflation"
-              />
+              <ControlLabel text="Inflation" info="Toggles inflation" />
               <Switch
                 checked={formState.inflation}
                 onCheckedChange={handleSwitchChange}
@@ -111,16 +143,15 @@ const Economics = forwardRef((props, ref) => {
                 variant="blank"
                 name="inflation_escalation_rate"
                 value={formState.inflation_escalation_rate}
-                onValueChange={(values) => {
-                  const { value } = values;
+                onBlur={(e) =>
                   handleChange({
                     target: {
                       name: "inflation_escalation_rate",
-                      value,
+                      value: e.target.value,
                       type: "text",
                     },
-                  });
-                }}
+                  })
+                }
                 thousandSeparator={true}
                 decimalScale={2}
                 allowNegative={false}
@@ -133,14 +164,6 @@ const Economics = forwardRef((props, ref) => {
                   );
                 }}
                 placeholder="%"
-              />
-              <Input
-                type="hidden"
-                variant="blank"
-                name="inflation_escalation_rate"
-                value={formState.inflation_escalation_rate}
-                onChange={handleChange}
-                placeholder=""
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -153,16 +176,15 @@ const Economics = forwardRef((props, ref) => {
                 variant="blank"
                 name="electricity_escalation_rate"
                 value={formState.electricity_escalation_rate}
-                onValueChange={(values) => {
-                  const { value } = values;
+                onBlur={(e) =>
                   handleChange({
                     target: {
                       name: "electricity_escalation_rate",
-                      value,
+                      value: e.target.value,
                       type: "text",
                     },
-                  });
-                }}
+                  })
+                }
                 thousandSeparator={true}
                 decimalScale={2}
                 allowNegative={false}
@@ -175,14 +197,6 @@ const Economics = forwardRef((props, ref) => {
                   );
                 }}
                 placeholder="%"
-              />
-              <Input
-                variant="blank"
-                name="electricity_escalation_rate"
-                value={formState.electricity_escalation_rate}
-                onChange={handleChange}
-                type="hidden"
-                placeholder=""
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -195,16 +209,15 @@ const Economics = forwardRef((props, ref) => {
                 variant="blank"
                 name="gasoline_escalation_rate"
                 value={formState.gasoline_escalation_rate}
-                onValueChange={(values) => {
-                  const { value } = values;
+                onBlur={(e) =>
                   handleChange({
                     target: {
                       name: "gasoline_escalation_rate",
-                      value,
+                      value: e.target.value,
                       type: "text",
                     },
-                  });
-                }}
+                  })
+                }
                 thousandSeparator={true}
                 decimalScale={2}
                 allowNegative={false}
@@ -218,14 +231,6 @@ const Economics = forwardRef((props, ref) => {
                 }}
                 placeholder="%"
               />
-              <Input
-                variant="blank"
-                name="gasoline_escalation_rate"
-                value={formState.gasoline_escalation_rate}
-                onChange={handleChange}
-                type="hidden"
-                placeholder=""
-              />
             </div>
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
@@ -236,7 +241,16 @@ const Economics = forwardRef((props, ref) => {
                 variant="blank"
                 name="infrastructure_loan_term"
                 value={formState.infrastructure_loan_term}
-                onChange={handleChange}
+                onBlur={(e) =>
+                  handleChange({
+                    target: {
+                      name: "infrastructure_loan_term",
+                      value: e.target.value,
+                      type: "text",
+                    },
+                  })
+                }
+                onChange={handleChange1}
                 type="text"
                 placeholder=""
               />
@@ -251,16 +265,15 @@ const Economics = forwardRef((props, ref) => {
                 variant="blank"
                 name="infrastructure_loan_interest_rate"
                 value={formState.infrastructure_loan_interest_rate}
-                onValueChange={(values) => {
-                  const { value } = values;
+                onBlur={(e) =>
                   handleChange({
                     target: {
                       name: "infrastructure_loan_interest_rate",
-                      value,
+                      value: e.target.value,
                       type: "text",
                     },
-                  });
-                }}
+                  })
+                }
                 thousandSeparator={true}
                 decimalScale={2}
                 allowNegative={false}
@@ -273,14 +286,6 @@ const Economics = forwardRef((props, ref) => {
                   );
                 }}
                 placeholder="%"
-              />
-              <Input
-                variant="blank"
-                name="infrastructure_loan_interest_rate"
-                value={formState.infrastructure_loan_interest_rate}
-                onChange={handleChange}
-                type="hidden"
-                placeholder=""
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -293,16 +298,16 @@ const Economics = forwardRef((props, ref) => {
                 variant="blank"
                 name="discount_rate_npv"
                 value={formState.discount_rate_npv}
-                onValueChange={(values) => {
-                  const { value } = values;
+                onBlur={(e) =>
                   handleChange({
                     target: {
                       name: "discount_rate_npv",
-                      value,
+                      value: e.target.value,
                       type: "text",
                     },
-                  });
-                }}
+                  })
+                }
+
                 thousandSeparator={true}
                 decimalScale={2}
                 allowNegative={false}
@@ -316,14 +321,6 @@ const Economics = forwardRef((props, ref) => {
                 }}
                 placeholder="%"
               />
-              <Input
-                variant="blank"
-                name="discount_rate_npv"
-                value={formState.discount_rate_npv}
-                onChange={handleChange}
-                type="hidden"
-                placeholder=""
-              />
             </div>
             <div className="flex flex-col space-y-1.5">
               <ControlLabel
@@ -334,7 +331,16 @@ const Economics = forwardRef((props, ref) => {
                 variant="blank"
                 name="maintenance_costs_annual_per_station"
                 value={formState.maintenance_costs_annual_per_station}
-                onChange={handleChange}
+                onBlur={(e) =>
+                  handleChange({
+                    target: {
+                      name: "maintenance_costs_annual_per_station",
+                      value: e.target.value,
+                      type: "text",
+                    },
+                  })
+                }
+                onChange={handleChange1}
                 type="text"
                 placeholder=""
               />

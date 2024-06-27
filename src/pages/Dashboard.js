@@ -32,7 +32,7 @@ function Dashboard() {
   return (
     <>
       <div className="flex justify-between pr-4">
-        <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-2">
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-normal lg:text-5xl text-optonygreen mb-2 font-franklin tracking-wide">
           Dashboard
         </h1>
       </div>

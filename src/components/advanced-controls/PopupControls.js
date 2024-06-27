@@ -69,7 +69,9 @@ function PopupControls({ tableName }) {
     console.log("Resetting to default");
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_ROUTE}api/update-default?userId=${user.id}&tableName=${"advanced controls"}`,
+        `${process.env.REACT_APP_API_ROUTE}api/update-default?userId=${
+          user.id
+        }&tableName=${"advanced controls"}`,
         {
           method: "GET",
         }
@@ -81,7 +83,6 @@ function PopupControls({ tableName }) {
 
       // API call successful, fetch the updated data
       await fetchData(user.id);
-
 
       // Add any additional logic here if needed
     } catch (error) {
@@ -97,20 +98,16 @@ function PopupControls({ tableName }) {
           Advanced Controls
         </Button>
       </DialogTrigger>
-      <DialogContent
-        className="sm:max-w-md max-h-[80vh] overflow-y-auto p-4"
-        showCloseButton={false}
-      >
+      <DialogContent className="sm:max-w-md max-h-[80vh] overflow-y-auto p-4">
         <div className="space-y-4">
-          <DialogClose asChild>
-            <Button className="w-full" onClick={handleSubmit}>
-              Apply Changes
-            </Button>
-            
-          </DialogClose>
-          <Button variant="outline" className="w-full" onClick={handleReset} type="submit">
-              Reset to Default
-            </Button>
+          <Button
+            variant="outline"
+            className="w-full mt-8"
+            onClick={handleReset}
+            type="submit"
+          >
+            Reset to Default
+          </Button>
           <Economics update={handleSubmit} ref={economicsRef} />
           <SoftwareCosts update={handleSubmit} ref={softwareCostsRef} />
         </div>

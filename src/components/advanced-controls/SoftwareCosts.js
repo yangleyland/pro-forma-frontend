@@ -11,9 +11,12 @@ import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 import useAdvancedCalc from "../../store/useAdvancedCalc";
 import ControlLabel from "./ControlLabel";
+import { updateAdvancedControl } from "./advUtils";
+import useAuthStore from "../../store/useAuthStore";
 
 const SoftwareCosts = forwardRef((props, ref) => {
-  const { advancedCalcs } = useAdvancedCalc();
+  const { advancedCalcs,setAdvancedCalcs } = useAdvancedCalc();
+  const {user}=useAuthStore();
 
   const [formState, setFormState] = useState({
     charging_optimization: false,
@@ -35,19 +38,46 @@ const SoftwareCosts = forwardRef((props, ref) => {
     }
   }, [advancedCalcs]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = async (e) => {
+    const { name, value, type, checked } = e.target;
+    console.log(e.target);
     setFormState((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
+    try {
+      let val = value;
+      if (val.endsWith("%")) {
+        val = val.slice(0, -1);
+      }
+      await updateAdvancedControl(user.id, { [name]: val },setAdvancedCalcs);
+    } catch (error) {
+      // Handle the error if needed
+    }
   };
 
-  const handleSwitchChange = () => {
+  const handleChange1 = async (e) => {
+    const { name, value, type, checked } = e.target;
+    console.log(name, value, type, checked );
     setFormState((prevState) => ({
       ...prevState,
-      charging_optimization: !prevState.charging_optimization,
+      [name]: type === "checkbox" ? checked : value,
     }));
+  }
+
+  const handleSwitchChange = async (checked) => {
+    console.log("called")
+    setFormState((prevState) => ({
+      ...prevState,
+      charging_optimization: checked,
+    }));
+
+    try {
+      await updateAdvancedControl(user.id, { charging_optimization: checked },setAdvancedCalcs);
+    } catch (error) {
+      // Handle the error if needed
+      console.error("Error updating advanced control:", error);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -90,7 +120,8 @@ const SoftwareCosts = forwardRef((props, ref) => {
                 variant="blank"
                 name="charging_optimization_savings"
                 value={formState.charging_optimization_savings}
-                onChange={handleChange}
+                onChange={handleChange1}
+                onBlur={handleChange}
                 type="text"
                 placeholder=""
                 disabled={!formState.charging_optimization}
@@ -106,8 +137,9 @@ const SoftwareCosts = forwardRef((props, ref) => {
                 variant="blank"
                 name="charge_management_subscription_costs"
                 value={formState.charge_management_subscription_costs}
-                onChange={handleChange}
-                type="text"
+                onChange={handleChange1}
+                onBlur={handleChange}
+                type="number"
                 placeholder=""
               />
             </div>
@@ -117,8 +149,9 @@ const SoftwareCosts = forwardRef((props, ref) => {
                 variant="blank"
                 name="charger_network_costs"
                 value={formState.charger_network_costs}
-                onChange={handleChange}
-                type="text"
+                onChange={handleChange1}
+                onBlur={handleChange}
+                type="number"
                 placeholder=""
               />
             </div>
