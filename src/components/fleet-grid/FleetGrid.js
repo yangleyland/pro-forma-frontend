@@ -1,8 +1,9 @@
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
-import { useState, useEffect,useRef } from "react"; // React State Management
+import { useState, useEffect, useRef } from "react"; // React State Management
 import useAuthStore from "../../store/useAuthStore";
+import useColumnState from "../../store/useColumnState";
 
 const formatAsCurrency = (number) => {
   if (number === null || number === undefined) return "";
@@ -10,7 +11,9 @@ const formatAsCurrency = (number) => {
 };
 
 const FleetGrid = () => {
+  const {fleet, setFleetState} = useColumnState();
   const { data } = useAuthStore();
+  const gridRef = useRef(null);
   // Fetch data & update rowData state
   useEffect(() => {
     setRowData(data);
@@ -24,6 +27,30 @@ const FleetGrid = () => {
 
   const onGridReady = (params) => {
     setGridApi(params.api);
+    params.api.addEventListener("bodyScroll", onBodyScroll);
+    // Restore column state, sort state, and filter state
+
+    if (fleet && params.api) {
+      console.log(fleet);
+      const res = params.api.applyColumnState({
+        state: fleet,
+      });
+      console.log(res);
+      if(!res){
+        params.api.autoSizeAllColumns()
+      }
+    }
+
+
+    // Add scroll event listener
+    params.api.addEventListener("bodyScroll", onBodyScroll);
+  };
+  const onBodyScroll = (event) => {
+    const horizontalScrollPosition = event.api.getHorizontalPixelRange();
+    // const scrollWidth = event.api.gridPanel.getBodyClientRect().width;
+    // const maxScrollLeft = horizontalScrollPosition.right - scrollWidth;
+
+    console.log("scrollWidth", horizontalScrollPosition);
   };
 
   // Column Definitions: Defines the columns to be displayed.
@@ -82,7 +109,13 @@ const FleetGrid = () => {
   const handleCellValueChanged = async (event) => {
     const updatedData = event.data;
     const field = event.colDef.field;
-    const value = event.newValue;
+    let value = event.newValue;
+
+    if (value === null || value === undefined) {
+      value = 0;
+      event.node.setDataValue(field, value); // Immediately update the cell value in the grid
+    }
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_ROUTE}api/fleet/patch`,
@@ -109,32 +142,25 @@ const FleetGrid = () => {
     }
   };
 
-  const gridRef = useRef(null);
-  useEffect(() => {
-    const savedState = localStorage.getItem('agGridColumnState');
-    if (savedState && gridRef.current) {
-      gridRef.current.columnApi.applyColumnState({
-        state: JSON.parse(savedState),
-        applyOrder: true,
-      });
-    }
-  }, []);
-
-
+  const onGridPreDestroyed = (event) => {
+    const gridState = event.api.getColumnState();
+    setFleetState(gridState)
+  };
   return (
     // wrapping container with theme & size
     <div
       className="ag-theme-quartz relative h-[95%]" // applying the grid theme
     >
       <AgGridReact
+        ref={gridRef}
         stopEditingWhenCellsLoseFocus={true}
         pagination={true}
         rowData={rowData}
         columnDefs={colDefs}
         onCellValueChanged={handleCellValueChanged}
         onGridReady={onGridReady}
-        autoSizeStrategy={{ type: "fitCellContents", skipHeader: false }}
         suppressColumnVirtualisation={true}
+        onGridPreDestroyed={onGridPreDestroyed}
       />
       <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
     </div>

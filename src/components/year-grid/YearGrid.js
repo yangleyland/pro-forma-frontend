@@ -6,6 +6,8 @@ import useAuthStore from "../../store/useAuthStore";
 import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
 import { getBackgroundColor, getTextColor } from "./getColor";
+import useColumnState from "../../store/useColumnState";
+
 
 
 // Function to format values as currency
@@ -52,6 +54,8 @@ const addHyphen = (value) => {
 };
 const YearGrid = () => {
   const { YEARS, CURRENT_YEAR } = useYears();
+  const {yearColumns, setYearColumns} = useColumnState();
+
   const {
     estimatedElectricVehicles,
     costOfElectricVehicles,
@@ -303,17 +307,27 @@ const YearGrid = () => {
 
   const onGridReady = (params) => {
     setGridApi(params.api);
+
+    if (yearColumns && params.api) {
+      console.log(yearColumns)
+      const res = params.api.applyColumnState({
+        state: yearColumns,
+      });
+    }
   };
 
   // Column Definitions: Defines the columns to be displayed.
   // Function to generate year columns
 
+  const isEmpty = (obj) => {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+  };
   const generateYearColumns = (years) => {
     return years.map((year) => ({
       headerName: `${year}`,
       field: `${year}`,
       editable: false,
-      width: 120,
+      width: isEmpty(yearColumns)? 150 : undefined,
       cellStyle: (params) => {
         return {
           color: getTextColor(params.data.title, params.value),
@@ -328,6 +342,11 @@ const YearGrid = () => {
       valueFormatter: (params) => params.value,
       sortable: false,
     }));
+  };
+  const onGridPreDestroyed = (event) => {
+    const gridState = event.api.getColumnState();
+    console.log(gridState)
+    setYearColumns(gridState)
   };
 
   // Combine "Title" column with dynamically generated year columns
@@ -373,6 +392,7 @@ const YearGrid = () => {
         onGridReady={onGridReady}
         suppressRowHoverHighlight={true}
         suppressCellFocus={true}
+        onGridPreDestroyed={onGridPreDestroyed}
       />
       <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
     </div>

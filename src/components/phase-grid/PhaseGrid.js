@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import useColumnState from "../../store/useColumnState";
 import { Label } from "../ui/label";
 const formatAsCurrency = (number) => {
   if (number === null || number === undefined) return "";
@@ -25,6 +26,7 @@ const PhaseGrid = () => {
   const { phases, addPhase, fetchPhases, updatePhase, calculateCosts } =
     usePhases();
   const { user } = useAuthStore();
+  const{phaseColumns,setPhaseColumns} = useColumnState();
   const { controlsData } = useAuthStore.getState();
 
   const [siteOptions, setSiteOptions] = useState(
@@ -230,7 +232,11 @@ const PhaseGrid = () => {
   const handleCellValueChanged = async (event) => {
     const updatedData = event.data;
     const field = event.colDef.field;
-    const value = event.newValue;
+    let value = event.newValue;
+    if (value === null || value === undefined) {
+      value = 0;
+      event.node.setDataValue(field, value); // Immediately update the cell value in the grid
+    }
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_ROUTE}api/phases/patch`,
@@ -284,6 +290,15 @@ const PhaseGrid = () => {
 
   const onGridReady = (params) => {
     setGridApi(params.api);
+
+    if (phaseColumns && params.api) {
+      const res = params.api.applyColumnState({
+        state: phaseColumns,
+      });
+      if(!res){
+        params.api.autoSizeAllColumns()
+      }
+    }
   };
 
   const autoSizeStrategy = useMemo(() => {
@@ -292,6 +307,12 @@ const PhaseGrid = () => {
       skipHeader: false,
     };
   }, []);
+
+  const onGridPreDestroyed = (event) => {
+    const gridState = event.api.getColumnState();
+    console.log(gridState)
+    setPhaseColumns(gridState)
+  };
   return (
     // wrapping container with theme & size
     <div
@@ -307,8 +328,8 @@ const PhaseGrid = () => {
         onCellValueChanged={handleCellValueChanged}
         onGridReady={onGridReady}
         suppressColumnVirtualisation={true}
-        autoSizeStrategy={autoSizeStrategy}
         undoRedoCellEditing={true}
+        onGridPreDestroyed={onGridPreDestroyed}
       />
       <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
       </div>
