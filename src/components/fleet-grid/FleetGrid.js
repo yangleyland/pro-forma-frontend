@@ -137,7 +137,7 @@ const FleetGrid = () => {
 
       const result = await response.json();
       console.log("Update successful:", result);
-      updateData(result[0])
+      // updateData(result[0])
 
     } catch (error) {
       console.error("Error updating data:", error);
