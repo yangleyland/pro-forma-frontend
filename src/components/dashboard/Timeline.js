@@ -24,6 +24,9 @@ import useAuthStore from "../../store/useAuthStore";
 
 
 function formatCurrency(value) {
+  if (value === 0) {
+    return "$-";
+  }
   return `$${Math.abs(value).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 }
 

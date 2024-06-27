@@ -1,7 +1,7 @@
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
-import { useState, useEffect } from "react"; // React State Management
+import { useState, useEffect,useRef } from "react"; // React State Management
 import useAuthStore from "../../store/useAuthStore";
 
 const formatAsCurrency = (number) => {
@@ -19,44 +19,12 @@ const FleetGrid = () => {
   // Row Data: The data to be displayed.
   const [rowData, setRowData] = useState([]);
 
-  // Handle adding a new row
-  const handleAddRow = () => {
-    const newRow = { userId: Date.now(), city_name: "", cost: 0 }; // Adjust fields as necessary
-    setRowData([...rowData, newRow]);
-  };
-
-  // Handle deleting the selected row
-  const handleDeleteRow = () => {
-    const selectedNodes = gridApi.getSelectedNodes();
-    const selectedData = selectedNodes.map((node) => node.data);
-    const remainingRows = rowData.filter((row) => !selectedData.includes(row));
-    setRowData(remainingRows);
-
-    // Optionally, send a delete request to your server
-    selectedData.forEach(async (row) => {
-      try {
-        const response = await fetch(
-          `http://localhost:3002/api/controls/${row.userId}`,
-          {
-            method: "DELETE",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to delete data");
-        }
-      } catch (error) {
-        console.error("Error deleting data:", error);
-      }
-    });
-  };
-
   // Store gridApi to access selected rows
   const [gridApi, setGridApi] = useState(null);
 
-  const onGridReady = (params) => {
-    setGridApi(params.api);
-  };
+  // const onGridReady = (params) => {
+  //   setGridApi(params.api);
+  // };
 
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs, setColDefs] = useState([
@@ -71,7 +39,12 @@ const FleetGrid = () => {
       field: "Simplified Domicile",
     },
     { field: "Replacement Year", editable: true, type: "number" },
-    { field: "Expected Lifetime", editable: true, type: "number" },
+    {
+      field: "Expected Lifetime",
+      editable: true,
+      type: "number",
+      cellStyle: { textAlign: "right" },
+    },
     {
       headerName: "EV MSRP",
       field: "EV Purchase Cost pre-incentive",
@@ -136,6 +109,35 @@ const FleetGrid = () => {
     }
   };
 
+  const gridRef = useRef(null);
+  useEffect(() => {
+    const savedState = localStorage.getItem('agGridColumnState');
+    if (savedState && gridRef.current) {
+      gridRef.current.columnApi.applyColumnState({
+        state: JSON.parse(savedState),
+        applyOrder: true,
+      });
+    }
+  }, []);
+
+  const saveColumnState = () => {
+    const columnState = gridRef.current.columnApi.getColumnState();
+    localStorage.setItem('agGridColumnState', JSON.stringify(columnState));
+  };
+
+  const onGridReady = params => {
+    gridRef.current = params.api;
+    params.columnApi.applyColumnState({
+      state: JSON.parse(localStorage.getItem('agGridColumnState')) || [],
+      applyOrder: true,
+    });
+
+    params.api.addEventListener('columnMoved', saveColumnState);
+    params.api.addEventListener('columnResized', saveColumnState);
+    params.api.addEventListener('columnPinned', saveColumnState);
+    params.api.addEventListener('columnVisible', saveColumnState);
+  };
+
   return (
     // wrapping container with theme & size
     <div
@@ -148,6 +150,8 @@ const FleetGrid = () => {
         columnDefs={colDefs}
         onCellValueChanged={handleCellValueChanged}
         onGridReady={onGridReady}
+        autoSizeStrategy={{ type: "fitCellContents", skipHeader: false }}
+        suppressColumnVirtualisation={true}
       />
       <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
     </div>

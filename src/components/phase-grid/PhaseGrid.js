@@ -49,6 +49,7 @@ const PhaseGrid = () => {
     {
       field: "site",
       editable: true,
+      
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
         values: siteOptions,
@@ -57,24 +58,28 @@ const PhaseGrid = () => {
     {
       headerName: "Ports <10 kW",
       field: "port_less_than_10_kw",
+      cellStyle: { textAlign: "right" },
       editable: true,
       type: "number",
     },
     {
       headerName: "Ports 10-20 kW",
       field: "port_10_20_kw",
+      cellStyle: { textAlign: "right" },
       editable: true,
       type: "number",
     },
     {
       headerName: "Ports 25 kW",
       field: "port_25_kw",
+      cellStyle: { textAlign: "right" },
       editable: true,
       type: "number",
     },
     {
       headerName: "Ports 180-200 kW",
       field: "port_180_200_kw",
+      cellStyle: { textAlign: "right" },
       editable: true,
       type: "number",
     },
@@ -301,6 +306,7 @@ const PhaseGrid = () => {
         rowSelection="single"
         onCellValueChanged={handleCellValueChanged}
         onGridReady={onGridReady}
+        suppressColumnVirtualisation={true}
         autoSizeStrategy={autoSizeStrategy}
         undoRedoCellEditing={true}
       />

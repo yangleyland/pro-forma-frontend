@@ -368,6 +368,7 @@ const YearGrid = () => {
       <AgGridReact
         style={{ width: "100%", height: "100%" }}
         ref={gridRef}
+        suppressColumnVirtualisation={true}
         rowData={rowData}
         columnDefs={colDefs}
         onGridReady={onGridReady}

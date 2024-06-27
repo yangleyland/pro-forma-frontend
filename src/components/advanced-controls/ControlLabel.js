@@ -9,8 +9,8 @@ import { Label } from "../ui/label";
 
 const ControlLabel = ({ text, info }) => {
   return (
-    <TooltipProvider>
-      <Tooltip>
+    <TooltipProvider className="z-[100]">
+      <Tooltip className="z-[100]">
         <Label className="w-full">
           <div className="w-full flex gap-2 relative">
           <TooltipTrigger className="absolute -left-6" asChild>
@@ -24,8 +24,8 @@ const ControlLabel = ({ text, info }) => {
             
           </div>
         </Label>
-        <TooltipContent>
-          <p>{info}</p>
+        <TooltipContent className="fixed z-[100]">
+          <p className="z-[100]">{info}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

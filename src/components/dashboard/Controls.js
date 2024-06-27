@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Switch } from "../ui/switch";
+import PopupControls from "../advanced-controls/PopupControls";
 
 const Controls = () => {
   const { controlsData, setControlsData, user, data } = useAuthStore();
@@ -163,6 +164,10 @@ const Controls = () => {
               </div>
             </div>
           </form>
+          <div  className="relative right-4">
+            <PopupControls/>
+          </div>
+          
         </CardContent>
       </CardHeader>
     </Card>

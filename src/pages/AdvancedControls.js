@@ -61,6 +61,7 @@ function AdvancedControls() {
           Advanced Controls
         </h1>
         <ResetButton tableName="advanced controls" />
+        
       </div>
       <div className="w-full flex flex-row-reverse lg:flex-col-reverse">
         
