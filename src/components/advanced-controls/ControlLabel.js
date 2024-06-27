@@ -24,7 +24,7 @@ const ControlLabel = ({ text, info }) => {
             
           </div>
         </Label>
-        <TooltipContent className="fixed z-[100]">
+        <TooltipContent className="fixed w-[200px] z-[100]">
           <p className="z-[100]">{info}</p>
         </TooltipContent>
       </Tooltip>
