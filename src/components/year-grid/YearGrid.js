@@ -296,7 +296,11 @@ const YearGrid = () => {
         loanAmountSum !== 0 ||
         capitalPlanningFundingSum !== 0
     );
-    setRowData(finalFilteredData);
+    const addUniqueIdToData = (data) => {
+      return data.map((item, index) => ({ ...item, id: index }));
+    };
+    
+    setRowData(addUniqueIdToData(finalFilteredData));
   }, [data]);
   // Row Data: The data to be displayed.
   const [rowData, setRowData] = useState([]);
@@ -358,7 +362,6 @@ const YearGrid = () => {
   ]);
   const gridRef = useRef(null);
   useEffect(() => {
-    console.log(YEARS)
     const combinedColumns = [
       {
         field: "title",
