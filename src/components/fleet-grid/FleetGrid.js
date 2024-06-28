@@ -9,10 +9,13 @@ const formatAsCurrency = (number) => {
   if (number === null || number === undefined) return "";
   return `$${Math.floor(number).toLocaleString()}`;
 };
+const isEmpty = (obj) => {
+  return Object.keys(obj).length === 0 && obj.constructor === Object;
+};
 
 const FleetGrid = () => {
-  const {fleet, setFleetState} = useColumnState();
-  const { data,updateData } = useAuthStore();
+  const { fleet, setFleetState } = useColumnState();
+  const { data, updateData } = useAuthStore();
   const gridRef = useRef(null);
   // Fetch data & update rowData state
   useEffect(() => {
@@ -29,18 +32,17 @@ const FleetGrid = () => {
     setGridApi(params.api);
     params.api.addEventListener("bodyScroll", onBodyScroll);
 
-    if (fleet && params.api) {
-      console.log(fleet);
-      const res = params.api.applyColumnState({
-        state: fleet,
-        applyOrder: true,
-      });
-      console.log(res);
-      if(!res){
-        params.api.autoSizeAllColumns()
-      }
-    }
-
+    // if (fleet && params.api) {
+    //   console.log(fleet);
+    //   const res = params.api.applyColumnState({
+    //     state: fleet,
+    //     applyOrder: true,
+    //   });
+    //   console.log(res);
+    //   if(!res){
+    //     params.api.autoSizeAllColumns()
+    //   }
+    // }
 
     // Add scroll event listener
     params.api.addEventListener("bodyScroll", onBodyScroll);
@@ -138,7 +140,6 @@ const FleetGrid = () => {
       const result = await response.json();
       console.log("Update successful:", result);
       // updateData(result[0])
-
     } catch (error) {
       console.error("Error updating data:", error);
     }
@@ -146,15 +147,20 @@ const FleetGrid = () => {
 
   const onGridPreDestroyed = (event) => {
     const gridState = event.api.getColumnState();
-    setFleetState(gridState)
+    setFleetState(event.state);
   };
+
   return (
     // wrapping container with theme & size
     <div
       className="ag-theme-quartz relative h-[95%]" // applying the grid theme
     >
       <AgGridReact
+        initialState={fleet}
         ref={gridRef}
+        autoSizeStrategy={
+          isEmpty(fleet) ? { type: "fitCellContents", skipHeader: false } : {}
+        }
         stopEditingWhenCellsLoseFocus={true}
         pagination={true}
         rowData={rowData}

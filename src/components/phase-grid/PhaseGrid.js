@@ -21,17 +21,25 @@ const formatAsCurrency = (number) => {
   if (number === null || number === undefined) return "";
   return `$${Math.floor(number).toLocaleString()}`;
 };
+const isEmpty = (obj) => {
+  return Object.keys(obj).length === 0 && obj.constructor === Object;
+};
 
 const PhaseGrid = () => {
   const { phases, addPhase, fetchPhases, updatePhase, calculateCosts } =
     usePhases();
   const { user } = useAuthStore();
-  const{phaseColumns,setPhaseColumns} = useColumnState();
+  const { phaseColumns, setPhaseColumns } = useColumnState();
   const { controlsData } = useAuthStore.getState();
 
   const [siteOptions, setSiteOptions] = useState(
     controlsData?.domiciles.map((option) => option) || []
   );
+
+  const [initialState, setInitialState] = useState(phaseColumns);
+  useEffect(() => {
+    setInitialState(phaseColumns);
+  }, [phaseColumns]);
 
   // Fetch data & update rowData state
 
@@ -51,7 +59,7 @@ const PhaseGrid = () => {
     {
       field: "site",
       editable: true,
-      
+
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
         values: siteOptions,
@@ -180,23 +188,24 @@ const PhaseGrid = () => {
     },
   ]);
 
-  useEffect(() => {
-    if (siteOptions.length > 0) {
-      setColDefs((prevColDefs) =>
-        prevColDefs.map((colDef) =>
-          colDef.field === "site"
-            ? {
-                ...colDef,
-                cellEditorParams: {
-                  ...colDef.cellEditorParams,
-                  values: siteOptions,
-                },
-              }
-            : colDef
-        )
-      );
-    }
-  }, [siteOptions]);
+  // useEffect(() => {
+  //   if (siteOptions.length > 0) {
+  //     setColDefs((prevColDefs) =>
+  //       prevColDefs.map((colDef) =>
+  //         colDef.field === "site"
+  //           ? {
+  //               ...colDef,
+  //               cellEditorParams: {
+  //                 ...colDef.cellEditorParams,
+  //                 values: siteOptions,
+  //               },
+  //             }
+  //           : colDef
+  //       )
+  //     );
+  //   }
+  // }, [siteOptions]);
+
   // Handle adding a new row
   const handleAddRow = async () => {
     try {
@@ -290,16 +299,6 @@ const PhaseGrid = () => {
 
   const onGridReady = (params) => {
     setGridApi(params.api);
-
-    if (phaseColumns && params.api) {
-      const res = params.api.applyColumnState({
-        state: phaseColumns,
-        applyOrder: true,
-      });
-      if(!res){
-        params.api.autoSizeAllColumns()
-      }
-    }
   };
 
   const autoSizeStrategy = useMemo(() => {
@@ -311,8 +310,9 @@ const PhaseGrid = () => {
 
   const onGridPreDestroyed = (event) => {
     const gridState = event.api.getColumnState();
-    console.log(gridState)
-    setPhaseColumns(gridState)
+    setPhaseColumns(event.state);
+    setInitialState(event.state);
+    // setPhaseColumns(gridState)
   };
   return (
     // wrapping container with theme & size
@@ -321,20 +321,21 @@ const PhaseGrid = () => {
     >
       <div className="relative">
         <AgGridReact
-        domLayout="autoHeight"
-        stopEditingWhenCellsLoseFocus={true}
-        rowData={rowData}
-        columnDefs={colDefs}
-        rowSelection="single"
-        onCellValueChanged={handleCellValueChanged}
-        onGridReady={onGridReady}
-        suppressColumnVirtualisation={true}
-        undoRedoCellEditing={true}
-        onGridPreDestroyed={onGridPreDestroyed}
-      />
-      <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
+          initialState={phaseColumns}
+          autoSizeStrategy={isEmpty(phaseColumns)?autoSizeStrategy:{}}
+          domLayout="autoHeight"
+          stopEditingWhenCellsLoseFocus={true}
+          rowData={rowData}
+          columnDefs={colDefs}
+          rowSelection="single"
+          onCellValueChanged={handleCellValueChanged}
+          onGridReady={onGridReady}
+          suppressColumnVirtualisation={true}
+          undoRedoCellEditing={true}
+          onGridPreDestroyed={onGridPreDestroyed}
+        />
+        <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
       </div>
-      
 
       <div className="flex lg:flex-col gap-2 mt-2">
         <Button variant="secondary" onClick={handleAddRow}>
