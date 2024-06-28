@@ -16,7 +16,7 @@ const isEmpty = (obj) => {
 const FleetGrid = () => {
   const { fleet, setFleetState } = useColumnState();
   const { data, updateData } = useAuthStore();
-  const [shadow,setShadow] = useState(true)
+  const [shadow, setShadow] = useState(true);
   const gridRef = useRef(null);
   // Fetch data & update rowData state
   useEffect(() => {
@@ -32,18 +32,7 @@ const FleetGrid = () => {
   const onGridReady = (params) => {
     setGridApi(params.api);
     params.api.addEventListener("bodyScroll", onBodyScroll);
-
-    // if (fleet && params.api) {
-    //   console.log(fleet);
-    //   const res = params.api.applyColumnState({
-    //     state: fleet,
-    //     applyOrder: true,
-    //   });
-    //   console.log(res);
-    //   if(!res){
-    //     params.api.autoSizeAllColumns()
-    //   }
-    // }
+    params.api.paginationGoToPage(fleet.pagination.page)
 
     // Add scroll event listener
     params.api.addEventListener("bodyScroll", onBodyScroll);
@@ -60,7 +49,7 @@ const FleetGrid = () => {
       return total;
     }, 0);
 
-    if (totalWidth-horizontalScrollPosition.right < 1) {
+    if (totalWidth - horizontalScrollPosition.right < 1) {
       setShadow(false);
     } else {
       setShadow(true);
@@ -151,7 +140,7 @@ const FleetGrid = () => {
 
       const result = await response.json();
       console.log("Update successful:", result);
-      updateData(result[0])
+      updateData(result[0]);
     } catch (error) {
       console.error("Error updating data:", error);
     }
@@ -162,6 +151,11 @@ const FleetGrid = () => {
     setFleetState(event.state);
     console.log(event.state);
   };
+
+  const onStateUpdated = (params) => {
+    console.log("State updated", params.state);
+  };
+  console.log(fleet);
 
   return (
     // wrapping container with theme & size
@@ -182,6 +176,7 @@ const FleetGrid = () => {
         onGridReady={onGridReady}
         suppressColumnVirtualisation={true}
         onGridPreDestroyed={onGridPreDestroyed}
+        onStateUpdated={onStateUpdated}
       />
       {shadow && (
         <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
