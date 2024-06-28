@@ -36,10 +36,6 @@ const PhaseGrid = () => {
     controlsData?.domiciles.map((option) => option) || []
   );
 
-  const [initialState, setInitialState] = useState(phaseColumns);
-  useEffect(() => {
-    setInitialState(phaseColumns);
-  }, [phaseColumns]);
 
   const onGridReady = (params) => {
     setGridApi(params.api);
@@ -194,23 +190,23 @@ const PhaseGrid = () => {
     },
   ]);
 
-  // useEffect(() => {
-  //   if (siteOptions.length > 0) {
-  //     setColDefs((prevColDefs) =>
-  //       prevColDefs.map((colDef) =>
-  //         colDef.field === "site"
-  //           ? {
-  //               ...colDef,
-  //               cellEditorParams: {
-  //                 ...colDef.cellEditorParams,
-  //                 values: siteOptions,
-  //               },
-  //             }
-  //           : colDef
-  //       )
-  //     );
-  //   }
-  // }, [siteOptions]);
+  useEffect(() => {
+    if (siteOptions.length > 0) {
+      setColDefs((prevColDefs) =>
+        prevColDefs.map((colDef) =>
+          colDef.field === "site"
+            ? {
+                ...colDef,
+                cellEditorParams: {
+                  ...colDef.cellEditorParams,
+                  values: siteOptions,
+                },
+              }
+            : colDef
+        )
+      );
+    }
+  }, [siteOptions]);
 
   // Handle adding a new row
   const handleAddRow = async () => {
@@ -314,8 +310,6 @@ const PhaseGrid = () => {
   const onGridPreDestroyed = (event) => {
     const gridState = event.api.getColumnState();
     setPhaseColumns(event.state);
-    setInitialState(event.state);
-    // setPhaseColumns(gridState)
   };
   const [shadow,setShadow] = useState(true)
   const onBodyScroll = (event) => {
@@ -352,6 +346,7 @@ const PhaseGrid = () => {
           onCellValueChanged={handleCellValueChanged}
           onGridReady={onGridReady}
           suppressColumnVirtualisation={true}
+          maintainColumnOrder={true}
           undoRedoCellEditing={true}
           onGridPreDestroyed={onGridPreDestroyed}
         />

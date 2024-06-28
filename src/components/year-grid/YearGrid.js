@@ -9,8 +9,6 @@ import { getBackgroundColor, getTextColor } from "./getColor";
 import useColumnState from "../../store/useColumnState";
 // import "./yeargrid.css";
 
-
-
 // Function to format values as currency
 const formatAsCurrency = (value) => {
   // Check if the value is exactly 0 or rounds to 0
@@ -55,7 +53,7 @@ const addHyphen = (value) => {
 };
 const YearGrid = () => {
   const { YEARS, CURRENT_YEAR } = useYears();
-  const {yearColumns, setYearColumns} = useColumnState();
+  const { yearColumns, setYearColumns } = useColumnState();
 
   const {
     estimatedElectricVehicles,
@@ -308,15 +306,14 @@ const YearGrid = () => {
   const onGridReady = (params) => {
     setGridApi(params.api);
     params.api.addEventListener("bodyScroll", onBodyScroll);
-
-
-    if (yearColumns && params.api) {
-      const res = params.api.applyColumnState({
-        state: yearColumns,
-        applyOrder: true,
-      });
-      console.log(res)
-    }
+    console.log("yearcol", yearColumns);
+    // if (yearColumns && params.api) {
+    //   const res = params.api.applyColumnState({
+    //     state: yearColumns,
+    //     applyOrder: true,
+    //   });
+    //   console.log(res);
+    // }
   };
 
   // Column Definitions: Defines the columns to be displayed.
@@ -330,7 +327,7 @@ const YearGrid = () => {
       headerName: `${year}`,
       field: `${year}`,
       editable: false,
-      width: 150,
+      initialWidth: 150,
       cellStyle: (params) => {
         return {
           color: getTextColor(params.data.title, params.value),
@@ -348,12 +345,27 @@ const YearGrid = () => {
   };
   const onGridPreDestroyed = (event) => {
     const gridState = event.api.getColumnState();
-    setYearColumns(event.state)
+    console.log(event.state);
+    setYearColumns(event.state);
   };
 
   // Combine "Title" column with dynamically generated year columns
-  const [colDefs, setColDefs] = useState([]);
-
+  const [colDefs, setColDefs] = useState([
+    {
+      field: "title",
+      editable: false,
+      cellStyle: (params) => {
+        return {
+          fontWeight: "bold",
+          backgroundColor: getBackgroundColor(params.value),
+        };
+      },
+      initialPinned: "left",
+      sortable: false,
+    },
+    ...generateYearColumns(YEARS),
+  ]);
+  const gridRef = useRef(null);
   useEffect(() => {
     const combinedColumns = [
       {
@@ -365,15 +377,18 @@ const YearGrid = () => {
             backgroundColor: getBackgroundColor(params.value),
           };
         },
-        pinned: "left",
+        initialPinned: "left",
         sortable: false,
       },
       ...generateYearColumns(YEARS),
     ];
-    setColDefs(combinedColumns);
-  }, [YEARS]);
-  const [showGradient, setShowGradient] = useState(true);
-  const gridRef = useRef(null);
+    if (gridRef.current.api) {
+      gridRef.current.api.setGridOption("columnDefs", combinedColumns);
+    }
+
+  }, [YEARS,gridRef]);
+
+  
   const autoSizeStrategy = useMemo(() => {
     return {
       type: "fitCellContents",
@@ -381,19 +396,17 @@ const YearGrid = () => {
     };
   }, []);
 
-  const [shadow,setShadow] = useState(true)
+  const [shadow, setShadow] = useState(true);
   const onBodyScroll = (event) => {
     const horizontalScrollPosition = event.api.getHorizontalPixelRange();
-    // const scrollWidth = event.api.gridPanel.getBodyClientRect().width;
     const size = event.api.getColumnState();
-    // const maxScrollLeft = horizontalScrollPosition.right - scrollWidth;
     const totalWidth = size.reduce((total, obj) => {
       if (!obj.pinned && !obj.hide) {
         return total + obj.width;
       }
       return total;
     }, 0);
-    if (totalWidth-horizontalScrollPosition.right < 1) {
+    if (totalWidth - horizontalScrollPosition.right < 1) {
       setShadow(false);
     } else {
       setShadow(true);
@@ -408,7 +421,8 @@ const YearGrid = () => {
         style={{ width: "100%", height: "100%" }}
         initialState={yearColumns}
         ref={gridRef}
-        // suppressColumnVirtualisation={true}
+        suppressColumnVirtualisation={true}
+        autoSizeStrategy={isEmpty(yearColumns) ? autoSizeStrategy : {}}
         rowData={rowData}
         columnDefs={colDefs}
         onGridReady={onGridReady}
@@ -416,7 +430,9 @@ const YearGrid = () => {
         suppressCellFocus={true}
         onGridPreDestroyed={onGridPreDestroyed}
       />
-      {shadow&&<div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>}
+      {shadow && (
+        <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
+      )}
     </div>
   );
 };
