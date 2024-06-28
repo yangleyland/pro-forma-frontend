@@ -33,12 +33,6 @@ const YearOverYear = () => {
   }, [filteredPhases, estimatedElectricVehicles]);
 
   useEffect(() => {
-    if (user) {
-      fetchData(user.id);
-    }
-  }, [fetchData, user]);
-
-  useEffect(() => {
     if (controlsData) {
       const tempSites = ["All Sites", ...controlsData.domiciles];
       setSite(controlsData["site"] || "");
