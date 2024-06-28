@@ -32,7 +32,9 @@ const FleetGrid = () => {
   const onGridReady = (params) => {
     setGridApi(params.api);
     params.api.addEventListener("bodyScroll", onBodyScroll);
-    params.api.paginationGoToPage(fleet.pagination.page)
+    if (fleet.pagination) {
+      params.api.paginationGoToPage(fleet.pagination.page);
+    }
 
     // Add scroll event listener
     params.api.addEventListener("bodyScroll", onBodyScroll);
