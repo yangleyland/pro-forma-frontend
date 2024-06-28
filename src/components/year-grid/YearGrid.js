@@ -7,6 +7,7 @@ import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
 import { getBackgroundColor, getTextColor } from "./getColor";
 import useColumnState from "../../store/useColumnState";
+import { set } from "react-hook-form";
 // import "./yeargrid.css";
 
 // Function to format values as currency
@@ -306,14 +307,6 @@ const YearGrid = () => {
   const onGridReady = (params) => {
     setGridApi(params.api);
     params.api.addEventListener("bodyScroll", onBodyScroll);
-    console.log("yearcol", yearColumns);
-    // if (yearColumns && params.api) {
-    //   const res = params.api.applyColumnState({
-    //     state: yearColumns,
-    //     applyOrder: true,
-    //   });
-    //   console.log(res);
-    // }
   };
 
   // Column Definitions: Defines the columns to be displayed.
@@ -344,8 +337,6 @@ const YearGrid = () => {
     }));
   };
   const onGridPreDestroyed = (event) => {
-    const gridState = event.api.getColumnState();
-    console.log(event.state);
     setYearColumns(event.state);
   };
 
@@ -367,6 +358,7 @@ const YearGrid = () => {
   ]);
   const gridRef = useRef(null);
   useEffect(() => {
+    console.log(YEARS)
     const combinedColumns = [
       {
         field: "title",
@@ -382,9 +374,11 @@ const YearGrid = () => {
       },
       ...generateYearColumns(YEARS),
     ];
+    // setColDefs(combinedColumns);
     if (gridRef.current.api) {
       gridRef.current.api.setGridOption("columnDefs", combinedColumns);
     }
+    
 
   }, [YEARS,gridRef]);
 
@@ -412,6 +406,12 @@ const YearGrid = () => {
       setShadow(true);
     }
   };
+  const preprocessYearColumns = (columns) => {
+    return {
+      ...columns,
+      columnOrder: undefined,
+    };
+  };
   return (
     // wrapping container with theme & size
     <div
@@ -419,7 +419,7 @@ const YearGrid = () => {
     >
       <AgGridReact
         style={{ width: "100%", height: "100%" }}
-        initialState={yearColumns}
+        initialState={preprocessYearColumns(yearColumns)}
         ref={gridRef}
         suppressColumnVirtualisation={true}
         autoSizeStrategy={isEmpty(yearColumns) ? autoSizeStrategy : {}}
@@ -429,6 +429,7 @@ const YearGrid = () => {
         suppressRowHoverHighlight={true}
         suppressCellFocus={true}
         onGridPreDestroyed={onGridPreDestroyed}
+
       />
       {shadow && (
         <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>

@@ -23,11 +23,11 @@ function Dashboard() {
   const [renderKey, setRenderKey] = useState(0);
   const { cityInfo } = useCityInfo();
 
-  useEffect(() => {
-    if (user) {
-      fetchData(user.id);
-    }
-  }, [fetchData, user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     fetchData(user.id);
+  //   }
+  // }, [fetchData, user]);
 
   return (
     <>
