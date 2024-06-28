@@ -41,6 +41,12 @@ const PhaseGrid = () => {
     setInitialState(phaseColumns);
   }, [phaseColumns]);
 
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+    params.api.addEventListener("bodyScroll", onBodyScroll);
+  };
+
+
   // Fetch data & update rowData state
 
   useEffect(() => {
@@ -297,9 +303,6 @@ const PhaseGrid = () => {
 
   const [gridApi, setGridApi] = useState(null);
 
-  const onGridReady = (params) => {
-    setGridApi(params.api);
-  };
 
   const autoSizeStrategy = useMemo(() => {
     return {
@@ -313,6 +316,30 @@ const PhaseGrid = () => {
     setPhaseColumns(event.state);
     setInitialState(event.state);
     // setPhaseColumns(gridState)
+  };
+  const [shadow,setShadow] = useState(true)
+  const onBodyScroll = (event) => {
+    const horizontalScrollPosition = event.api.getHorizontalPixelRange();
+    // const scrollWidth = event.api.gridPanel.getBodyClientRect().width;
+    const size = event.api.getColumnState();
+    // const maxScrollLeft = horizontalScrollPosition.right - scrollWidth;
+    const totalWidth = size.reduce((total, obj) => {
+      if (!obj.pinned && !obj.hide) {
+        return total + obj.width;
+      }
+      return total;
+    }, 0);
+    console.log(
+      "scrollWidth",
+      horizontalScrollPosition.right,
+      "width",
+      totalWidth
+    );
+    if (totalWidth-horizontalScrollPosition.right < 1) {
+      setShadow(false);
+    } else {
+      setShadow(true);
+    }
   };
   return (
     // wrapping container with theme & size
@@ -334,7 +361,7 @@ const PhaseGrid = () => {
           undoRedoCellEditing={true}
           onGridPreDestroyed={onGridPreDestroyed}
         />
-        <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
+        {shadow&&<div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>}
       </div>
 
       <div className="flex lg:flex-col gap-2 mt-2">

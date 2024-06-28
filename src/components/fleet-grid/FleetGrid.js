@@ -16,6 +16,7 @@ const isEmpty = (obj) => {
 const FleetGrid = () => {
   const { fleet, setFleetState } = useColumnState();
   const { data, updateData } = useAuthStore();
+  const [shadow,setShadow] = useState(true)
   const gridRef = useRef(null);
   // Fetch data & update rowData state
   useEffect(() => {
@@ -50,9 +51,20 @@ const FleetGrid = () => {
   const onBodyScroll = (event) => {
     const horizontalScrollPosition = event.api.getHorizontalPixelRange();
     // const scrollWidth = event.api.gridPanel.getBodyClientRect().width;
+    const size = event.api.getColumnState();
     // const maxScrollLeft = horizontalScrollPosition.right - scrollWidth;
+    const totalWidth = size.reduce((total, obj) => {
+      if (!obj.pinned && !obj.hide) {
+        return total + obj.width;
+      }
+      return total;
+    }, 0);
 
-    console.log("scrollWidth", horizontalScrollPosition);
+    if (totalWidth-horizontalScrollPosition.right < 1) {
+      setShadow(false);
+    } else {
+      setShadow(true);
+    }
   };
 
   // Column Definitions: Defines the columns to be displayed.
@@ -148,6 +160,7 @@ const FleetGrid = () => {
   const onGridPreDestroyed = (event) => {
     const gridState = event.api.getColumnState();
     setFleetState(event.state);
+    console.log(event.state);
   };
 
   return (
@@ -170,7 +183,9 @@ const FleetGrid = () => {
         suppressColumnVirtualisation={true}
         onGridPreDestroyed={onGridPreDestroyed}
       />
-      <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
+      {shadow && (
+        <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
+      )}
     </div>
   );
 };

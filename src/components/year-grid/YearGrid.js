@@ -7,6 +7,7 @@ import useYears from "../../store/useYears";
 import useYearOverYear from "../../store/useYearOverYear";
 import { getBackgroundColor, getTextColor } from "./getColor";
 import useColumnState from "../../store/useColumnState";
+// import "./yeargrid.css";
 
 
 
@@ -306,6 +307,8 @@ const YearGrid = () => {
 
   const onGridReady = (params) => {
     setGridApi(params.api);
+    params.api.addEventListener("bodyScroll", onBodyScroll);
+
 
     if (yearColumns && params.api) {
       console.log(yearColumns)
@@ -346,7 +349,7 @@ const YearGrid = () => {
   };
   const onGridPreDestroyed = (event) => {
     const gridState = event.api.getColumnState();
-    setYearColumns(gridState)
+    setYearColumns(event.state)
   };
 
   // Combine "Title" column with dynamically generated year columns
@@ -378,6 +381,31 @@ const YearGrid = () => {
       skipHeader: false,
     };
   }, []);
+
+  const [shadow,setShadow] = useState(true)
+  const onBodyScroll = (event) => {
+    const horizontalScrollPosition = event.api.getHorizontalPixelRange();
+    // const scrollWidth = event.api.gridPanel.getBodyClientRect().width;
+    const size = event.api.getColumnState();
+    // const maxScrollLeft = horizontalScrollPosition.right - scrollWidth;
+    const totalWidth = size.reduce((total, obj) => {
+      if (!obj.pinned && !obj.hide) {
+        return total + obj.width;
+      }
+      return total;
+    }, 0);
+    console.log(
+      "scrollWidth",
+      horizontalScrollPosition.right,
+      "width",
+      totalWidth
+    );
+    if (totalWidth-horizontalScrollPosition.right < 1) {
+      setShadow(false);
+    } else {
+      setShadow(true);
+    }
+  };
   return (
     // wrapping container with theme & size
     <div
@@ -385,6 +413,7 @@ const YearGrid = () => {
     >
       <AgGridReact
         style={{ width: "100%", height: "100%" }}
+        initialState={yearColumns}
         ref={gridRef}
         // suppressColumnVirtualisation={true}
         rowData={rowData}
@@ -394,7 +423,7 @@ const YearGrid = () => {
         suppressCellFocus={true}
         onGridPreDestroyed={onGridPreDestroyed}
       />
-      <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
+      {shadow&&<div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>}
     </div>
   );
 };
