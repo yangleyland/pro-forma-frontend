@@ -329,12 +329,6 @@ const PhaseGrid = () => {
       }
       return total;
     }, 0);
-    console.log(
-      "scrollWidth",
-      horizontalScrollPosition.right,
-      "width",
-      totalWidth
-    );
     if (totalWidth-horizontalScrollPosition.right < 1) {
       setShadow(false);
     } else {

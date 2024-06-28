@@ -311,7 +311,6 @@ const YearGrid = () => {
 
 
     if (yearColumns && params.api) {
-      console.log(yearColumns)
       const res = params.api.applyColumnState({
         state: yearColumns,
         applyOrder: true,
@@ -394,12 +393,6 @@ const YearGrid = () => {
       }
       return total;
     }, 0);
-    console.log(
-      "scrollWidth",
-      horizontalScrollPosition.right,
-      "width",
-      totalWidth
-    );
     if (totalWidth-horizontalScrollPosition.right < 1) {
       setShadow(false);
     } else {
