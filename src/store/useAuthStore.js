@@ -49,8 +49,7 @@ const useAuthStore = create((set, get) => ({
     setYearSums();
     const { setYearSums: setYearSumsAllSites } = useAllSitesCalcs.getState();
     setYearSumsAllSites();
-
-
+    
 
   },
 

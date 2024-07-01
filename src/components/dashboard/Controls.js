@@ -42,6 +42,7 @@ const Controls = () => {
 
   useEffect(() => {
     if (controlsData) {
+      console.log(controlsData)
       setElectrificationScenario(controlsData["electrification_scenario"]);
       const tempSites = ["All Sites", ...controlsData.domiciles];
       setSite(controlsData["site"]);
