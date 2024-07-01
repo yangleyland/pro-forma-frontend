@@ -31,7 +31,6 @@ const Controls = () => {
   const [electrificationOptions, setElectrificationOptions] = useState([]);
   const [siteOptions, setSiteOptions] = useState([]);
 
-  const initialLoad = useRef(true);
 
   useEffect(() => {
     if (data && data[0] && data[0].electrification_scenario) {
@@ -42,15 +41,14 @@ const Controls = () => {
 
   useEffect(() => {
     if (controlsData) {
-      console.log(controlsData)
+      
       setElectrificationScenario(controlsData["electrification_scenario"]);
       const tempSites = ["All Sites", ...controlsData.domiciles];
       setSite(controlsData["site"]);
+      console.log(controlsData,tempSites)
       setSiteOptions(tempSites || "");
       setIncentives(controlsData.incentives || false);
       setIraIncentives(controlsData.ira_incentives || false);
-
-      initialLoad.current = false;
     }
   }, [controlsData, electrificationOptions]);
 
