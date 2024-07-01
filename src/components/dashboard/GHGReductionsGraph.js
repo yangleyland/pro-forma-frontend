@@ -73,7 +73,7 @@ const GHGReductionsGraph = () => {
             <Line
               type="monotone"
               dataKey="ghgReductions"
-              stroke="#88a37f"
+              stroke="#6a7b9e"
               name="Selected Site"
             />
             {allSitesData && (

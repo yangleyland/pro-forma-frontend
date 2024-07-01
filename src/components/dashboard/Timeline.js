@@ -30,6 +30,13 @@ function formatCurrency(value) {
   return `$${Math.abs(value).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 }
 
+const formatNum = (value) => {
+  if (value === 0) {
+    return "-";
+  }
+  return value;
+}
+
 const Timeline = () => {
   const { END_YEAR } = useYears();
   const { vehicleCounts, totalVehicles } = useProFormaCalcs();
@@ -98,12 +105,12 @@ const Timeline = () => {
       <CardContent className="flex flex-col">
         <div className="flex w-full justify-center gap-2 items-center">
           <p className="flex-1 text-xl font-bold text-right">
-            {vehiclesElectrified}/{totalVehicles}
+            {formatNum(vehiclesElectrified)}/{totalVehicles}
           </p>
           <p className="flex-[2_2_0%] text-bold">vehicles electrified</p>
         </div>
         <div className="flex w-full justify-center gap-2 items-start">
-          <p className="flex-1  text-xl font-bold text-right">{portSum}</p>
+          <p className="flex-1  text-xl font-bold text-right">{formatNum(portSum)}</p>
           <p className="flex-[2_2_0%] text-bold">ports installed</p>
         </div>
         <div className="flex w-full justify-center gap-2 items-start">
