@@ -12,6 +12,7 @@ import ResetButton from "../components/ResetButton";
 import { Card } from "../components/ui/card";
 import CostBenefitChart from "../components/dashboard/CostBenefitChart";
 import CostAndSavings from "../components/dashboard/CostAndSavings";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 function AdvancedControls() {
   const economicsRef = useRef(null);
@@ -64,7 +65,12 @@ function AdvancedControls() {
         </h1>
         <ResetButton tableName="advanced controls" />
       </div>
-      <div className="w-full flex flex-row-reverse lg:flex-col-reverse">
+      {(!advancedCalcs) && (
+        <div className="w-full h-full flex justify-center items-center z-20 bg-white">
+          <LoadingSpinner />
+        </div>
+      )}
+      <div className={`w-full flex flex-row-reverse lg:flex-col-reverse ${(!advancedCalcs)?"hidden":""}`}>
         <div className="w-1/2 flex flex-col gap-10 lg:w-full">
           <CostBenefitChart />
           <CostAndSavings />

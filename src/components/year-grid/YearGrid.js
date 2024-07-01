@@ -299,7 +299,6 @@ const YearGrid = () => {
     const addUniqueIdToData = (data) => {
       return data.map((item, index) => ({ ...item, id: String(index) }));
     };
-    
     setRowData(addUniqueIdToData(finalFilteredData));
   }, [data]);
   // Row Data: The data to be displayed.
@@ -324,7 +323,6 @@ const YearGrid = () => {
       headerName: `${year}`,
       field: `${year}`,
       editable: false,
-      initialWidth: 150,
       cellStyle: (params) => {
         return {
           color: getTextColor(params.data.title, params.value),
@@ -381,11 +379,8 @@ const YearGrid = () => {
     if (gridRef.current.api) {
       gridRef.current.api.setGridOption("columnDefs", combinedColumns);
     }
-    
+  }, [YEARS, gridRef]);
 
-  }, [YEARS,gridRef]);
-
-  
   const autoSizeStrategy = useMemo(() => {
     return {
       type: "fitCellContents",
@@ -415,22 +410,37 @@ const YearGrid = () => {
       columnOrder: undefined,
     };
   };
-  const getRowId = (params) =>{
-    console.log(params.data.id)
+  const getRowId = (params) => {
     return params.data.id;
-  }
+  };
+  useEffect(() => {
+    console.log(yearColumns, isEmpty(yearColumns));
+  }, [yearColumns]);
 
+  useEffect(() => {
+    if(!gridRef.current.api || !isEmpty(yearColumns)){
+      return;
+    }
+    const allColumnIds = [];
+    gridRef?.current?.api?.getColumns().forEach((column) => {
+      allColumnIds.push(column.getId());
+    });
+    gridRef?.current?.api?.autoSizeColumns(allColumnIds, false);
+  }, [rowData]);
   return (
     // wrapping container with theme & size
     <div
-      className="ag-theme-quartz h-full relative w-full" // applying the grid theme
+      className="ag-theme-quartz h-[90%] relative w-full" // applying the grid theme
     >
       <AgGridReact
         style={{ width: "100%", height: "100%" }}
         initialState={preprocessYearColumns(yearColumns)}
         ref={gridRef}
         suppressColumnVirtualisation={true}
-        autoSizeStrategy={isEmpty(yearColumns) ? autoSizeStrategy : {}}
+        suppressRowVirtualisation={true}
+        // autoSizeStrategy={
+        //   isEmpty(yearColumns) ? { type: "fitCellContents"} : {}
+        // }
         rowData={rowData}
         columnDefs={colDefs}
         onGridReady={onGridReady}

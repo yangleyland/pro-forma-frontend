@@ -31,9 +31,7 @@ const Controls = () => {
   const [electrificationOptions, setElectrificationOptions] = useState([]);
   const [siteOptions, setSiteOptions] = useState([]);
 
-  useEffect(() => {
-    console.log("site", site);
-  }, [site]);
+
 
   useEffect(() => {
     if (data && data[0] && data[0].electrification_scenario) {
@@ -80,6 +78,9 @@ const Controls = () => {
   };
 
   const handleElectrificationScenarioChange = (str) => {
+    if (str === "") {
+      return;
+    }
     const newValue = str;
     setElectrificationScenario(newValue);
     updateControl("electrification_scenario", newValue);

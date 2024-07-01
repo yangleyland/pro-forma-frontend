@@ -12,13 +12,18 @@ import {
 } from "../components/ui/dialog";
 import { Label } from "../components/ui/label";
 import useAuthStore from "../store/useAuthStore";
+import useAdvancedCalc from "../store/useAdvancedCalc";
 
 function ResetButton({tableName}) {
   const { user, fetchData } = useAuthStore();
+  const {setAdvancedCalcs} = useAdvancedCalc();
 
   const handleReset = async () => {
     if (!user) {
       return;
+    }
+    if (tableName === "advanced controls") {
+      setAdvancedCalcs(null);
     }
     console.log("Resetting to default");
     try {
@@ -30,7 +35,7 @@ function ResetButton({tableName}) {
       );
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error(response);
       }
 
       // API call successful, fetch the updated data
