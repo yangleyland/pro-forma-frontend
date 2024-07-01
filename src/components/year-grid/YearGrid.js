@@ -414,7 +414,8 @@ const YearGrid = () => {
     return params.data.id;
   };
   useEffect(() => {
-    if(!gridRef.current.api || !isEmpty(yearColumns)){
+    console.log("yearcols",isEmpty(yearColumns),yearColumns,gridRef.current.api)
+    if(!isEmpty(yearColumns)){
       return;
     }
     const allColumnIds = [];
@@ -422,7 +423,7 @@ const YearGrid = () => {
       allColumnIds.push(column.getId());
     });
     gridRef?.current?.api?.autoSizeColumns(allColumnIds, false);
-  }, [rowData]);
+  }, [rowData,yearColumns]);
   return (
     // wrapping container with theme & size
     <div
@@ -434,9 +435,9 @@ const YearGrid = () => {
         ref={gridRef}
         suppressColumnVirtualisation={true}
         suppressRowVirtualisation={true}
-        // autoSizeStrategy={
-        //   isEmpty(yearColumns) ? { type: "fitCellContents"} : {}
-        // }
+        autoSizeStrategy={
+          isEmpty(yearColumns) ? { type: "fitCellContents"} : {}
+        }
         rowData={rowData}
         columnDefs={colDefs}
         onGridReady={onGridReady}
