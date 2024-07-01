@@ -44,12 +44,11 @@ const useAuthStore = create((set, get) => ({
     controls.domiciles=uniqueDomiciles;
     set({ controlsData: controls});
 
-    set({ controlsData: controls });
     const { setYearSums } = useProFormaCalcs.getState();
     setYearSums();
     const { setYearSums: setYearSumsAllSites } = useAllSitesCalcs.getState();
     setYearSumsAllSites();
-    
+
 
   },
 

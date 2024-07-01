@@ -31,7 +31,9 @@ const Controls = () => {
   const [electrificationOptions, setElectrificationOptions] = useState([]);
   const [siteOptions, setSiteOptions] = useState([]);
 
-
+  useEffect(() => {
+    console.log(site);
+  }, [site]);
   useEffect(() => {
     if (data && data[0] && data[0].electrification_scenario) {
       const options = Object.keys(data[0].electrification_scenario);
