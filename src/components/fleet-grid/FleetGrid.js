@@ -15,9 +15,9 @@ const isEmpty = (obj) => {
 
 const FleetGrid = () => {
   const { fleet, setFleetState } = useColumnState();
-  const { data, updateData,patchData } = useAuthStore();
+  const { data, updateData, patchData } = useAuthStore();
   const [shadow, setShadow] = useState(true);
-  const [history,setHistory]  = useState([]);
+  const [history, setHistory] = useState([]);
   const gridRef = useRef(null);
   // Fetch data & update rowData state
   useEffect(() => {
@@ -26,41 +26,37 @@ const FleetGrid = () => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "z") {
         undoEdit();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [history]);
-  
+
   const undoEdit = useCallback(() => {
-    
-
     if (history.length === 0) return;
-    const val = history[history.length-1];
-    console.log("val",val)
-    patchData(val.equipment_id,val.field,val.value);
-    setHistory(history.slice(0,history.length-1));
-    console.log("pressed",5483,"Equipment ID","000",val.equipment_id,val.field,val.value)
-    const event={
-      data:{
-        equipment_id:val.equipment_id
+    const val = history[history.length - 1];
+    console.log("val", val);
+    patchData(val.equipment_id, val.field, val.value);
+    setHistory(history.slice(0, history.length - 1));
+    const event = {
+      data: {
+        equipment_id: val.equipment_id,
       },
-      colDef:{
-        field:val.field
+      colDef: {
+        field: val.field,
       },
-      newValue:val.value,
-    }
-    handleCellValueChanged(event,true);
-
+      newValue: val.value,
+    };
+    handleCellValueChanged(event, true);
   }, [history]);
 
   useEffect(() => {
-    console.log(history)
+    console.log(history);
   }, [history]);
 
   // Row Data: The data to be displayed.
@@ -110,7 +106,15 @@ const FleetGrid = () => {
       cellStyle: { color: "gray", border: "none" },
       field: "Simplified Domicile",
     },
-    { field: "Replacement Year", editable: true, type: "number" },
+    {
+      field: "Replacement Year",
+      editable: true,
+      type: "number",
+      cellEditorParams: {
+        min: 2000,
+        max: 2100,
+      },
+    },
     {
       field: "Expected Lifetime",
       editable: true,
@@ -151,14 +155,18 @@ const FleetGrid = () => {
     },
   ]);
 
-  const handleCellValueChanged = async (event,undo=false) => {
+  const handleCellValueChanged = async (event, undo = false) => {
     const equipment_id = event.data.equipment_id;
     const field = event.colDef.field;
     let value = event.newValue;
 
-
     if (value === null || value === undefined) {
-      value = 0;
+      if (field === "Replacement Year") {
+        value = 2024;
+      }else{
+        value = 0;
+      }
+      
       event.node.setDataValue(field, value); // Immediately update the cell value in the grid
     }
     console.log(field, value, equipment_id);
@@ -180,8 +188,11 @@ const FleetGrid = () => {
       if (!response.ok) {
         throw new Error("Failed to update data");
       }
-      if (!undo){
-        setHistory([...history,{equipment_id: equipment_id, field, value:event.oldValue}]);
+      if (!undo) {
+        setHistory([
+          ...history,
+          { equipment_id: equipment_id, field, value: event.oldValue },
+        ]);
       }
       const result = await response.json();
       console.log("Update successful:", result);
@@ -199,7 +210,6 @@ const FleetGrid = () => {
   const onStateUpdated = (params) => {
     console.log("State updated", params.state);
   };
-  
 
   return (
     // wrapping container with theme & size

@@ -414,10 +414,6 @@ const YearGrid = () => {
     return params.data.id;
   };
   useEffect(() => {
-    console.log(yearColumns, isEmpty(yearColumns));
-  }, [yearColumns]);
-
-  useEffect(() => {
     if(!gridRef.current.api || !isEmpty(yearColumns)){
       return;
     }
