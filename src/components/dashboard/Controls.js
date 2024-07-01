@@ -24,16 +24,17 @@ import { Switch } from "../ui/switch";
 
 const Controls = () => {
   const { controlsData, setControlsData, user, data } = useAuthStore();
-  const [electrificationScenario, setElectrificationScenario] = useState(null);
-  const [site, setSite] = useState(null);
+  const [electrificationScenario, setElectrificationScenario] = useState("");
+  const [site, setSite] = useState("");
   const [incentives, setIncentives] = useState(false);
   const [iraIncentives, setIraIncentives] = useState(false);
   const [electrificationOptions, setElectrificationOptions] = useState([]);
   const [siteOptions, setSiteOptions] = useState([]);
 
   useEffect(() => {
-    console.log("site",site);
+    console.log("site", site);
   }, [site]);
+
   useEffect(() => {
     if (data && data[0] && data[0].electrification_scenario) {
       const options = Object.keys(data[0].electrification_scenario);
@@ -43,15 +44,9 @@ const Controls = () => {
 
   useEffect(() => {
     if (controlsData) {
-      
       setElectrificationScenario(controlsData["electrification_scenario"]);
       const tempSites = ["All Sites", ...controlsData.domiciles];
-      if (controlsData["site"]!=="" && controlsData["site"]!==null){
-        console.log("controlsDataSite",controlsData["site"])
-        setSite(controlsData["site"]);
-      }
-      
-      console.log(controlsData,tempSites)
+      setSite(controlsData["site"]);
       setSiteOptions(tempSites);
       setIncentives(controlsData.incentives || false);
       setIraIncentives(controlsData.ira_incentives || false);
