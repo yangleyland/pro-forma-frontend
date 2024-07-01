@@ -47,46 +47,45 @@ function Dashboard() {
           className="md:hidden border absolute right-14 top-6 h-24 rounded-sm shadow-md"
         />
       )}
-      {!controlsData || !controlsData.site ? (
-        <div className="w-full h-1/2 flex justify-center items-center">
+      {(!controlsData) && (
+        <div className="w-full h-full flex justify-center items-center z-20 bg-white">
           <LoadingSpinner />
         </div>
-        
-      ) : (
-        <div className="grid grid-cols-12 gap-4 p-4">
-          <div className="col-span-3 xl:col-span-12 h-fill">
-            <Controls />
-          </div>
-          <div className="col-span-5 lg:col-span-12 row-span-1 h-fill">
-            <CostBenefitChart />
-          </div>
-          <div className="col-span-4 lg:col-span-12 row-span-1 h-fill">
-            <CostAndSavings key={renderKey} />
-          </div>
-
-          <div className="col-span-3 lg:col-span-12 lg:h-[150px] row-span-1 h-fill">
-            <PrioritySite />
-          </div>
-          <div className="col-span-3 lg:col-span-12 lg:h-[150px] lg:row-span-2  row-span-1 h-fill">
-            <ElectrificationScenario />
-          </div>
-          <div className="col-span-3  lg:col-span-12 lg:h-[150px] row-span-1 h-fill">
-            <GHGReductions />
-          </div>
-          <div className="col-span-3  lg:col-span-12 row-span-1 h-fill">
-            <CashFlow />
-          </div>
-          <div className="col-span-6 lg:col-span-12 row-span-1 h-full">
-            <GHGReductionsGraph />
-          </div>
-          <div className="col-span-6 lg:col-span-12 row-span-1 h-full">
-            <CapitalCostsGraph />
-          </div>
-          <div className="col-span-4 lg:col-span-12 row-span-1 h-full">
-            <Timeline />
-          </div>
-        </div>
       )}
+
+      <div className={`grid grid-cols-12 gap-4 p-4 ${(!controlsData)?"hidden":""}`}>
+        <div className="col-span-3 xl:col-span-12 h-fill">
+          <Controls />
+        </div>
+        <div className="col-span-5 lg:col-span-12 row-span-1 h-fill">
+          <CostBenefitChart />
+        </div>
+        <div className="col-span-4 lg:col-span-12 row-span-1 h-fill">
+          <CostAndSavings key={renderKey} />
+        </div>
+
+        <div className="col-span-3 lg:col-span-12 lg:h-[150px] row-span-1 h-fill">
+          <PrioritySite />
+        </div>
+        <div className="col-span-3 lg:col-span-12 lg:h-[150px] lg:row-span-2  row-span-1 h-fill">
+          <ElectrificationScenario />
+        </div>
+        <div className="col-span-3  lg:col-span-12 lg:h-[150px] row-span-1 h-fill">
+          <GHGReductions />
+        </div>
+        <div className="col-span-3  lg:col-span-12 row-span-1 h-fill">
+          <CashFlow />
+        </div>
+        <div className="col-span-6 lg:col-span-12 row-span-1 h-full">
+          <GHGReductionsGraph />
+        </div>
+        <div className="col-span-6 lg:col-span-12 row-span-1 h-full">
+          <CapitalCostsGraph />
+        </div>
+        <div className="col-span-4 lg:col-span-12 row-span-1 h-full">
+          <Timeline />
+        </div>
+      </div>
     </>
   );
 }

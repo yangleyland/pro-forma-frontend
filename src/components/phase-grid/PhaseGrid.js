@@ -346,9 +346,7 @@ const PhaseGrid = () => {
           onGridReady={onGridReady}
           suppressColumnVirtualisation={true}
           maintainColumnOrder={true}
-          undoRedoCellEditing={true}
           onGridPreDestroyed={onGridPreDestroyed}
-          undoRedoCellEditingLimit={20}
         />
         {shadow && (
           <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
