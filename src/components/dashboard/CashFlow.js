@@ -36,7 +36,6 @@ const CashFlow = () => {
   };
 
   const val = annualCostBenefit[year] ?? annualCostBenefit[2040];
-  console.log(val);
 
   return (
     <Card className="h-full">

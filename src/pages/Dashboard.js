@@ -29,10 +29,6 @@ function Dashboard() {
   //     fetchData(user.id);
   //   }
   // }, [fetchData, user]);
-  useEffect(() => {
-    console.log("controlsData", controlsData);
-  }, [controlsData]);
-
   return (
     <>
       <div className="flex justify-between pr-4">

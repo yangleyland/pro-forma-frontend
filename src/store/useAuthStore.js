@@ -28,6 +28,16 @@ const useAuthStore = create((set, get) => ({
     });
     set({ data: updatedData });
   },
+  patchData: (equipment_id,field, value) => {
+    const currentData = get().data;
+    const updatedData = currentData.map(item => {
+      if (item.equipment_id === equipment_id) {
+        return {...item, [field]: value};
+      }
+      return item;
+    });
+    set({ data: updatedData });
+  },
   setControlsData: (controls) => {
 
     const uniqueDomiciles = [...new Set(get().data.map(item => item["Simplified Domicile"]))];
@@ -70,7 +80,6 @@ const useAuthStore = create((set, get) => ({
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      console.log("Logged out successfully");
       set({ user: null, data: [] });
     } catch (error) {
       set({ message: `Logout error: ${error.message}` });

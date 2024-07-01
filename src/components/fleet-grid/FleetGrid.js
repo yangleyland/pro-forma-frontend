@@ -1,7 +1,7 @@
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
-import { useState, useEffect, useRef } from "react"; // React State Management
+import { useState, useEffect, useRef, useCallback } from "react"; // React State Management
 import useAuthStore from "../../store/useAuthStore";
 import useColumnState from "../../store/useColumnState";
 
@@ -15,16 +15,56 @@ const isEmpty = (obj) => {
 
 const FleetGrid = () => {
   const { fleet, setFleetState } = useColumnState();
-  const { data, updateData } = useAuthStore();
+  const { data, updateData,patchData } = useAuthStore();
   const [shadow, setShadow] = useState(true);
+  const [history,setHistory]  = useState([]);
   const gridRef = useRef(null);
   // Fetch data & update rowData state
   useEffect(() => {
     setRowData(data);
   }, [data]); //maybe change this
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+        undoEdit();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [history]);
+  
+  const undoEdit = useCallback(() => {
+    
+
+    if (history.length === 0) return;
+    const val = history[history.length-1];
+    console.log("val",val)
+    patchData(val.equipment_id,val.field,val.value);
+    setHistory(history.slice(0,history.length-1));
+    console.log("pressed",5483,"Equipment ID","000",val.equipment_id,val.field,val.value)
+    const event={
+      data:{
+        equipment_id:val.equipment_id
+      },
+      colDef:{
+        field:val.field
+      },
+      newValue:val.value,
+    }
+    handleCellValueChanged(event,true);
+
+  }, [history]);
+
+  useEffect(() => {
+    console.log(history)
+  }, [history]);
+
   // Row Data: The data to be displayed.
-  const [rowData, setRowData] = useState([]);
+  const [rowData, setRowData] = useState(null);
 
   // Store gridApi to access selected rows
   const [gridApi, setGridApi] = useState(null);
@@ -111,16 +151,17 @@ const FleetGrid = () => {
     },
   ]);
 
-  const handleCellValueChanged = async (event) => {
-    const updatedData = event.data;
+  const handleCellValueChanged = async (event,undo=false) => {
+    const equipment_id = event.data.equipment_id;
     const field = event.colDef.field;
     let value = event.newValue;
+
 
     if (value === null || value === undefined) {
       value = 0;
       event.node.setDataValue(field, value); // Immediately update the cell value in the grid
     }
-
+    console.log(field, value, equipment_id);
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_ROUTE}api/fleet/patch`,
@@ -131,7 +172,7 @@ const FleetGrid = () => {
           },
           body: JSON.stringify({
             [field]: value,
-            equipment_id: updatedData.equipment_id,
+            equipment_id: equipment_id,
           }),
         }
       );
@@ -139,7 +180,9 @@ const FleetGrid = () => {
       if (!response.ok) {
         throw new Error("Failed to update data");
       }
-
+      if (!undo){
+        setHistory([...history,{equipment_id: equipment_id, field, value:event.oldValue}]);
+      }
       const result = await response.json();
       console.log("Update successful:", result);
       updateData(result[0]);
@@ -149,7 +192,6 @@ const FleetGrid = () => {
   };
 
   const onGridPreDestroyed = (event) => {
-    const gridState = event.api.getColumnState();
     setFleetState(event.state);
     console.log(event.state);
   };
@@ -157,7 +199,6 @@ const FleetGrid = () => {
   const onStateUpdated = (params) => {
     console.log("State updated", params.state);
   };
-  console.log(fleet);
 
   return (
     // wrapping container with theme & size

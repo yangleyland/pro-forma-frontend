@@ -48,8 +48,6 @@ const ChargerInfoForm = () => {
   
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    console.log(chargerCosts)
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_ROUTE}api/chargerdata/patch/${chargerCosts.id}`,

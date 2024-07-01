@@ -25,7 +25,6 @@ function SetDefaults() {
       }
 
       const data = await response.json();
-      console.log('Defaults saved:', data);
     } catch (error) {
       console.error('Error saving defaults:', error);
     }

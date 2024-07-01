@@ -297,13 +297,13 @@ const YearGrid = () => {
         capitalPlanningFundingSum !== 0
     );
     const addUniqueIdToData = (data) => {
-      return data.map((item, index) => ({ ...item, id: index }));
+      return data.map((item, index) => ({ ...item, id: String(index) }));
     };
     
     setRowData(addUniqueIdToData(finalFilteredData));
   }, [data]);
   // Row Data: The data to be displayed.
-  const [rowData, setRowData] = useState([]);
+  const [rowData, setRowData] = useState(null);
 
   // Store gridApi to access selected rows
   const [gridApi, setGridApi] = useState(null);
@@ -415,10 +415,15 @@ const YearGrid = () => {
       columnOrder: undefined,
     };
   };
+  const getRowId = (params) =>{
+    console.log(params.data.id)
+    return params.data.id;
+  }
+
   return (
     // wrapping container with theme & size
     <div
-      className="ag-theme-quartz h-full relative" // applying the grid theme
+      className="ag-theme-quartz h-full relative w-full" // applying the grid theme
     >
       <AgGridReact
         style={{ width: "100%", height: "100%" }}
@@ -432,7 +437,7 @@ const YearGrid = () => {
         suppressRowHoverHighlight={true}
         suppressCellFocus={true}
         onGridPreDestroyed={onGridPreDestroyed}
-
+        getRowId={getRowId}
       />
       {shadow && (
         <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
