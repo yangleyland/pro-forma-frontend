@@ -24,7 +24,7 @@ import { Switch } from "../ui/switch";
 
 const Controls = () => {
   const { controlsData, setControlsData, user, data } = useAuthStore();
-  const [electrificationScenario, setElectrificationScenario] = useState("");
+  const [electrificationScenario, setElectrificationScenario] = useState(null);
   const [site, setSite] = useState(null);
   const [incentives, setIncentives] = useState(false);
   const [iraIncentives, setIraIncentives] = useState(false);
@@ -32,7 +32,7 @@ const Controls = () => {
   const [siteOptions, setSiteOptions] = useState([]);
 
   useEffect(() => {
-    console.log(site);
+    console.log("site",site);
   }, [site]);
   useEffect(() => {
     if (data && data[0] && data[0].electrification_scenario) {
@@ -47,11 +47,12 @@ const Controls = () => {
       setElectrificationScenario(controlsData["electrification_scenario"]);
       const tempSites = ["All Sites", ...controlsData.domiciles];
       if (controlsData["site"]!=="" && controlsData["site"]!==null){
+        console.log("controlsDataSite",controlsData["site"])
         setSite(controlsData["site"]);
       }
       
       console.log(controlsData,tempSites)
-      setSiteOptions(tempSites || "");
+      setSiteOptions(tempSites);
       setIncentives(controlsData.incentives || false);
       setIraIncentives(controlsData.ira_incentives || false);
     }
@@ -90,6 +91,9 @@ const Controls = () => {
   };
 
   const handleSiteChange = (str) => {
+    if (str === "") {
+      return;
+    }
     const newValue = str;
     setSite(newValue);
     updateControl("site", newValue);
