@@ -36,12 +36,10 @@ const PhaseGrid = () => {
     controlsData?.domiciles.map((option) => option) || []
   );
 
-
   const onGridReady = (params) => {
     setGridApi(params.api);
     params.api.addEventListener("bodyScroll", onBodyScroll);
   };
-
 
   // Fetch data & update rowData state
 
@@ -57,7 +55,7 @@ const PhaseGrid = () => {
 
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs, setColDefs] = useState([
-    { field: "year", editable: true },
+    { field: "year", editable: true, pinned: true },
     {
       field: "site",
       editable: true,
@@ -66,6 +64,7 @@ const PhaseGrid = () => {
       cellEditorParams: {
         values: siteOptions,
       },
+      pinned: true,
     },
     {
       headerName: "Ports <10 kW",
@@ -299,7 +298,6 @@ const PhaseGrid = () => {
 
   const [gridApi, setGridApi] = useState(null);
 
-
   const autoSizeStrategy = useMemo(() => {
     return {
       type: "fitCellContents",
@@ -311,7 +309,7 @@ const PhaseGrid = () => {
     const gridState = event.api.getColumnState();
     setPhaseColumns(event.state);
   };
-  const [shadow,setShadow] = useState(true)
+  const [shadow, setShadow] = useState(true);
   const onBodyScroll = (event) => {
     const horizontalScrollPosition = event.api.getHorizontalPixelRange();
     // const scrollWidth = event.api.gridPanel.getBodyClientRect().width;
@@ -323,12 +321,13 @@ const PhaseGrid = () => {
       }
       return total;
     }, 0);
-    if (totalWidth-horizontalScrollPosition.right < 1) {
+    if (totalWidth - horizontalScrollPosition.right < 1) {
       setShadow(false);
     } else {
       setShadow(true);
     }
   };
+
   return (
     // wrapping container with theme & size
     <div
@@ -337,7 +336,7 @@ const PhaseGrid = () => {
       <div className="relative">
         <AgGridReact
           initialState={phaseColumns}
-          autoSizeStrategy={isEmpty(phaseColumns)?autoSizeStrategy:{}}
+          autoSizeStrategy={isEmpty(phaseColumns) ? autoSizeStrategy : {}}
           domLayout="autoHeight"
           stopEditingWhenCellsLoseFocus={true}
           rowData={rowData}
@@ -351,7 +350,9 @@ const PhaseGrid = () => {
           onGridPreDestroyed={onGridPreDestroyed}
           undoRedoCellEditingLimit={20}
         />
-        {shadow&&<div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>}
+        {shadow && (
+          <div className="h-full absolute top-0 right-0 bottom-0 w-5 bg-gradient-to-r from-transparent to-black/10 pointer-events-none z-20 rounded-lg"></div>
+        )}
       </div>
 
       <div className="flex lg:flex-col gap-2 mt-2">
