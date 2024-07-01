@@ -25,7 +25,7 @@ import { Switch } from "../ui/switch";
 const Controls = () => {
   const { controlsData, setControlsData, user, data } = useAuthStore();
   const [electrificationScenario, setElectrificationScenario] = useState("");
-  const [site, setSite] = useState("");
+  const [site, setSite] = useState(null);
   const [incentives, setIncentives] = useState(false);
   const [iraIncentives, setIraIncentives] = useState(false);
   const [electrificationOptions, setElectrificationOptions] = useState([]);
@@ -46,7 +46,10 @@ const Controls = () => {
       
       setElectrificationScenario(controlsData["electrification_scenario"]);
       const tempSites = ["All Sites", ...controlsData.domiciles];
-      setSite(controlsData["site"]);
+      if (controlsData["site"]!=="" && controlsData["site"]!==null){
+        setSite(controlsData["site"]);
+      }
+      
       console.log(controlsData,tempSites)
       setSiteOptions(tempSites || "");
       setIncentives(controlsData.incentives || false);
