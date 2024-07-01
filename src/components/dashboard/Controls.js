@@ -44,7 +44,7 @@ const Controls = () => {
     if (controlsData) {
       setElectrificationScenario(controlsData["electrification_scenario"]);
       const tempSites = ["All Sites", ...controlsData.domiciles];
-      setSite(controlsData["site"] || "");
+      setSite(controlsData["site"]);
       setSiteOptions(tempSites || "");
       setIncentives(controlsData.incentives || false);
       setIraIncentives(controlsData.ira_incentives || false);
